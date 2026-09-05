@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>✈️ 해진 & 양재 유럽여행</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3248;
+    --accent: #5b8def;
+    --accent2: #7c6bdd;
+    --green: #4ec994;
+    --yellow: #f5c842;
+    --red: #e06b6b;
+    --text: #e8eaf2;
+    --text2: #8b90a7;
+    --text3: #5a5f7a;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* ── 헤더 ── */
+  .header {
+    background: linear-gradient(135deg, #1a1d27 0%, #22263a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 20px 14px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-top { display: flex; align-items: center; justify-content: space-between; }
+  .header h1 { font-family: 'DM Sans', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
+  .header h1 span { color: var(--accent); }
+  .sync-btn {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text2); padding: 6px 12px; border-radius: 20px;
+    font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 5px;
+  }
+  .sync-btn:active { opacity: 0.7; }
+  .date-range { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+  /* ── 탭 ── */
+  .tabs {
+    display: flex; overflow-x: auto; gap: 6px;
+    padding: 12px 20px 0; scrollbar-width: none;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex-shrink: 0; padding: 8px 14px;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    font-size: 12px; font-weight: 500; cursor: pointer;
+    color: var(--text2); border: 1px solid transparent;
+    border-bottom: none; transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .tab.active {
+    background: var(--bg); color: var(--accent);
+    border-color: var(--border); border-bottom-color: var(--bg);
+  }
+
+  /* ── 콘텐츠 ── */
+  .content { padding: 16px 16px 0; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── 로딩 ── */
+  .loading {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 60px 20px; gap: 14px;
+  }
+  .spinner {
+    width: 36px; height: 36px; border: 3px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading p { color: var(--text2); font-size: 13px; }
+
+  /* ── 카드 공통 ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 12px 14px;
+    display: flex; align-items: center; gap: 10px;
+    cursor: pointer; user-select: none;
+  }
+  .card-header:active { opacity: 0.8; }
+  .card-body { padding: 0 14px 14px; display: none; }
+  .card.open .card-body { display: block; }
+  .card-chevron {
+    margin-left: auto; color: var(--text3); font-size: 11px;
+    transition: transform 0.2s;
+  }
+  .card.open .card-chevron { transform: rotate(180deg); }
+
+  /* ── 날짜 배지 ── */
+  .date-badge {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 8px;
+    font-size: 11px; color: var(--text2); font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+  }
+  .date-badge.today { background: rgba(91,141,239,0.15); border-color: var(--accent); color: var(--accent); }
+  .date-badge.past { opacity: 0.4; }
+
+  /* ── 전체일정 ── */
+  .schedule-day { margin-bottom: 6px; }
+  .day-title {
+    font-size: 13px; font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .day-dow { color: var(--text3); font-size: 11px; }
+  .day-dow.sat { color: var(--accent); }
+  .day-dow.sun { color: var(--red); }
+  .info-row {
+    display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 11px; padding: 3px 8px; border-radius: 20px;
+    white-space: nowrap;
+  }
+  .tag.flight { background: rgba(91,141,239,0.15); color: var(--accent); border: 1px solid rgba(91,141,239,0.3); }
+  .tag.hotel  { background: rgba(78,201,148,0.15); color: var(--green); border: 1px solid rgba(78,201,148,0.3); }
+  .tag.place  { background: rgba(124,107,221,0.15); color: var(--accent2); border: 1px solid rgba(124,107,221,0.3); }
+  .tag.note   { background: rgba(245,200,66,0.1); color: var(--yellow); border: 1px solid rgba(245,200,66,0.2); }
+
+  /* ── 항공 ── */
+  .flight-card { position: relative; }
+  .flight-route {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .airport { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+  .flight-line {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  }
+  .flight-line-bar {
+    width: 100%; height: 1px; background: var(--border);
+    position: relative;
+  }
+  .flight-line-bar::after {
+    content: '✈'; position: absolute; right: -4px; top: -8px;
+    font-size: 14px; color: var(--accent);
+  }
+  .flight-duration { font-size: 10px; color: var(--text3); }
+  .flight-meta {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;
+  }
+  .meta-item { }
+  .meta-label { font-size: 10px; color: var(--text3); margin-bottom: 2px; }
+  .meta-value { font-size: 13px; font-weight: 500; }
+  .travelers {
+    display: flex; gap: 8px; margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .traveler {
+    flex: 1; background: var(--surface2); border-radius: var(--radius-sm);
+    padding: 8px 10px;
+  }
+  .traveler-name { font-size: 10px; color: var(--text3); margin-bottom: 3px; }
+  .traveler-info { font-size: 12px; font-weight: 500; }
+
+  /* ── 호텔 ── */
+  .hotel-nights {
+    font-size: 11px; color: var(--text3);
+    background: var(--surface2); border-radius: 4px;
+    padding: 2px 6px; margin-left: auto;
+  }
+  .hotel-detail {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;
+  }
+  .map-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    color: var(--accent); font-size: 12px; text-decoration: none;
+    margin-top: 10px; padding: 7px 12px;
+    background: rgba(91,141,239,0.1); border-radius: var(--radius-sm);
+    border: 1px solid rgba(91,141,239,0.2);
+  }
+
+  /* ── 여행지 ── */
+  .place-number {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--surface2); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: var(--text3); flex-shrink: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .place-name { font-size: 14px; font-weight: 500; flex: 1; }
+  .place-cat {
+    font-size: 10px; padding: 2px 7px; border-radius: 20px;
+    background: var(--surface2); color: var(--text3);
+  }
+  .transport-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; color: var(--text2); margin-top: 6px;
+  }
+
+  /* ── 예산 ── */
+  .budget-add {
+    background: var(--surface2); border: 1px dashed var(--border);
+    border-radius: var(--radius); padding: 14px; margin-bottom: 10px;
+  }
+  .budget-add h3 { font-size: 13px; margin-bottom: 10px; color: var(--text2); }
+  .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .form-input {
+    flex: 1; min-width: 100px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 8px 10px;
+    color: var(--text); font-size: 13px; font-family: 'Noto Sans KR', sans-serif;
+    outline: none;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-select {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 8px 10px;
+    color: var(--text); font-size: 13px; outline: none;
+  }
+  .btn-submit {
+    width: 100%; padding: 10px; background: var(--accent);
+    color: white; border: none; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .btn-submit:active { opacity: 0.8; }
+  .budget-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+  }
+  .budget-row:last-child { border-bottom: none; }
+  .budget-who {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0;
+  }
+  .budget-who.hj { background: rgba(91,141,239,0.2); }
+  .budget-who.yj { background: rgba(78,201,148,0.2); }
+  .budget-who.both { background: rgba(124,107,221,0.2); }
+  .budget-desc { flex: 1; }
+  .budget-desc .desc-main { font-size: 13px; }
+  .budget-desc .desc-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .budget-amount { font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; }
+  .budget-amount.exp { color: var(--red); }
+
+  /* ── 구글지도 ── */
+  .map-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .map-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px;
+    text-decoration: none; display: block;
+  }
+  .map-item:active { opacity: 0.7; }
+  .map-item-cat { font-size: 10px; color: var(--text3); margin-bottom: 3px; }
+  .map-item-name { font-size: 12px; font-weight: 500; color: var(--text); }
+  .map-item-date { font-size: 10px; color: var(--text3); margin-top: 3px; }
+  .map-item.hotel .map-item-name { color: var(--green); }
+  .map-item.sight .map-item-name { color: var(--accent); }
+  .map-item.market .map-item-name { color: var(--yellow); }
+
+  /* ── 섹션 타이틀 ── */
+  .section-title {
+    font-size: 11px; font-weight: 500; color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    margin: 16px 0 8px; padding-left: 2px;
+  }
+
+  /* ── 에러 ── */
+  .error-box {
+    background: rgba(224,107,107,0.1); border: 1px solid rgba(224,107,107,0.3);
+    border-radius: var(--radius); padding: 16px; text-align: center;
+  }
+  .error-box p { color: var(--red); font-size: 13px; margin-bottom: 8px; }
+  .retry-btn {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text2); padding: 6px 14px; border-radius: 20px;
+    font-size: 12px; cursor: pointer;
+  }
+
+  /* ── 바텀 네비 ── */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--surface); border-top: 1px solid var(--border);
+    display: flex; padding: 8px 0 20px;
+    z-index: 100;
+  }
+  .nav-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 3px; cursor: pointer; padding: 4px 0;
+    color: var(--text3); font-size: 10px; transition: color 0.15s;
+  }
+  .nav-item.active { color: var(--accent); }
+  .nav-icon { font-size: 20px; }
+
+  /* ── 검색 ── */
+  .search-bar {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 8px 12px;
+    margin-bottom: 12px;
+  }
+  .search-bar input {
+    flex: 1; background: none; border: none; outline: none;
+    color: var(--text); font-size: 13px; font-family: 'Noto Sans KR', sans-serif;
+  }
+  .search-bar input::placeholder { color: var(--text3); }
+  .search-icon { color: var(--text3); font-size: 14px; }
+
+  /* ── 토스트 ── */
+  .toast {
+    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 8px 18px; font-size: 13px;
+    color: var(--text); z-index: 200; opacity: 0;
+    transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; }
+
+  /* ── D-day 배너 ── */
+  .dday-banner {
+    background: linear-gradient(135deg, rgba(91,141,239,0.15), rgba(124,107,221,0.15));
+    border: 1px solid rgba(91,141,239,0.25);
+    border-radius: var(--radius); padding: 14px 16px;
+    margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .dday-label { font-size: 11px; color: var(--text2); }
+  .dday-num { font-size: 28px; font-weight: 700; font-family: 'DM Sans', sans-serif; color: var(--accent); }
+  .dday-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .dday-right { text-align: right; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>✈️ 해진 <span>&</span> 양재</h1>
+    <button class="sync-btn" onclick="syncAll()">↻ 새로고침</button>
+  </div>
+  <div class="date-range">2026.09.09 — 2026.10.15 · 37일</div>
+</div>
+
+<!-- 바텀 네비 -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="switchNav(0)" id="nav0">
+    <div class="nav-icon">📅</div><div>일정</div>
+  </div>
+  <div class="nav-item" onclick="switchNav(1)" id="nav1">
+    <div class="nav-icon">✈️</div><div>항공</div>
+  </div>
+  <div class="nav-item" onclick="switchNav(2)" id="nav2">
+    <div class="nav-icon">🏨</div><div>숙소</div>
+  </div>
+  <div class="nav-item" onclick="switchNav(3)" id="nav3">
+    <div class="nav-icon">📍</div><div>여행지</div>
+  </div>
+  <div class="nav-item" onclick="switchNav(4)" id="nav4">
+    <div class="nav-icon">🗺️</div><div>지도</div>
+  </div>
+  <div class="nav-item" onclick="switchNav(5)" id="nav5">
+    <div class="nav-icon">💰</div><div>예산</div>
+  </div>
+</div>
+
+<div class="content">
+  <!-- 0. 전체일정 -->
+  <div class="section active" id="sec0">
+    <div id="schedule-content"><div class="loading"><div class="spinner"></div><p>일정 불러오는 중...</p></div></div>
+  </div>
+  <!-- 1. 항공 -->
+  <div class="section" id="sec1">
+    <div id="flight-content"><div class="loading"><div class="spinner"></div><p>항공 정보 불러오는 중...</p></div></div>
+  </div>
+  <!-- 2. 숙소 -->
+  <div class="section" id="sec2">
+    <div id="hotel-content"><div class="loading"><div class="spinner"></div><p>숙소 정보 불러오는 중...</p></div></div>
+  </div>
+  <!-- 3. 여행지 -->
+  <div class="section" id="sec3">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="place-search" placeholder="여행지 검색..." oninput="filterPlaces()">
+    </div>
+    <div id="place-content"><div class="loading"><div class="spinner"></div><p>여행지 불러오는 중...</p></div></div>
+  </div>
+  <!-- 4. 구글지도 -->
+  <div class="section" id="sec4">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="map-search" placeholder="장소 검색..." oninput="filterMaps()">
+    </div>
+    <div id="map-content"><div class="loading"><div class="spinner"></div><p>지도 정보 불러오는 중...</p></div></div>
+  </div>
+  <!-- 5. 예산 -->
+  <div class="section" id="sec5">
+    <div id="budget-content"><div class="loading"><div class="spinner"></div><p>예산 불러오는 중...</p></div></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = 'https://script.google.com/macros/s/AKfycby1Hf-QIQbkY9ZfEYg-G_UawxvjHgBhfaVCw7h-nv3ckTGZEPpSrL2c5-ly_BUBcKr6wA/exec';
+const SHEETS = {
+  schedule: '01_전체일정',
+  flight:   '02_항공스케쥴',
+  hotel:    '03_호텔정보',
+  place:    '04_여행지동선',
+  map:      '05_구글지도',
+  budget:   '06_예산메모'
+};
+
+let cache = {};
+let placeData = [], mapData = [];
+let currentNav = 0;
+
+// ── 유틸 ──────────────────────────────────────────────────────────
+function toast(msg, dur=2000) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), dur);
+}
+
+function dday() {
+  const start = new Date('2026-09-09');
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const diff = Math.ceil((start - today) / 86400000);
+  return diff;
+}
+
+function nightsBetween(ci, co) {
+  try {
+    const a = new Date(ci), b = new Date(co);
+    return Math.round((b-a)/86400000);
+  } catch { return '?'; }
+}
+
+// ── API 호출 ───────────────────────────────────────────────────────
+async function fetchSheet(sheetName) {
+  if (cache[sheetName]) return cache[sheetName];
+  try {
+    const res = await fetch(`${API}?action=read&sheet=${encodeURIComponent(sheetName)}`);
+    const json = await res.json();
+    if (json.data) { cache[sheetName] = json.data; return json.data; }
+    return null;
+  } catch(e) { return null; }
+}
+
+async function postRow(sheetName, data) {
+  try {
+    await fetch(API, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'append', sheet: sheetName, data })
+    });
+    delete cache[sheetName];
+    toast('✅ 저장 완료!');
+  } catch(e) { toast('❌ 저장 실패'); }
+}
+
+// ── 네비 전환 ─────────────────────────────────────────────────────
+function switchNav(idx) {
+  document.querySelectorAll('.section').forEach((s,i) => {
+    s.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.nav-item').forEach((n,i) => {
+    n.classList.toggle('active', i === idx);
+  });
+  currentNav = idx;
+  if (idx === 0 && !cache[SHEETS.schedule]) renderSchedule();
+  if (idx === 1 && !cache[SHEETS.flight])   renderFlights();
+  if (idx === 2 && !cache[SHEETS.hotel])    renderHotels();
+  if (idx === 3 && !cache[SHEETS.place])    renderPlaces();
+  if (idx === 4 && !cache[SHEETS.map])      renderMaps();
+  if (idx === 5)                             renderBudget();
+}
+
+function syncAll() {
+  cache = {};
+  toast('🔄 동기화 중...');
+  if (currentNav === 0) renderSchedule();
+  if (currentNav === 1) renderFlights();
+  if (currentNav === 2) renderHotels();
+  if (currentNav === 3) renderPlaces();
+  if (currentNav === 4) renderMaps();
+  if (currentNav === 5) renderBudget();
+}
+
+// ── 카드 토글 ─────────────────────────────────────────────────────
+function toggleCard(el) {
+  el.closest('.card').classList.toggle('open');
+}
+
+// ── 0. 전체일정 ───────────────────────────────────────────────────
+async function renderSchedule() {
+  const el = document.getElementById('schedule-content');
+  const data = await fetchSheet(SHEETS.schedule);
+  if (!data) { el.innerHTML = errorHTML(() => renderSchedule()); return; }
+
+  const rows = data.slice(4).filter(r => r[0] && r[0].toString().match(/\d{4}-\d{2}-\d{2}/));
+  const dd = dday();
+  const todayStr = new Date().toISOString().slice(0,10);
+
+  let html = '';
+
+  // D-day 배너
+  if (dd > 0) {
+    html += `<div class="dday-banner">
+      <div><div class="dday-label">출발까지</div><div class="dday-num">D-${dd}</div></div>
+      <div class="dday-right"><div style="font-size:13px;font-weight:600">9월 9일 출발</div><div class="dday-sub">ICN → FRA · KE945</div></div>
+    </div>`;
+  } else if (dd <= 0 && dd > -37) {
+    html += `<div class="dday-banner">
+      <div><div class="dday-label">여행 진행 중 🎉</div><div class="dday-num">D+${Math.abs(dd)}</div></div>
+      <div class="dday-right"><div style="font-size:13px;font-weight:600">10월 15일 귀국</div><div class="dday-sub">37일 중 ${Math.abs(dd)+1}일째</div></div>
+    </div>`;
+  }
+
+  // 지역 그룹핑
+  const regions = [
+    { label: '🇩🇪 독일', dates: ['2026-09-09','2026-09-10','2026-09-11','2026-09-12','2026-09-13'] },
+    { label: '🇮🇹 시칠리아', dates: rows.filter(r => r[0] >= '2026-09-14' && r[0] <= '2026-09-29').map(r=>r[0]) },
+    { label: '🇲🇹 몰타', dates: rows.filter(r => r[0] >= '2026-09-30' && r[0] <= '2026-10-04').map(r=>r[0]) },
+    { label: '🇮🇹 북이탈리아', dates: rows.filter(r => r[0] >= '2026-10-05' && r[0] <= '2026-10-13').map(r=>r[0]) },
+    { label: '🛬 귀국', dates: ['2026-10-14','2026-10-15'] },
+  ];
+
+  const dowKr = ['일','월','화','수','목','금','토'];
+
+  rows.forEach(row => {
+    const dateStr = row[0]?.toString().slice(0,10) || '';
+    if (!dateStr) return;
+    const dateObj = new Date(dateStr + 'T00:00:00');
+    const dow = dowKr[dateObj.getDay()];
+    const dowClass = dateObj.getDay() === 6 ? 'sat' : dateObj.getDay() === 0 ? 'sun' : '';
+    const isToday = dateStr === todayStr;
+    const isPast  = dateStr < todayStr;
+    const badgeClass = isToday ? 'today' : isPast ? 'past' : '';
+
+    const flight = row[2] || '';
+    const hotel  = row[5] || '';
+    const place  = row[7] || '';
+    const detail = row[8] || '';
+    const memo   = row[11] || '';
+
+    html += `<div class="card schedule-day ${isPast ? 'past-card' : ''}">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="date-badge ${badgeClass}">${dateStr.slice(5)} ${isToday ? '오늘' : ''}</div>
+        <div class="day-title">
+          <span class="day-dow ${dowClass}">${dow}</span>
+          ${place ? `<span style="font-size:13px">${place}</span>` : `<span style="color:var(--text3);font-size:12px">이동일</span>`}
+        </div>
+        <span class="card-chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          ${flight ? `<span class="tag flight">✈ ${flight}</span>` : ''}
+          ${hotel  ? `<span class="tag hotel">🏨 ${hotel}</span>` : ''}
+          ${place  ? `<span class="tag place">📍 ${place}</span>` : ''}
+        </div>
+        ${detail ? `<div style="font-size:12px;color:var(--text2);margin-top:8px;line-height:1.6">${detail}</div>` : ''}
+        ${memo   ? `<div style="font-size:11px;color:var(--yellow);margin-top:6px">📌 ${memo}</div>` : ''}
+      </div>
+    </div>`;
+  });
+
+  el.innerHTML = html;
+
+  // 오늘 날짜로 스크롤
+  setTimeout(() => {
+    const todayCard = el.querySelector('.date-badge.today');
+    if (todayCard) todayCard.closest('.card')?.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 300);
+}
+
+// ── 1. 항공 ───────────────────────────────────────────────────────
+async function renderFlights() {
+  const el = document.getElementById('flight-content');
+  const data = await fetchSheet(SHEETS.flight);
+  if (!data) { el.innerHTML = errorHTML(() => renderFlights()); return; }
+
+  const rows = data.slice(4).filter(r => r[0]);
+  let html = `<div class="section-title">전체 항공편 · ${rows.length}구간</div>`;
+
+  rows.forEach((row, i) => {
+    const date   = row[0] || '';
+    const route  = row[1] || '';
+    const airline= row[2] || '';
+    const depAP  = (row[3] || '').replace(/\(.*?\)/g,'').trim();
+    const depT   = row[4] || '';
+    const arrAP  = (row[6] || '').replace(/\(.*?\)/g,'').trim();
+    const arrT   = row[7] || '';
+    const hjBk   = row[11] || '';
+    const hjSeat = row[12] || '';
+    const yjBk   = row[14] || '';
+    const yjSeat = row[15] || '';
+    const memo   = row[17] || '';
+
+    const depCode = depAP.length <= 5 ? depAP : (route.split('→')[0]?.trim() || depAP);
+    const arrCode = arrAP.length <= 5 ? arrAP : (route.split('→')[1]?.trim() || arrAP);
+
+    html += `<div class="card flight-card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="date-badge">${typeof date === 'string' ? date.slice(5) : date}</div>
+        <div style="flex:1;margin-left:4px">
+          <div style="font-size:13px;font-weight:600">${route}</div>
+          <div style="font-size:11px;color:var(--text3)">${airline}</div>
+        </div>
+        <span class="card-chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="flight-route">
+          <div>
+            <div class="airport">${depCode.substring(0,3)}</div>
+            <div style="font-size:11px;color:var(--text3)">${depT}</div>
+          </div>
+          <div class="flight-line">
+            <div class="flight-line-bar"></div>
+          </div>
+          <div style="text-align:right">
+            <div class="airport">${arrCode.substring(0,3)}</div>
+            <div style="font-size:11px;color:var(--text3)">${arrT}</div>
+          </div>
+        </div>
+        <div class="travelers">
+          <div class="traveler">
+            <div class="traveler-name">💙 해진</div>
+            <div class="traveler-info">${hjBk || '-'}</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">좌석 ${hjSeat || '-'}</div>
+          </div>
+          <div class="traveler">
+            <div class="traveler-name">💚 양재</div>
+            <div class="traveler-info">${yjBk || '-'}</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">좌석 ${yjSeat || '-'}</div>
+          </div>
+        </div>
+        ${memo ? `<div style="font-size:11px;color:var(--text3);margin-top:8px">📝 ${memo}</div>` : ''}
+      </div>
+    </div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+// ── 2. 숙소 ───────────────────────────────────────────────────────
+async function renderHotels() {
+  const el = document.getElementById('hotel-content');
+  const data = await fetchSheet(SHEETS.hotel);
+  if (!data) { el.innerHTML = errorHTML(() => renderHotels()); return; }
+
+  const rows = data.slice(4).filter(r => r[2]);
+  let html = `<div class="section-title">숙소 · ${rows.length}곳</div>`;
+
+  rows.forEach(row => {
+    const ci    = row[0] || '';
+    const co    = row[1] || '';
+    const name  = row[2] || '';
+    const grade = row[3] || '';
+    const addr  = row[4] || '';
+    const city  = row[5] || '';
+    const conf  = row[6] || '';
+    const chan  = row[7] || '';
+    const room  = row[9] || '';
+    const note  = row[12] || '';
+    const mapUrl= row[13] || '';
+    const nights = nightsBetween(ci, co);
+
+    html += `<div class="card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div>
+          <div style="font-size:14px;font-weight:600">${name}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">${ci.toString().slice(5)} → ${co.toString().slice(5)}</div>
+        </div>
+        <div class="hotel-nights">${nights}박</div>
+        <span class="card-chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="hotel-detail">
+          <div class="meta-item">
+            <div class="meta-label">등급</div>
+            <div class="meta-value">${grade}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">예약</div>
+            <div class="meta-value">${chan || '-'}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">확인번호</div>
+            <div class="meta-value" style="font-size:11px">${conf || '-'}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">객실</div>
+            <div class="meta-value" style="font-size:11px">${room || '-'}</div>
+          </div>
+        </div>
+        ${addr ? `<div style="font-size:11px;color:var(--text3);margin-top:8px">📍 ${addr}, ${city}</div>` : ''}
+        ${note ? `<div style="font-size:11px;color:var(--yellow);margin-top:6px">📌 ${note}</div>` : ''}
+        ${mapUrl ? `<a href="${mapUrl}" target="_blank" class="map-link">🗺️ 구글 지도 열기</a>` : ''}
+      </div>
+    </div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+// ── 3. 여행지 ─────────────────────────────────────────────────────
+async function renderPlaces() {
+  const el = document.getElementById('place-content');
+  const data = await fetchSheet(SHEETS.place);
+  if (!data) { el.innerHTML = errorHTML(() => renderPlaces()); return; }
+
+  placeData = data.slice(4).filter(r => r[2]);
+  renderPlaceList(placeData);
+}
+
+function renderPlaceList(rows) {
+  const el = document.getElementById('place-content');
+  if (!rows.length) { el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px">검색 결과 없음</div>'; return; }
+
+  // 날짜별 그룹
+  const groups = {};
+  rows.forEach(row => {
+    const date = row[0]?.toString().slice(0,10) || '기타';
+    if (!groups[date]) groups[date] = [];
+    groups[date].push(row);
+  });
+
+  let html = '';
+  Object.entries(groups).forEach(([date, items]) => {
+    html += `<div class="section-title">${date.slice(5)}</div>`;
+    items.forEach(row => {
+      const num   = row[1] || '';
+      const name  = row[2] || '';
+      const cat   = row[3] || '';
+      const hours = row[4] || '';
+      const fee   = row[5] || '';
+      const move  = row[6] || '';
+      const trans = row[7] || '';
+      const needBook = row[8] || '';
+      const bookId = row[9] || '';
+      const memo  = row[10] || '';
+      const mapUrl= row[11] || '';
+
+      html += `<div class="card">
+        <div class="card-header" onclick="toggleCard(this)">
+          <div class="place-number">${num || '·'}</div>
+          <div class="place-name">${name}</div>
+          ${cat ? `<div class="place-cat">${cat}</div>` : ''}
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="card-body">
+          ${move ? `<div class="transport-badge">🚗 ${move} ${trans ? '· '+trans : ''}</div>` : ''}
+          <div class="flight-meta" style="margin-top:8px">
+            ${hours ? `<div class="meta-item"><div class="meta-label">운영시간</div><div class="meta-value" style="font-size:12px">${hours}</div></div>` : ''}
+            ${fee   ? `<div class="meta-item"><div class="meta-label">입장료</div><div class="meta-value" style="font-size:12px">${fee}</div></div>` : ''}
+            ${needBook === 'Y' ? `<div class="meta-item"><div class="meta-label">예약</div><div class="meta-value" style="font-size:12px;color:var(--red)">필요 ${bookId || ''}</div></div>` : ''}
+          </div>
+          ${memo ? `<div style="font-size:12px;color:var(--text2);margin-top:8px;line-height:1.6">💡 ${memo}</div>` : ''}
+          ${mapUrl ? `<a href="${mapUrl}" target="_blank" class="map-link">🗺️ 지도 보기</a>` : ''}
+        </div>
+      </div>`;
+    });
+  });
+
+  el.innerHTML = html;
+}
+
+function filterPlaces() {
+  const q = document.getElementById('place-search').value.toLowerCase();
+  if (!q) { renderPlaceList(placeData); return; }
+  const filtered = placeData.filter(r =>
+    (r[2]||'').toLowerCase().includes(q) ||
+    (r[3]||'').toLowerCase().includes(q) ||
+    (r[10]||'').toLowerCase().includes(q)
+  );
+  renderPlaceList(filtered);
+}
+
+// ── 4. 구글지도 ───────────────────────────────────────────────────
+async function renderMaps() {
+  const el = document.getElementById('map-content');
+  const data = await fetchSheet(SHEETS.map);
+  if (!data) { el.innerHTML = errorHTML(() => renderMaps()); return; }
+
+  mapData = data.slice(4).filter(r => r[1] && r[4]);
+  renderMapGrid(mapData);
+}
+
+function renderMapGrid(rows) {
+  const el = document.getElementById('map-content');
+  if (!rows.length) { el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px">검색 결과 없음</div>'; return; }
+
+  const hotels = rows.filter(r => ['호텔','숙소'].includes(r[2]));
+  const sights = rows.filter(r => ['관광지','유적지'].includes(r[2]));
+  const others = rows.filter(r => !['호텔','숙소','관광지','유적지'].includes(r[2]));
+
+  function makeGrid(items, cls) {
+    return items.map(row => `
+      <a class="map-item ${cls}" href="${row[4]}" target="_blank">
+        <div class="map-item-cat">${row[2] || ''}</div>
+        <div class="map-item-name">${row[1]}</div>
+        <div class="map-item-date">${row[0] || ''}</div>
+      </a>`).join('');
+  }
+
+  el.innerHTML = `
+    ${hotels.length ? `<div class="section-title">🏨 숙소 · ${hotels.length}곳</div><div class="map-grid">${makeGrid(hotels,'hotel')}</div>` : ''}
+    ${sights.length ? `<div class="section-title">📍 관광지 · ${sights.length}곳</div><div class="map-grid">${makeGrid(sights,'sight')}</div>` : ''}
+    ${others.length ? `<div class="section-title">기타 · ${others.length}곳</div><div class="map-grid">${makeGrid(others,'market')}</div>` : ''}
+  `;
+}
+
+function filterMaps() {
+  const q = document.getElementById('map-search').value.toLowerCase();
+  if (!q) { renderMapGrid(mapData); return; }
+  renderMapGrid(mapData.filter(r =>
+    (r[1]||'').toLowerCase().includes(q) ||
+    (r[2]||'').toLowerCase().includes(q)
+  ));
+}
+
+// ── 5. 예산 ───────────────────────────────────────────────────────
+async function renderBudget() {
+  const el = document.getElementById('budget-content');
+  const data = await fetchSheet(SHEETS.budget);
+  if (!data) { el.innerHTML = errorHTML(() => renderBudget()); return; }
+
+  const rows = data.slice(4).filter(r => r[0] || r[2]);
+
+  const addForm = `
+    <div class="budget-add">
+      <h3>+ 지출 추가</h3>
+      <div class="form-row">
+        <input class="form-input" id="b-date" type="date" value="${new Date().toISOString().slice(0,10)}" style="flex:1.2">
+        <select class="form-select" id="b-who">
+          <option value="💙 해진">💙 해진</option>
+          <option value="💚 양재">💚 양재</option>
+          <option value="🔷 공통">🔷 공통</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <input class="form-input" id="b-cat" placeholder="카테고리 (식비·교통·숙박...)" style="flex:1">
+      </div>
+      <div class="form-row">
+        <input class="form-input" id="b-desc" placeholder="내용" style="flex:2">
+        <input class="form-input" id="b-amt" type="number" placeholder="금액(₩)" style="flex:1">
+      </div>
+      <button class="btn-submit" onclick="addBudget()">저장</button>
+    </div>`;
+
+  // 합계
+  const total = rows.reduce((sum, r) => sum + (parseFloat(r[5]) || 0), 0);
+  const hjTotal = rows.filter(r => (r[3]||'').includes('해진')).reduce((s,r) => s+(parseFloat(r[5])||0), 0);
+  const yjTotal = rows.filter(r => (r[3]||'').includes('양재')).reduce((s,r) => s+(parseFloat(r[5])||0), 0);
+
+  let summary = `
+    <div class="card" style="margin-bottom:12px">
+      <div style="padding:14px 16px">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px">총 지출</div>
+        <div style="font-size:26px;font-weight:700;font-family:'DM Sans',sans-serif;color:var(--red)">₩${total.toLocaleString()}</div>
+        <div style="display:flex;gap:16px;margin-top:10px">
+          <div><div style="font-size:10px;color:var(--text3)">💙 해진</div><div style="font-size:14px;font-weight:600">₩${hjTotal.toLocaleString()}</div></div>
+          <div><div style="font-size:10px;color:var(--text3)">💚 양재</div><div style="font-size:14px;font-weight:600">₩${yjTotal.toLocaleString()}</div></div>
+        </div>
+      </div>
+    </div>`;
+
+  let list = `<div class="section-title">내역 · ${rows.length}건</div><div class="card"><div style="padding:4px 14px">`;
+  rows.reverse().forEach(row => {
+    const who = row[3] || '';
+    const whoClass = who.includes('해진') ? 'hj' : who.includes('양재') ? 'yj' : 'both';
+    const emoji = who.includes('해진') ? '💙' : who.includes('양재') ? '💚' : '🔷';
+    const amt = parseFloat(row[5]) || 0;
+    list += `<div class="budget-row">
+      <div class="budget-who ${whoClass}">${emoji}</div>
+      <div class="budget-desc">
+        <div class="desc-main">${row[2] || '-'}</div>
+        <div class="desc-sub">${row[0]?.toString().slice(5) || ''} · ${row[1] || ''}</div>
+      </div>
+      <div class="budget-amount exp">₩${amt.toLocaleString()}</div>
+    </div>`;
+  });
+  list += '</div></div>';
+
+  el.innerHTML = addForm + summary + (rows.length ? list : '<div style="text-align:center;color:var(--text3);padding:20px">아직 내역이 없어요</div>');
+}
+
+async function addBudget() {
+  const date = document.getElementById('b-date').value;
+  const who  = document.getElementById('b-who').value;
+  const cat  = document.getElementById('b-cat').value;
+  const desc = document.getElementById('b-desc').value;
+  const amt  = document.getElementById('b-amt').value;
+  if (!desc || !amt) { toast('내용과 금액을 입력해주세요'); return; }
+  await postRow(SHEETS.budget, [date, cat, desc, who, '', amt, '', '', '']);
+  renderBudget();
+}
+
+// ── 에러 HTML ─────────────────────────────────────────────────────
+function errorHTML(retryFn) {
+  window._retryFn = retryFn;
+  return `<div class="error-box">
+    <p>데이터를 불러오지 못했어요</p>
+    <button class="retry-btn" onclick="window._retryFn()">다시 시도</button>
+  </div>`;
+}
+
+// ── 초기화 ────────────────────────────────────────────────────────
+renderSchedule();
+</script>
+</body>
+</html>
