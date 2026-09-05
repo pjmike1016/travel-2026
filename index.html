@@ -8,18 +8,18 @@
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Sans:wght@400;500;600&display=swap');
 
   :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #22263a;
-    --border: #2e3248;
-    --accent: #5b8def;
-    --accent2: #7c6bdd;
-    --green: #4ec994;
-    --yellow: #f5c842;
-    --red: #e06b6b;
-    --text: #e8eaf2;
-    --text2: #8b90a7;
-    --text3: #5a5f7a;
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface2: #eef1f6;
+    --border: #dde2ec;
+    --accent: #2563eb;
+    --accent2: #7c3aed;
+    --green: #16a34a;
+    --yellow: #d97706;
+    --red: #dc2626;
+    --text: #111827;
+    --text2: #4b5563;
+    --text3: #9ca3af;
     --radius: 14px;
     --radius-sm: 8px;
   }
@@ -36,7 +36,7 @@
 
   /* ── 헤더 ── */
   .header {
-    background: linear-gradient(135deg, #1a1d27 0%, #22263a 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #eef1f6 100%);
     border-bottom: 1px solid var(--border);
     padding: 18px 20px 14px;
     position: sticky; top: 0; z-index: 100;
@@ -120,7 +120,7 @@
     font-size: 11px; color: var(--text2); font-family: 'DM Sans', sans-serif;
     white-space: nowrap;
   }
-  .date-badge.today { background: rgba(91,141,239,0.15); border-color: var(--accent); color: var(--accent); }
+  .date-badge.today { background: rgba(37,99,235,0.10); border-color: var(--accent); color: var(--accent); }
   .date-badge.past { opacity: 0.4; }
 
   /* ── 전체일정 ── */
@@ -139,10 +139,10 @@
     font-size: 11px; padding: 3px 8px; border-radius: 20px;
     white-space: nowrap;
   }
-  .tag.flight { background: rgba(91,141,239,0.15); color: var(--accent); border: 1px solid rgba(91,141,239,0.3); }
-  .tag.hotel  { background: rgba(78,201,148,0.15); color: var(--green); border: 1px solid rgba(78,201,148,0.3); }
-  .tag.place  { background: rgba(124,107,221,0.15); color: var(--accent2); border: 1px solid rgba(124,107,221,0.3); }
-  .tag.note   { background: rgba(245,200,66,0.1); color: var(--yellow); border: 1px solid rgba(245,200,66,0.2); }
+  .tag.flight { background: rgba(37,99,235,0.10); color: var(--accent); border: 1px solid rgba(37,99,235,0.25); }
+  .tag.hotel  { background: rgba(22,163,74,0.10); color: var(--green); border: 1px solid rgba(22,163,74,0.25); }
+  .tag.place  { background: rgba(124,58,237,0.10); color: var(--accent2); border: 1px solid rgba(124,58,237,0.25); }
+  .tag.note   { background: rgba(217,119,6,0.10); color: var(--yellow); border: 1px solid rgba(217,119,6,0.20); }
 
   /* ── 항공 ── */
   .flight-card { position: relative; }
@@ -193,8 +193,8 @@
     display: inline-flex; align-items: center; gap: 5px;
     color: var(--accent); font-size: 12px; text-decoration: none;
     margin-top: 10px; padding: 7px 12px;
-    background: rgba(91,141,239,0.1); border-radius: var(--radius-sm);
-    border: 1px solid rgba(91,141,239,0.2);
+    background: rgba(37,99,235,0.07); border-radius: var(--radius-sm);
+    border: 1px solid rgba(37,99,235,0.18);
   }
 
   /* ── 여행지 ── */
@@ -252,9 +252,9 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; flex-shrink: 0;
   }
-  .budget-who.hj { background: rgba(91,141,239,0.2); }
-  .budget-who.yj { background: rgba(78,201,148,0.2); }
-  .budget-who.both { background: rgba(124,107,221,0.2); }
+  .budget-who.hj { background: rgba(37,99,235,0.12); }
+  .budget-who.yj { background: rgba(22,163,74,0.12); }
+  .budget-who.both { background: rgba(124,58,237,0.12); }
   .budget-desc { flex: 1; }
   .budget-desc .desc-main { font-size: 13px; }
   .budget-desc .desc-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
@@ -285,7 +285,7 @@
 
   /* ── 에러 ── */
   .error-box {
-    background: rgba(224,107,107,0.1); border: 1px solid rgba(224,107,107,0.3);
+    background: rgba(220,38,38,0.07); border: 1px solid rgba(220,38,38,0.22);
     border-radius: var(--radius); padding: 16px; text-align: center;
   }
   .error-box p { color: var(--red); font-size: 13px; margin-bottom: 8px; }
@@ -298,7 +298,7 @@
   /* ── 바텀 네비 ── */
   .bottom-nav {
     position: fixed; bottom: 0; left: 0; right: 0;
-    background: var(--surface); border-top: 1px solid var(--border);
+    background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
     display: flex; padding: 8px 0 20px;
     z-index: 100;
   }
@@ -336,8 +336,8 @@
 
   /* ── D-day 배너 ── */
   .dday-banner {
-    background: linear-gradient(135deg, rgba(91,141,239,0.15), rgba(124,107,221,0.15));
-    border: 1px solid rgba(91,141,239,0.25);
+    background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(124,58,237,0.08));
+    border: 1px solid rgba(37,99,235,0.18);
     border-radius: var(--radius); padding: 14px 16px;
     margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;
   }
