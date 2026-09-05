@@ -125,11 +125,31 @@
 
   /* ── 전체일정 ── */
   .schedule-day { margin-bottom: 6px; }
+  .schedule-day.today-card {
+    border: 2px solid var(--accent) !important;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+  }
+  .schedule-day.today-card .card-header {
+    background: rgba(37,99,235,0.05);
+  }
+  .schedule-day.has-flight {
+    border: 2px solid var(--yellow) !important;
+    box-shadow: 0 2px 10px rgba(217,119,6,0.12);
+  }
+  .schedule-day.today-card.has-flight {
+    border: 2px solid var(--accent) !important;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+  }
   .day-title {
     font-size: 13px; font-weight: 500;
-    display: flex; align-items: center; gap: 8px;
+    display: flex; align-items: center; gap: 6px;
+    flex: 1; min-width: 0;
   }
-  .day-dow { color: var(--text3); font-size: 11px; }
+  .day-place-main {
+    font-size: 14px; font-weight: 700; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .day-dow { color: var(--text3); font-size: 11px; flex-shrink: 0; }
   .day-dow.sat { color: var(--accent); }
   .day-dow.sun { color: var(--red); }
   .info-row {
@@ -517,36 +537,11 @@ async function renderSchedule() {
   const rows = data.slice(4).filter(r => r[0] && r[0].toString().match(/\d{4}-\d{2}-\d{2}/));
   const dd = dday();
   const todayStr = new Date().toISOString().slice(0,10);
-
-  let html = '';
-
-  // D-day 배너
-  if (dd > 0) {
-    html += `<div class="dday-banner">
-      <div><div class="dday-label">출발까지</div><div class="dday-num">D-${dd}</div></div>
-      <div class="dday-right"><div style="font-size:13px;font-weight:600">9월 9일 출발</div><div class="dday-sub">ICN → FRA · KE945</div></div>
-    </div>`;
-  } else if (dd <= 0 && dd > -37) {
-    html += `<div class="dday-banner">
-      <div><div class="dday-label">여행 진행 중 🎉</div><div class="dday-num">D+${Math.abs(dd)}</div></div>
-      <div class="dday-right"><div style="font-size:13px;font-weight:600">10월 15일 귀국</div><div class="dday-sub">37일 중 ${Math.abs(dd)+1}일째</div></div>
-    </div>`;
-  }
-
-  // 지역 그룹핑
-  const regions = [
-    { label: '🇩🇪 독일', dates: ['2026-09-09','2026-09-10','2026-09-11','2026-09-12','2026-09-13'] },
-    { label: '🇮🇹 시칠리아', dates: rows.filter(r => r[0] >= '2026-09-14' && r[0] <= '2026-09-29').map(r=>r[0]) },
-    { label: '🇲🇹 몰타', dates: rows.filter(r => r[0] >= '2026-09-30' && r[0] <= '2026-10-04').map(r=>r[0]) },
-    { label: '🇮🇹 북이탈리아', dates: rows.filter(r => r[0] >= '2026-10-05' && r[0] <= '2026-10-13').map(r=>r[0]) },
-    { label: '🛬 귀국', dates: ['2026-10-14','2026-10-15'] },
-  ];
-
   const dowKr = ['일','월','화','수','목','금','토'];
 
-  rows.forEach(row => {
+  function buildCard(row, extraClass='') {
     const dateStr = row[0]?.toString().slice(0,10) || '';
-    if (!dateStr) return;
+    if (!dateStr) return '';
     const dateObj = new Date(dateStr + 'T00:00:00');
     const dow = dowKr[dateObj.getDay()];
     const dowClass = dateObj.getDay() === 6 ? 'sat' : dateObj.getDay() === 0 ? 'sun' : '';
@@ -560,12 +555,26 @@ async function renderSchedule() {
     const detail = row[8] || '';
     const memo   = row[11] || '';
 
-    html += `<div class="card schedule-day ${isPast ? 'past-card' : ''}">
+    const hasFlight = !!flight;
+    const cardClass = [
+      'card schedule-day',
+      isToday ? 'today-card open' : '',
+      hasFlight ? 'has-flight' : '',
+      isPast && !isToday ? 'past-card' : '',
+      extraClass
+    ].filter(Boolean).join(' ');
+
+    const flightBadge = hasFlight ? `<span style="font-size:11px;margin-left:4px" title="${flight}">✈️</span>` : '';
+
+    return `<div class="${cardClass}" data-date="${dateStr}">
       <div class="card-header" onclick="toggleCard(this)">
-        <div class="date-badge ${badgeClass}">${dateStr.slice(5)} ${isToday ? '오늘' : ''}</div>
+        <div class="date-badge ${badgeClass}">${dateStr.slice(5)}${isToday ? ' 오늘' : ''}</div>
         <div class="day-title">
           <span class="day-dow ${dowClass}">${dow}</span>
-          ${place ? `<span style="font-size:13px">${place}</span>` : `<span style="color:var(--text3);font-size:12px">이동일</span>`}
+          ${place
+            ? `<span class="day-place-main">${place}</span>`
+            : `<span style="color:var(--text3);font-size:12px">이동일</span>`}
+          ${flightBadge}
         </div>
         <span class="card-chevron">▼</span>
       </div>
@@ -579,14 +588,44 @@ async function renderSchedule() {
         ${memo   ? `<div style="font-size:11px;color:var(--yellow);margin-top:6px">📌 ${memo}</div>` : ''}
       </div>
     </div>`;
-  });
+  }
 
-  el.innerHTML = html;
+  // 오늘 기준으로 분리
+  const todayIdx = rows.findIndex(r => r[0]?.toString().slice(0,10) === todayStr);
+  const pastRows    = todayIdx > 0 ? rows.slice(0, todayIdx) : (todayStr > rows[rows.length-1]?.[0]?.toString().slice(0,10) ? rows : []);
+  const todayRow    = todayIdx >= 0 ? rows[todayIdx] : null;
+  const futureRows  = todayIdx >= 0 ? rows.slice(todayIdx + 1) : (todayStr < rows[0]?.[0]?.toString().slice(0,10) ? rows : []);
 
-  // 오늘 날짜로 스크롤
+  // D-day 배너
+  let bannerHTML = '';
+  if (dd > 0) {
+    bannerHTML = `<div class="dday-banner">
+      <div><div class="dday-label">출발까지</div><div class="dday-num">D-${dd}</div></div>
+      <div class="dday-right"><div style="font-size:13px;font-weight:600">9월 9일 출발</div><div class="dday-sub">ICN → FRA · KE945</div></div>
+    </div>`;
+  } else if (dd <= 0 && dd > -37) {
+    bannerHTML = `<div class="dday-banner">
+      <div><div class="dday-label">여행 진행 중 🎉</div><div class="dday-num">D+${Math.abs(dd)}</div></div>
+      <div class="dday-right"><div style="font-size:13px;font-weight:600">10월 15일 귀국</div><div class="dday-sub">37일 중 ${Math.abs(dd)+1}일째</div></div>
+    </div>`;
+  }
+
+  // 과거 (역순 — 위로 스크롤하면 더 오래된 날짜)
+  const pastHTML   = [...pastRows].reverse().map(r => buildCard(r)).join('');
+  const todayHTML  = todayRow ? buildCard(todayRow) : '';
+  const futureHTML = futureRows.map(r => buildCard(r)).join('');
+
+  el.innerHTML = `
+    <div id="past-section" style="display:flex;flex-direction:column-reverse">${pastHTML}</div>
+    ${bannerHTML}
+    <div id="today-section">${todayHTML}</div>
+    <div id="future-section">${futureHTML}</div>
+  `;
+
+  // 오늘 카드로 스크롤 (없으면 미래 첫 카드)
   setTimeout(() => {
-    const todayCard = el.querySelector('.date-badge.today');
-    if (todayCard) todayCard.closest('.card')?.scrollIntoView({ behavior:'smooth', block:'start' });
+    const target = el.querySelector('.today-card') || el.querySelector('#future-section .card');
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 300);
 }
 
