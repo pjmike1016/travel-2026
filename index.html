@@ -630,6 +630,13 @@ async function renderSchedule() {
 }
 
 // ── 1. 항공 ───────────────────────────────────────────────────────
+function fmtDate(val) {
+  // Handles both "2026-09-08T15:00:00.000Z" and "2026-09-08" → "09-08"
+  const s = val?.toString() || '';
+  const m = s.match(/(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[2]}-${m[3]}` : s;
+}
+
 async function renderFlights() {
   const el = document.getElementById('flight-content');
   const data = await fetchSheet(SHEETS.flight);
@@ -657,7 +664,7 @@ async function renderFlights() {
 
     html += `<div class="card flight-card">
       <div class="card-header" onclick="toggleCard(this)">
-        <div class="date-badge">${typeof date === 'string' ? date.slice(5) : date}</div>
+        <div class="date-badge">${fmtDate(date)}</div>
         <div style="flex:1;margin-left:4px">
           <div style="font-size:13px;font-weight:600">${route}</div>
           <div style="font-size:11px;color:var(--text3)">${airline}</div>
@@ -725,7 +732,7 @@ async function renderHotels() {
       <div class="card-header" onclick="toggleCard(this)">
         <div>
           <div style="font-size:14px;font-weight:600">${name}</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:2px">${ci.toString().slice(5)} → ${co.toString().slice(5)}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">${fmtDate(ci)} → ${fmtDate(co)}</div>
         </div>
         <div class="hotel-nights">${nights}박</div>
         <span class="card-chevron">▼</span>
@@ -783,7 +790,7 @@ function renderPlaceList(rows) {
 
   let html = '';
   Object.entries(groups).forEach(([date, items]) => {
-    html += `<div class="section-title">${date.slice(5)}</div>`;
+    html += `<div class="section-title">${fmtDate(date)}</div>`;
     items.forEach(row => {
       const num   = row[1] || '';
       const name  = row[2] || '';
@@ -931,7 +938,7 @@ async function renderBudget() {
       <div class="budget-who ${whoClass}">${emoji}</div>
       <div class="budget-desc">
         <div class="desc-main">${row[2] || '-'}</div>
-        <div class="desc-sub">${row[0]?.toString().slice(5) || ''} · ${row[1] || ''}</div>
+        <div class="desc-sub">${fmtDate(row[0])} · ${row[1] || ''}</div>
       </div>
       <div class="budget-amount exp">₩${amt.toLocaleString()}</div>
     </div>`;
