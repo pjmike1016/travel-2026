@@ -4,7 +4,7 @@
   <meta name="robots" content="noindex, nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>✈️ 해진 & 양재 유럽여행</title>
+<title>✈️ Sicily&amp;Malta</title>
 
 <!-- 홈 화면 바로가기 아이콘 -->
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -679,6 +679,22 @@ function fmtDate(val) {
   const m = key.match(/(\d{4})-(\d{2})-(\d{2})/);
   return m ? `${m[2]}-${m[3]}` : (val?.toString() || '');
 }
+// Time-only sheet cells (e.g. a flight's departure clock time entered with
+// no date) get Sheets' epoch date "1899-12-30" attached before Apps Script
+// serializes them as UTC. Converting that back via timeZone:'Asia/Seoul'
+// is the correct inverse here — verified directly against the source sheet
+// (e.g. raw "1899-12-30T02:22:08.000Z" → "10:50", matching the 항공스케쥴 sheet).
+function fmtTime(val) {
+  if (!val) return '';
+  const s = val.toString();
+  const bare = s.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if (bare) return `${bare[1].padStart(2,'0')}:${bare[2]}`;
+  const d = new Date(s);
+  if (isNaN(d)) return s;
+  return new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit', hour12: false
+  }).format(d);
+}
 function maskCode(code) {
   if (!code) return '-';
   const c = code.toString();
@@ -723,14 +739,14 @@ async function renderFlights() {
         <div class="flight-route">
           <div>
             <div class="airport">${depCode.substring(0,3)}</div>
-            <div style="font-size:11px;color:var(--text3)">${depT}</div>
+            <div style="font-size:11px;color:var(--text3)">${fmtTime(depT)}</div>
           </div>
           <div class="flight-line">
             <div class="flight-line-bar"></div>
           </div>
           <div style="text-align:right">
             <div class="airport">${arrCode.substring(0,3)}</div>
-            <div style="font-size:11px;color:var(--text3)">${arrT}</div>
+            <div style="font-size:11px;color:var(--text3)">${fmtTime(arrT)}</div>
           </div>
         </div>
         <div class="travelers">
