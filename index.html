@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <meta name="robots" content="noindex, nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>✈️ 해진 & 양재 유럽여행</title>
@@ -368,7 +369,12 @@
 </style>
 </head>
 <body>
-
+<div id="gate" style="position:fixed;inset:0;background:#fff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
+  <p style="font-size:16px;">비밀번호를 입력하세요</p>
+  <input id="gate-pw" type="password" style="padding:10px;font-size:16px;border:1px solid #ccc;border-radius:8px;">
+  <button id="gate-btn" style="padding:10px 20px;background:#333;color:#fff;border:none;border-radius:8px;">입장</button>
+  <p id="gate-err" style="color:red;font-size:13px;display:none;">틀렸어요</p>
+</div>
 <div class="header">
   <div class="header-top">
     <h1>✈️ 해진 <span>&</span> 양재</h1>
@@ -970,6 +976,34 @@ function errorHTML(retryFn) {
 
 // ── 초기화 ────────────────────────────────────────────────────────
 renderSchedule();
+</script>
+  <script>
+const CORRECT_HASH = "d05237d0f34432aac1885e1e82c5bf43bbf489ea7d6a049aff64c6a1225a506c";
+
+async function hashPw(pw) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+(function checkGate() {
+  if (localStorage.getItem('travel2026_unlocked') === 'yes') {
+    document.getElementById('gate').style.display = 'none';
+    return;
+  }
+  document.getElementById('gate-btn').onclick = async () => {
+    const input = document.getElementById('gate-pw').value;
+    const hash = await hashPw(input);
+    if (hash === CORRECT_HASH) {
+      localStorage.setItem('travel2026_unlocked', 'yes');
+      document.getElementById('gate').style.display = 'none';
+    } else {
+      document.getElementById('gate-err').style.display = 'block';
+    }
+  };
+  document.getElementById('gate-pw').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') document.getElementById('gate-btn').click();
+  });
+})();
 </script>
 </body>
 </html>
