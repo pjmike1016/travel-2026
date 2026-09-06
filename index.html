@@ -642,7 +642,12 @@ function fmtDate(val) {
   const m = s.match(/(\d{4})-(\d{2})-(\d{2})/);
   return m ? `${m[2]}-${m[3]}` : s;
 }
-
+function maskCode(code) {
+  if (!code) return '-';
+  const c = code.toString();
+  if (c.length <= 4) return c;
+  return '*'.repeat(c.length - 4) + c.slice(-4);
+}
 async function renderFlights() {
   const el = document.getElementById('flight-content');
   const data = await fetchSheet(SHEETS.flight);
@@ -694,12 +699,12 @@ async function renderFlights() {
         <div class="travelers">
           <div class="traveler">
             <div class="traveler-name">💙 해진</div>
-            <div class="traveler-info">${hjBk || '-'}</div>
+            <div class="traveler-info">${maskCode(hjBk)}</div>
             <div style="font-size:11px;color:var(--text3);margin-top:2px">좌석 ${hjSeat || '-'}</div>
           </div>
           <div class="traveler">
             <div class="traveler-name">💚 양재</div>
-            <div class="traveler-info">${yjBk || '-'}</div>
+            <div class="traveler-info">${maskCode(yjBk)}</div>
             <div style="font-size:11px;color:var(--text3);margin-top:2px">좌석 ${yjSeat || '-'}</div>
           </div>
         </div>
