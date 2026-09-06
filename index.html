@@ -464,8 +464,32 @@ function toast(msg, dur=2000) {
   setTimeout(() => el.classList.remove('show'), dur);
 }
 
+// Apps Script serializes Sheet date cells as UTC ISO timestamps
+// (e.g. "2026-09-08T15:00:00.000Z" for a cell meaning 2026-09-09 00:00 KST).
+// Naively slicing the string gives the UTC calendar date, which is one day
+// behind the intended KST date for any cell with a midnight-KST time.
+// This converts back to the correct calendar date, in Asia/Seoul, regardless
+// of the viewer's own device timezone (important once travelers are in Europe).
+function toKSTDateStr(val) {
+  if (!val) return '';
+  const s = val.toString();
+  const bare = s.match(/^(\d{4}-\d{2}-\d{2})$/);
+  if (bare) return bare[1]; // already a plain date, nothing to convert
+  const d = new Date(s);
+  if (isNaN(d)) return s.slice(0, 10);
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(d); // YYYY-MM-DD
+}
+
+// "Today" for the itinerary should be a fixed KST calendar day, not derived
+// from toISOString() (which is UTC and drifts a day off for roughly 9 hours
+// of the KST day) nor from raw device-local time (which would shift once
+// phones auto-switch to a European timezone during the trip).
+function todayKST() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date());
+}
+
 function dday() {
-  const start = new Date('2026-09-09');
+  const start = new Date(2026, 8, 9); // local midnight, avoids the UTC-parse quirk of new Date('2026-09-09')
   const today = new Date();
   today.setHours(0,0,0,0);
   const diff = Math.ceil((start - today) / 86400000);
@@ -542,11 +566,11 @@ async function renderSchedule() {
 
   const rows = data.slice(4).filter(r => r[0] && r[0].toString().match(/\d{4}-\d{2}-\d{2}/));
   const dd = dday();
-  const todayStr = new Date().toISOString().slice(0,10);
+  const todayStr = todayKST();
   const dowKr = ['일','월','화','수','목','금','토'];
 
   function buildCard(row, extraClass='') {
-    const dateStr = row[0]?.toString().slice(0,10) || '';
+    const dateStr = toKSTDateStr(row[0]);
     if (!dateStr) return '';
     const dateObj = new Date(dateStr + 'T00:00:00');
     const dow = dowKr[dateObj.getDay()];
@@ -637,10 +661,11 @@ async function renderSchedule() {
 
 // ── 1. 항공 ───────────────────────────────────────────────────────
 function fmtDate(val) {
-  // Handles both "2026-09-08T15:00:00.000Z" and "2026-09-08" → "09-08"
-  const s = val?.toString() || '';
-  const m = s.match(/(\d{4})-(\d{2})-(\d{2})/);
-  return m ? `${m[2]}-${m[3]}` : s;
+  // Handles both "2026-09-08T15:00:00.000Z" (UTC, converted to KST) and
+  // "2026-09-08" (already a plain date) → "09-08"
+  const key = toKSTDateStr(val);
+  const m = key.match(/(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[2]}-${m[3]}` : (val?.toString() || '');
 }
 function maskCode(code) {
   if (!code) return '-';
@@ -794,7 +819,7 @@ function renderPlaceList(rows) {
   // 날짜별 그룹
   const groups = {};
   rows.forEach(row => {
-    const date = row[0]?.toString().slice(0,10) || '기타';
+    const date = row[0] ? toKSTDateStr(row[0]) : '기타';
     if (!groups[date]) groups[date] = [];
     groups[date].push(row);
   });
@@ -905,7 +930,7 @@ async function renderBudget() {
     <div class="budget-add">
       <h3>+ 지출 추가</h3>
       <div class="form-row">
-        <input class="form-input" id="b-date" type="date" value="${new Date().toISOString().slice(0,10)}" style="flex:1.2">
+        <input class="form-input" id="b-date" type="date" value="${todayKST()}" style="flex:1.2">
         <select class="form-select" id="b-who">
           <option value="💙 해진">💙 해진</option>
           <option value="💚 양재">💚 양재</option>
