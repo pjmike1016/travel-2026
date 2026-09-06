@@ -134,6 +134,7 @@
     white-space: nowrap;
   }
   .date-badge.today { background: rgba(37,99,235,0.10); border-color: var(--accent); color: var(--accent); }
+  .date-badge.tomorrow { background: rgba(22,163,74,0.10); border-color: var(--green); color: var(--green); }
   .date-badge.past { opacity: 0.4; }
 
   /* ── 전체일정 ── */
@@ -145,6 +146,13 @@
   .schedule-day.today-card .card-header {
     background: rgba(37,99,235,0.05);
   }
+  .schedule-day.tomorrow-card {
+    border: 2px solid var(--green) !important;
+    box-shadow: 0 2px 10px rgba(22,163,74,0.12);
+  }
+  .schedule-day.tomorrow-card .card-header {
+    background: rgba(22,163,74,0.05);
+  }
   .schedule-day.has-flight {
     border: 2px solid var(--yellow) !important;
     box-shadow: 0 2px 10px rgba(217,119,6,0.12);
@@ -152,6 +160,10 @@
   .schedule-day.today-card.has-flight {
     border: 2px solid var(--accent) !important;
     box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+  }
+  .schedule-day.tomorrow-card.has-flight {
+    border: 2px solid var(--green) !important;
+    box-shadow: 0 2px 10px rgba(22,163,74,0.12);
   }
   .day-title {
     font-size: 13px; font-weight: 500;
@@ -217,7 +229,7 @@
   .hotel-nights {
     font-size: 11px; color: var(--text3);
     background: var(--surface2); border-radius: 4px;
-    padding: 2px 6px; margin-left: auto;
+    padding: 2px 6px; margin-left: auto; flex-shrink: 0;
   }
   .hotel-detail {
     display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;
@@ -389,10 +401,11 @@
 </div>
 <div class="header">
   <div class="header-top">
-    <h1>✈️ 해진 <span>&</span> 양재</h1>
+    <h1>✈️ Sicily<span>&</span>Malta</h1>
     <button class="sync-btn" onclick="syncAll()">↻ 새로고침</button>
   </div>
   <div class="date-range">2026.09.09 — 2026.10.15 · 37일</div>
+  <div id="test-mode-banner" style="display:none;font-size:11px;color:#fff;background:var(--red);border-radius:6px;padding:4px 8px;margin-top:6px;font-weight:600"></div>
 </div>
 
 <!-- 바텀 네비 -->
@@ -469,6 +482,33 @@ let cache = {};
 let placeData = [], mapData = [];
 let currentNav = 0;
 
+// ── 테스트용 날짜 오버라이드 ──────────────────────────────────────
+// URL에 ?asOf=2026-09-14 처럼 붙이면 "오늘"을 그 날짜로 취급합니다.
+// 파라미터가 없으면 완전히 무시되고 실제 기기 날짜를 그대로 씁니다.
+// (해진/양재가 평소 쓰는 링크에는 이 파라미터가 없으니 평소엔 존재하지 않는 기능입니다.)
+const _asOfParam = new URLSearchParams(location.search).get('asOf');
+const _asOfDate  = _asOfParam && /^\d{4}-\d{2}-\d{2}$/.test(_asOfParam) ? _asOfParam : null;
+if (_asOfDate) {
+  const b = document.getElementById('test-mode-banner');
+  b.textContent = `⚠️ 테스트 모드 · 오늘을 ${_asOfDate}로 표시 중 (?asOf 파라미터 제거하면 실제 날짜로 복귀)`;
+  b.style.display = 'block';
+}
+
+function addDaysStr(dateStr, n) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  dt.setDate(dt.getDate() + n);
+  return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+}
+
+// 'today' | 'tomorrow' | 'past' | 'future'
+function dayRelation(dateStr, todayStr) {
+  todayStr = todayStr || todayKST();
+  if (dateStr === todayStr) return 'today';
+  if (dateStr === addDaysStr(todayStr, 1)) return 'tomorrow';
+  return dateStr < todayStr ? 'past' : 'future';
+}
+
 // ── 유틸 ──────────────────────────────────────────────────────────
 function toast(msg, dur=2000) {
   const el = document.getElementById('toast');
@@ -497,12 +537,18 @@ function toKSTDateStr(val) {
 // of the KST day) nor from raw device-local time (which would shift once
 // phones auto-switch to a European timezone during the trip).
 function todayKST() {
-  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date());
+  return _asOfDate || new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date());
 }
 
 function dday() {
   const start = new Date(2026, 8, 9); // local midnight, avoids the UTC-parse quirk of new Date('2026-09-09')
-  const today = new Date();
+  let today;
+  if (_asOfDate) {
+    const [y, m, d] = _asOfDate.split('-').map(Number);
+    today = new Date(y, m - 1, d);
+  } else {
+    today = new Date();
+  }
   today.setHours(0,0,0,0);
   const diff = Math.ceil((start - today) / 86400000);
   return diff;
@@ -587,9 +633,11 @@ async function renderSchedule() {
     const dateObj = new Date(dateStr + 'T00:00:00');
     const dow = dowKr[dateObj.getDay()];
     const dowClass = dateObj.getDay() === 6 ? 'sat' : dateObj.getDay() === 0 ? 'sun' : '';
-    const isToday = dateStr === todayStr;
-    const isPast  = dateStr < todayStr;
-    const badgeClass = isToday ? 'today' : isPast ? 'past' : '';
+    const rel = dayRelation(dateStr, todayStr);
+    const isToday = rel === 'today';
+    const isTomorrow = rel === 'tomorrow';
+    const isPast  = rel === 'past';
+    const badgeClass = isToday ? 'today' : isTomorrow ? 'tomorrow' : isPast ? 'past' : '';
 
     const flight = row[2] || '';
     const hotel  = row[5] || '';
@@ -601,16 +649,18 @@ async function renderSchedule() {
     const cardClass = [
       'card schedule-day',
       isToday ? 'today-card open' : '',
+      isTomorrow ? 'tomorrow-card' : '',
       hasFlight ? 'has-flight' : '',
-      isPast && !isToday ? 'past-card' : '',
+      isPast ? 'past-card' : '',
       extraClass
     ].filter(Boolean).join(' ');
 
     const flightBadge = hasFlight ? `<span style="font-size:11px;margin-left:4px" title="${flight}">✈️</span>` : '';
+    const dateLabel = isToday ? ' 오늘' : isTomorrow ? ' 내일' : '';
 
     return `<div class="${cardClass}" data-date="${dateStr}">
       <div class="card-header" onclick="toggleCard(this)">
-        <div class="date-badge ${badgeClass}">${dateStr.slice(5)}${isToday ? ' 오늘' : ''}</div>
+        <div class="date-badge ${badgeClass}">${dateStr.slice(5)}${dateLabel}</div>
         <div class="day-title">
           <span class="day-dow ${dowClass}">${dow}</span>
           ${place
@@ -632,11 +682,13 @@ async function renderSchedule() {
     </div>`;
   }
 
-  // 오늘 기준으로 분리
-  const todayIdx = rows.findIndex(r => r[0]?.toString().slice(0,10) === todayStr);
-  const pastRows    = todayIdx > 0 ? rows.slice(0, todayIdx) : (todayStr > rows[rows.length-1]?.[0]?.toString().slice(0,10) ? rows : []);
+  // 오늘 기준으로 분리 (toKSTDateStr로 통일 — 예전엔 여기만 naive slice를 써서
+  // buildCard가 보여주는 날짜와 이 구간분리 기준이 서로 어긋날 수 있었음)
+  const rowDateStrs = rows.map(r => toKSTDateStr(r[0]));
+  const todayIdx = rowDateStrs.findIndex(d => d === todayStr);
+  const pastRows    = todayIdx > 0 ? rows.slice(0, todayIdx) : (todayStr > rowDateStrs[rowDateStrs.length-1] ? rows : []);
   const todayRow    = todayIdx >= 0 ? rows[todayIdx] : null;
-  const futureRows  = todayIdx >= 0 ? rows.slice(todayIdx + 1) : (todayStr < rows[0]?.[0]?.toString().slice(0,10) ? rows : []);
+  const futureRows  = todayIdx >= 0 ? rows.slice(todayIdx + 1) : (todayStr < rowDateStrs[0] ? rows : []);
 
   // D-day 배너
   let bannerHTML = '';
@@ -707,7 +759,25 @@ async function renderFlights() {
   if (!data) { el.innerHTML = errorHTML(() => renderFlights()); return; }
 
   const rows = data.slice(4).filter(r => r[0]);
-  let html = `<div class="section-title">전체 항공편 · ${rows.length}구간</div>`;
+  const todayStr = todayKST();
+  const flightRel = rows.map(r => dayRelation(toKSTDateStr(r[0]), todayStr));
+  const todayFlight = rows[flightRel.indexOf('today')];
+  const tomorrowFlight = rows[flightRel.indexOf('tomorrow')];
+
+  let bannerHTML = '';
+  if (todayFlight) {
+    bannerHTML = `<div class="dday-banner" style="border-color:rgba(37,99,235,0.35)">
+      <div><div class="dday-label">오늘 항공편</div><div class="dday-num" style="font-size:18px">✈️ 오늘</div></div>
+      <div class="dday-right"><div style="font-size:13px;font-weight:600">${todayFlight[1] || ''}</div><div class="dday-sub">${todayFlight[2] || ''}</div></div>
+    </div>`;
+  } else if (tomorrowFlight) {
+    bannerHTML = `<div class="dday-banner" style="border-color:rgba(22,163,74,0.35);background:linear-gradient(135deg, rgba(22,163,74,0.08), rgba(124,58,237,0.08))">
+      <div><div class="dday-label">내일 항공편</div><div class="dday-num" style="font-size:18px;color:var(--green)">✈️ 내일</div></div>
+      <div class="dday-right"><div style="font-size:13px;font-weight:600">${tomorrowFlight[1] || ''}</div><div class="dday-sub">${tomorrowFlight[2] || ''}</div></div>
+    </div>`;
+  }
+
+  let html = bannerHTML + `<div class="section-title">전체 항공편 · ${rows.length}구간</div>`;
 
   rows.forEach((row, i) => {
     const date   = row[0] || '';
@@ -726,9 +796,14 @@ async function renderFlights() {
     const depCode = depAP.length <= 5 ? depAP : (route.split('→')[0]?.trim() || depAP);
     const arrCode = arrAP.length <= 5 ? arrAP : (route.split('→')[1]?.trim() || arrAP);
 
-    html += `<div class="card flight-card">
+    const rel = flightRel[i];
+    const cardExtra = rel === 'today' ? ' today-card' : rel === 'tomorrow' ? ' tomorrow-card' : '';
+    const badgeExtra = rel === 'today' ? ' today' : rel === 'tomorrow' ? ' tomorrow' : '';
+    const dateLabel = rel === 'today' ? ' 오늘' : rel === 'tomorrow' ? ' 내일' : '';
+
+    html += `<div class="card flight-card schedule-day${cardExtra}">
       <div class="card-header" onclick="toggleCard(this)">
-        <div class="date-badge">${fmtDate(date)}</div>
+        <div class="date-badge${badgeExtra}">${fmtDate(date)}${dateLabel}</div>
         <div style="flex:1;margin-left:4px">
           <div style="font-size:13px;font-weight:600">${route}</div>
           <div style="font-size:11px;color:var(--text3)">${airline}</div>
@@ -776,6 +851,8 @@ async function renderHotels() {
   if (!data) { el.innerHTML = errorHTML(() => renderHotels()); return; }
 
   const rows = data.slice(4).filter(r => r[2]);
+  const todayStr = todayKST();
+  const tomorrowStr = addDaysStr(todayStr, 1);
   let html = `<div class="section-title">숙소 · ${rows.length}곳</div>`;
 
   rows.forEach(row => {
@@ -792,10 +869,21 @@ async function renderHotels() {
     const mapUrl= row[13] || '';
     const nights = nightsBetween(ci, co);
 
-    html += `<div class="card">
+    const ciStr = toKSTDateStr(ci), coStr = toKSTDateStr(co);
+    const isStayingNow = ciStr && coStr && ciStr <= todayStr && todayStr < coStr;
+    const isCheckinTomorrow = ciStr === tomorrowStr;
+    const stayExtra = isStayingNow ? ' today-card' : isCheckinTomorrow ? ' tomorrow-card' : '';
+    const stayBadge = isStayingNow
+      ? `<span class="tag" style="background:rgba(37,99,235,0.10);color:var(--accent);border:1px solid rgba(37,99,235,0.25);margin-bottom:6px;display:inline-block">🏨 오늘 머무는 중</span>`
+      : isCheckinTomorrow
+      ? `<span class="tag" style="background:rgba(22,163,74,0.10);color:var(--green);border:1px solid rgba(22,163,74,0.25);margin-bottom:6px;display:inline-block">🏨 내일 체크인</span>`
+      : '';
+
+    html += `<div class="card schedule-day${stayExtra}">
+      ${stayBadge ? `<div style="padding:10px 14px 0">${stayBadge}</div>` : ''}
       <div class="card-header" onclick="toggleCard(this)">
-        <div>
-          <div style="font-size:14px;font-weight:600">${name}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div>
           <div style="font-size:11px;color:var(--text3);margin-top:2px">${fmtDate(ci)} → ${fmtDate(co)}</div>
         </div>
         <div class="hotel-nights">${nights}박</div>
@@ -837,12 +925,15 @@ async function renderPlaces() {
   if (!data) { el.innerHTML = errorHTML(() => renderPlaces()); return; }
 
   placeData = data.slice(4).filter(r => r[2]);
-  renderPlaceList(placeData);
+  renderPlaceList(placeData, true);
 }
 
-function renderPlaceList(rows) {
+function renderPlaceList(rows, scrollToToday=false) {
   const el = document.getElementById('place-content');
   if (!rows.length) { el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px">검색 결과 없음</div>'; return; }
+
+  const todayStr = todayKST();
+  const tomorrowStr = addDaysStr(todayStr, 1);
 
   // 날짜별 그룹
   const groups = {};
@@ -854,7 +945,10 @@ function renderPlaceList(rows) {
 
   let html = '';
   Object.entries(groups).forEach(([date, items]) => {
-    html += `<div class="section-title">${fmtDate(date)}</div>`;
+    const rel = date !== '기타' ? dayRelation(date, todayStr) : '';
+    const label = rel === 'today' ? ' · 오늘' : rel === 'tomorrow' ? ' · 내일' : '';
+    const titleColor = rel === 'today' ? 'color:var(--accent)' : rel === 'tomorrow' ? 'color:var(--green)' : '';
+    html += `<div class="section-title" id="place-group-${date}" style="${titleColor}">${fmtDate(date)}${label}</div>`;
     items.forEach(row => {
       const num   = row[1] || '';
       const name  = row[2] || '';
@@ -867,8 +961,9 @@ function renderPlaceList(rows) {
       const bookId = row[9] || '';
       const memo  = row[10] || '';
       const mapUrl= row[11] || '';
+      const cardExtra = rel === 'today' ? ' schedule-day today-card' : rel === 'tomorrow' ? ' schedule-day tomorrow-card' : '';
 
-      html += `<div class="card">
+      html += `<div class="card${cardExtra}">
         <div class="card-header" onclick="toggleCard(this)">
           <div class="place-number">${num || '·'}</div>
           <div class="place-name">${name}</div>
@@ -890,6 +985,13 @@ function renderPlaceList(rows) {
   });
 
   el.innerHTML = html;
+
+  if (scrollToToday) {
+    setTimeout(() => {
+      const target = el.querySelector('#place-group-' + todayStr) || el.querySelector('#place-group-' + tomorrowStr);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
+  }
 }
 
 function filterPlaces() {
