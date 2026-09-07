@@ -1849,8 +1849,8 @@ function showLPPanel(name, source) {
         const wrap = document.getElementById('place-img-wrap');
         if (!wrap) return;
         if (data.thumbnail && data.thumbnail.source) {
-          const src = data.thumbnail.source.replace(/\/\d+px-/, '/800px-');
-          wrap.innerHTML = `<img class="place-img" src="${src}" alt="${name}">`;
+          const src = data.thumbnail.source;
+          wrap.innerHTML = `<img class="place-img" src="${src}" alt="${name}" onerror="this.closest('.place-img-wrap').remove()">`;
         } else {
           wrap.remove();
         }
