@@ -496,6 +496,29 @@
     line-height: 1.4;
   }
   .web-btn:active { background: rgba(3,105,161,0.18); }
+  .place-img-wrap {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: #f3f4f6;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .place-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+  }
+  .place-img-loading {
+    padding: 16px;
+    color: #9ca3af;
+    font-size: 12px;
+  }
 </style>
 </head>
 <body>
@@ -1719,6 +1742,77 @@ const WEB_DATA = {
 브레라(Brera) 지구의 갤러리아와 예술가 골목, 나빌리(Navigli)의 운하변 바와 빈티지 마켓도 밀라노의 또 다른 얼굴입니다.`,
 };
 
+// ── Wikipedia 이미지 타이틀 매핑 ──────────────────────────────────
+const WIKI_TITLES = {
+  // Malta
+  '발레타': 'Valletta',
+  '임디나': 'Mdina',
+  '쓰리시티': 'Three Cities, Malta',
+  '마르사슬록': 'Marsaxlokk',
+  '고조섬': 'Gozo',
+  '코미노': 'Comino',
+  '몰타 생줄리안': "St. Julian's, Malta",
+  // Sicily — 팔레르모
+  '팔레르모': 'Palermo',
+  '콰트로칸티': 'Quattro Canti',
+  '팔레르모 팔라로시장': 'Ballarò',
+  '팔레르모 대성당': 'Palermo Cathedral',
+  '노르만궁전': 'Norman Palace',
+  '몬레알레 대성당': 'Monreale Cathedral',
+  '마시모 극장': 'Teatro Massimo',
+  '카포시장': 'Capo market',
+  '제수교회': 'Church of the Gesù, Palermo',
+  '벨리니광장': 'Piazza Bellini, Palermo',
+  '산타카테리나 성당': 'Santa Caterina, Palermo',
+  // Sicily — 서부
+  '세게스타': 'Segesta',
+  '셀리눈테': 'Selinunte',
+  '팔라조 아드리아노': 'Palazzo Adriano',
+  '아그리젠토 신전의계곡': 'Valley of the Temples',
+  '터키인의 계단': 'Scala dei Turchi',
+  '트라파니': 'Trapani',
+  '에리체': 'Erice',
+  '마르살라': 'Marsala',
+  // Sicily — 남동부
+  '노토': 'Noto, Sicily',
+  '라구사': 'Ragusa, Sicily',
+  '모디카': 'Modica',
+  '시라쿠사': 'Syracuse, Sicily',
+  // Sicily — 동부
+  '타오르미나': 'Taormina',
+  '카타니아': 'Catania',
+  '이솔라벨라': 'Isola Bella (Taormina)',
+  '카스텔로몰라': 'Castelmola',
+  '사보카': 'Savoca, Sicily',
+  '체팔루': 'Cefalù',
+  '그리스 극장': 'Teatro antico di Taormina',
+  '카타니아 어시장': 'La Pescheria (Catania)',
+  '산베네디토 교회': 'Abbazia di San Nicolò l\'Arena',
+  '비스카리 궁전': 'Palazzo Biscari',
+  // Germany — Rhine
+  '뤼데스하임': 'Rüdesheim am Rhein',
+  '바하라흐': 'Bacharach',
+  '코블렌츠': 'Koblenz',
+  '엘츠성': 'Eltz Castle',
+  '코헴': 'Cochem',
+  '하이델베르크': 'Heidelberg',
+  // Lake Garda
+  '가르다호수': 'Lake Garda',
+  '말체시네': 'Malcesine',
+  '말체시네 케이블카': 'Monte Baldo',
+  '리모네술가르다': 'Limone sul Garda',
+  '시르미오네': 'Sirmione',
+  // Dolomites
+  '오르티세이': 'Ortisei',
+  '산타막달레나': 'Santa Maddalena, South Tyrol',
+  '발 가르데나': 'Val Gardena',
+  '세체다': 'Seceda',
+  '알페디시우스': 'Alpe di Siusi',
+  '사쏘룽고': 'Sassolungo',
+  // Milan
+  '밀라노': 'Milan',
+};
+
 // ── LP 패널 열기/닫기 ───────────────────────────────────────────
 function showLPPanel(name, source) {
   const content = source === 'web' ? WEB_DATA[name] : LP_DATA[name];
@@ -1735,12 +1829,37 @@ function showLPPanel(name, source) {
   const paras = content.trim().split(/\n\n+/).map(p =>
     `<p>${p.trim().replace(/\n/g, '<br>')}</p>`
   ).join('');
-  document.getElementById('lp-panel-body').innerHTML = paras;
+
+  const wikiTitle = WIKI_TITLES[name];
+  const imgPlaceholder = wikiTitle
+    ? `<div class="place-img-wrap" id="place-img-wrap"><span class="place-img-loading">📷 사진 불러오는 중…</span></div>`
+    : '';
+  document.getElementById('lp-panel-body').innerHTML = imgPlaceholder + paras;
+
   document.getElementById('lp-overlay').classList.add('open');
   const panel = document.getElementById('lp-panel');
   panel.classList.add('open');
   document.getElementById('lp-panel-body').scrollTop = 0;
   document.body.style.overflow = 'hidden';
+
+  if (wikiTitle) {
+    fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(wikiTitle)}`)
+      .then(r => r.json())
+      .then(data => {
+        const wrap = document.getElementById('place-img-wrap');
+        if (!wrap) return;
+        if (data.thumbnail && data.thumbnail.source) {
+          const src = data.thumbnail.source.replace(/\/\d+px-/, '/800px-');
+          wrap.innerHTML = `<img class="place-img" src="${src}" alt="${name}">`;
+        } else {
+          wrap.remove();
+        }
+      })
+      .catch(() => {
+        const wrap = document.getElementById('place-img-wrap');
+        if (wrap) wrap.remove();
+      });
+  }
 }
 
 function closeLPPanel() {
