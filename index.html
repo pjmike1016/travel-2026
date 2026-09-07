@@ -392,9 +392,95 @@
   .dday-num { font-size: 28px; font-weight: 700; font-family: 'DM Sans', sans-serif; color: var(--accent); }
   .dday-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
   .dday-right { text-align: right; }
+
+  /* ── LP 슬라이드업 패널 ── */
+  .lp-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 8000;
+  }
+  .lp-overlay.open { display: block; }
+  .lp-panel {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--card);
+    border-radius: 20px 20px 0 0;
+    padding: 0 0 env(safe-area-inset-bottom,16px);
+    z-index: 8001;
+    max-height: 72vh;
+    transform: translateY(100%);
+    transition: transform 0.32s cubic-bezier(0.32,0.72,0,1);
+    box-shadow: 0 -4px 32px rgba(0,0,0,0.18);
+    display: flex; flex-direction: column;
+  }
+  .lp-panel.open { transform: translateY(0); }
+  .lp-panel-handle {
+    width: 40px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 12px auto 0;
+    flex-shrink: 0;
+  }
+  .lp-panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px 8px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .lp-panel-title {
+    font-size: 15px; font-weight: 700;
+    color: var(--text); display: flex; align-items: center; gap: 6px;
+  }
+  .lp-panel-badge {
+    font-size: 10px; font-weight: 600;
+    color: #fff; background: #e55a1e;
+    padding: 2px 7px; border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .lp-panel-close {
+    font-size: 20px; color: var(--text3); cursor: pointer;
+    padding: 4px 8px; border-radius: 8px; border: none;
+    background: none; line-height: 1;
+  }
+  .lp-panel-body {
+    overflow-y: auto;
+    padding: 14px 18px 20px;
+    flex: 1;
+    font-size: 13.5px; line-height: 1.75;
+    color: var(--text2);
+    white-space: pre-line;
+  }
+  .lp-btn {
+    display: inline-flex; align-items: center; gap: 3px;
+    margin-top: 8px;
+    font-size: 11px; font-weight: 600;
+    color: #e55a1e;
+    background: rgba(229,90,30,0.08);
+    border: 1px solid rgba(229,90,30,0.22);
+    border-radius: 20px;
+    padding: 3px 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .lp-btn:hover { background: rgba(229,90,30,0.15); }
 </style>
 </head>
 <body>
+
+<!-- LP 슬라이드업 패널 -->
+<div class="lp-overlay" id="lp-overlay" onclick="closeLPPanel()"></div>
+<div class="lp-panel" id="lp-panel">
+  <div class="lp-panel-handle"></div>
+  <div class="lp-panel-header">
+    <div class="lp-panel-title">
+      <span id="lp-panel-name">-</span>
+      <span class="lp-panel-badge">Lonely Planet</span>
+    </div>
+    <button class="lp-panel-close" onclick="closeLPPanel()">✕</button>
+  </div>
+  <div class="lp-panel-body" id="lp-panel-body"></div>
+</div>
+
 <div id="gate" style="position:fixed;inset:0;background:#fff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
   <p style="font-size:16px;">비밀번호를 입력하세요</p>
   <input id="gate-pw" type="password" style="padding:10px;font-size:16px;border:1px solid #ccc;border-radius:8px;">
@@ -989,7 +1075,10 @@ function renderPlaceList(rows, scrollToToday=false) {
             ${needBook === 'Y' ? `<div class="meta-item"><div class="meta-label">예약</div><div class="meta-value" style="font-size:12px;color:var(--red)">필요 ${bookId || ''}</div></div>` : ''}
           </div>
           ${memo ? `<div style="font-size:12px;color:var(--text2);margin-top:8px;line-height:1.6">💡 ${memo}</div>` : ''}
-          ${mapUrl ? `<a href="${mapUrl}" target="_blank" class="map-link">🗺️ 지도 보기</a>` : ''}
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px">
+            ${mapUrl ? `<a href="${mapUrl}" target="_blank" class="map-link">🗺️ 지도 보기</a>` : ''}
+            ${LP_DATA[name] ? `<button class="lp-btn" onclick="event.stopPropagation();showLPPanel('${name.replace(/'/g,"\\'")}')">📖 론리플래닛</button>` : ''}
+          </div>
         </div>
       </div>`;
     });
@@ -1257,6 +1346,147 @@ async function hashPw(pw) {
     if (e.key === 'Enter') document.getElementById('gate-btn').click();
   });
 })();
+
+// ── Lonely Planet 데이터 ───────────────────────────────────────────
+const LP_DATA = {
+  // ═══════ MALTA ═══════
+  '발레타': `유럽 최초의 계획 도시 발레타. 1565년 오스만 제국의 대공방전에서 승리한 성 요한 기사단이 세운 이 도시는 면적 불과 0.55㎢의 작은 반도 위에 거의 완벽한 바둑판 형태로 건설되었습니다.
+
+평행하게 뻗은 거리 양편으로 4~5층 높이의 타운하우스가 늘어서고, 파스텔 색조나 선명한 빨간색으로 칠해진 벽에 돌출형 발코니가 매달려 있습니다. 기사단장의 궁전, 성 요한 대성당(St John's Co-Cathedral)의 황금빛 바로크 내부, 전쟁 박물관, 수십 개의 교회와 요새가 이 작은 도시에 빽빽하게 들어서 있습니다.
+
+성 요한 대성당의 수수한 요새 같은 외관에 속지 마세요. 내부는 금빛 조각과 카라바조의 걸작 그림으로 가득한 압도적인 공간이 기다리고 있습니다.`,
+
+  '임디나': `황금빛 돌로 쌓인 성벽 도시 임디나(Mdina)는 현대 몰타와 완전히 다른 세계입니다. 아랍과 노르만 건축이 어우러진 이 고요한 중세 도시는 한때 몰타의 수도였으며, 현재는 불과 몇백 명만 거주하는 '침묵의 도시'로 불립니다.
+
+카타콤, 웅장한 노르만 궁전, 17세기 바로크 성당들이 좁은 미로 같은 골목 사이에 숨겨져 있습니다. 성벽 위에서 바라보는 몰타 전경과 멀리 보이는 바다는 잊지 못할 파노라마를 선사합니다. 해 질 무렵 황금빛으로 빛나는 석회암 건물들과 텅 빈 골목은 시간이 멈춘 듯한 환상적인 분위기를 자아냅니다.`,
+
+  '쓰리시티': `발레타의 그랜드 하버 건너편, 황금빛 돌로 지어진 비토리오사(Vittoriosa)와 셍글레아(Senglea)는 17세기에 건설된 아름다운 도시입니다. 비토리오사, 셍글레아, 코스피쿠아(Cospicua) 세 도시를 합쳐 '쓰리시티'라 부릅니다.
+
+성 요한 기사단의 역사가 고스란히 숨쉬는 이곳은 발레타보다 훨씬 한적하고 진실한 몰타의 모습을 보여줍니다. 물 위에서 바라보는 쓰리시티의 실루엣과 그랜드 하버의 전경은 몰타 여행의 하이라이트 중 하나입니다. 수상 택시를 타고 발레타에서 건너오는 것도 특별한 경험이 됩니다.`,
+
+  '마르사슬록': `알록달록한 전통 어선 루쭈(luzzu)와 신선한 해산물 레스토랑으로 가득한 마르사슬록 항구는 수천 년의 역사를 품고 있습니다. 1565년 대공방전 당시 오스만 군대 30,000명이 이 천연 만에 상륙했고, 이후 나폴레옹도 이곳을 통해 몰타를 점령했습니다. 1989년에는 부시 대통령과 고르바초프가 이 바다 위에서 냉전 종식을 논의하기도 했습니다.
+
+일요일 새벽에 열리는 수산 시장은 몰타에서 가장 유명한 야외 시장으로, 신선한 생선과 현지 특산물을 만날 수 있습니다. 주중에 방문하면 붐비지 않고 느긋하게 항구의 정취를 즐길 수 있습니다.`,
+
+  '고조': `느린 삶의 속도와 전원적인 매력이 넘치는 고조는 몰타 본섬과는 전혀 다른 세계입니다. 역사적인 타운들, 아름다운 해변, 들쭉날쭉한 절벽이 어우러진 이 섬은 작지만 볼거리가 풍부합니다.
+
+수도 빅토리아(Victoria) 꼭대기에는 아담한 요새 치타델(Citadel)이 서 있고, 비밀스러운 마을 샤흐라(Xagħra) 바로 외곽에는 인류 최고(最古)의 돌 신전 중 하나인 쥬간티야(Ġgantija) 신전이 자리합니다. 아주르 윈도우(Azure Window)가 무너진 자리에는 이제 다이버들이 즐겨 찾는 해저 아치가 남아 있습니다.`,
+
+  '블루라군': `몰타와 고조 사이 코미노 섬에 자리한 블루 라군은 그 이름처럼 믿기 어려울 만큼 투명하고 새파란 바다를 자랑합니다. 수심이 얕아 수영과 스노클링을 즐기기에 완벽하며, 맑은 물 속으로 물고기와 해초가 선명하게 보입니다.
+
+성수기에는 몰타 전역에서 보트들이 모여 붐비지만, 이른 아침이나 늦은 오후에 방문하면 더 여유롭게 즐길 수 있습니다. 코미노는 인구가 거의 없는 섬으로 블루 라군 외에도 아름다운 동굴과 트레킹 코스를 갖추고 있습니다.`,
+
+  '슬리에마': `슬리에마(Sliema)와 세인트 줄리안스(St Julian's)는 발레타에서 북쪽으로 이어지는 몰타의 현대적인 해안 지구입니다. 긴 해안 산책로를 따라 카페와 레스토랑이 즐비하고, 쇼핑센터와 호텔들이 모여 있습니다.
+
+슬리에마는 몰타 상류층이 오래전부터 거주하던 고급스러운 분위기의 지구로, 우아한 타운하우스와 암반 수영 장소가 평화로운 분위기를 만들어냅니다. 세인트 줄리안스는 에너지 넘치는 레스토랑과 바가 가득하며, 파체빌레(Paceville)는 몰타 최대의 나이트라이프 중심지입니다.`,
+
+  // ═══════ SICILY ═══════
+  '팔레르모': `시칠리아의 수도 팔레르모는 수천 년 역사의 층위가 쌓인 복잡하고 매혹적인 도시입니다. 페니키아, 그리스, 로마, 아랍, 노르만, 스페인의 지배를 거치며 세계 어디에서도 볼 수 없는 독특한 문화와 건축이 탄생했습니다.
+
+노르만 왕궁(Palazzo dei Normanni)과 팔라티나 예배당의 황금빛 모자이크는 그 화려함에 할 말을 잃게 만듭니다. 발라로(Ballarò) 시장에서는 9세기 아랍 상인들이 흥정하던 그 자리에서 오늘도 시칠리아, 아시아, 아프리카의 냄새와 소리가 뒤섞입니다.`,
+
+  '콰트로칸티': `'태양의 무대(Il Teatro del Sole)'라는 별명을 가진 콰트로칸티(Quattro Canti)는 팔레르모 구도심의 중심을 이루는 팔각형 광장입니다. 비아 비토리오 에마누엘레와 비아 마퀘다의 우아한 교차로에서, 매일 햇빛이 이동하면서 네 개의 바로크 파사드를 차례로 비추는 빛의 쇼가 펼쳐집니다.
+
+각 모퉁이에는 사계절의 여신, 스페인 왕들, 그리고 팔레르모의 수호 성인들이 층층이 조각되어 있습니다. 팔레르모의 4개 구역이 만나는 이 지점은 도시 산책의 출발점으로 완벽합니다.`,
+
+  '발라로시장': `발라로(Ballarò)는 팔레르모에서 가장 오래된 노천 시장으로, 9세기 아랍 상인들이 흥정하던 그 자리에서 오늘도 변함없이 시칠리아, 아시아, 아프리카의 냄새와 소리가 뒤섞입니다.
+
+색색의 향신료 더미, 신선한 생선, 채소, 과일 그리고 길거리 음식들이 좁은 골목을 가득 채웁니다. 아란치니(arancini), 파니니 콘 라 밀차(panino con la milza, 비장 샌드위치)를 비롯한 시칠리아 길거리 음식의 성지입니다. 이른 아침부터 오후까지 운영되며, 현지인들의 일상 속으로 깊이 들어가는 최고의 방법입니다.`,
+
+  '팔레르모 두오모': `팔레르모 대성당(Cattedrale di Palermo)은 무려 9세기에 걸쳐 증축과 개조를 거듭하며 아랍-노르만 건축의 정수를 보여주는 건축물입니다. 노르만, 아랍, 비잔틴, 고딕, 바로크 양식이 한 건물에 공존하는 세계적으로 유례없는 건축 유산입니다.
+
+금박 모자이크로 장식된 내부와 루게로 2세(Roger II)를 비롯한 노르만 왕들의 석관이 있는 왕실 예배당이 특히 인상적입니다. 지붕에 올라가면 팔레르모 구도심의 파노라마가 펼쳐집니다.`,
+
+  '노르만궁전': `노르만 왕궁(Palazzo dei Normanni)은 팔레르모에서 가장 오래된 왕실 거주지로, 현재는 시칠리아 지방의회로 사용됩니다. 9세기 아랍 에미리트의 요새 위에 노르만 왕들이 증축한 이 궁전은 시칠리아 문화 혼합의 살아있는 증거입니다.
+
+궁전 안에 자리한 팔라티나 예배당(Cappella Palatina)은 비잔틴 황금 모자이크, 아랍식 무카르나스 천장, 노르만 건축이 완벽하게 융합된 걸작으로, 팔레르모 방문의 절정입니다. 12세기에 루게로 2세가 건설한 이 예배당의 모자이크는 라벤나에 비견되는 아름다움을 자랑합니다.`,
+
+  '몬레알레': `팔레르모에서 8km 거리의 몬레알레(Monreale)에 자리한 대성당은 세계에서 가장 화려한 비잔틴 모자이크의 보고입니다. 12세기 노르만 왕 굴리엘모 2세(William II)가 건설한 이 성당의 내부 벽면 6,340㎡ 전체가 황금 배경의 모자이크로 뒤덮여 있습니다.
+
+모자이크들은 창세기부터 그리스도의 생애까지 성경 전체를 생생하게 묘사하며, 정점에는 중앙 앱스를 가득 채운 판토크라토르(전능한 그리스도) 이미지가 자리합니다. 회랑(chiostro)의 228개 쌍둥이 기둥도 놓치지 마세요.`,
+
+  '세게스타': `들판의 야생화 사이에 우뚝 선 세게스타(Segesta)의 도리아식 신전은 고대 그리스 건축의 신비를 품고 있습니다. 기원전 5세기에 지어진 이 신전은 36개의 기둥이 완벽하게 보존되어 있으며, 바람이 불면 기둥들이 파이프 오르간처럼 신비로운 소리를 냅니다.
+
+언덕 꼭대기에는 기원전 3세기에 지어진 그리스 극장이 있어, 여름밤 별빛 아래 공연이 펼쳐집니다. 엘리미아(Elymian) 문명의 수도였던 이곳은 그리스 세리누스(Selinunte)와 끊임없이 충돌했던 역사를 품고 있습니다.`,
+
+  '셀리눈테': `유럽 최대의 고고학 공원인 셀리눈테(Selinunte, 파르코 아르케올로지코 디 셀리눈테)는 드넓은 지중해를 배경으로 웅장하게 펼쳐집니다. 기원전 7세기에 건설된 이 고대 그리스 도시는 카르타고에 의해 기원전 409년 철저히 파괴되었습니다.
+
+현재도 발굴이 진행 중인 이곳에는 여러 신전의 잔해가 남아 있으며, 그중 일부는 웅장하게 재건되었습니다. 바다를 향해 서 있는 신전 기둥들과 석양이 어우러지는 풍경은 시칠리아 고고학 여행의 하이라이트입니다.`,
+
+  '아그리젠토신전의계곡': `시칠리아 전역을 통틀어 그 중요성, 규모, 아름다움에서 견줄 곳이 없는 신전의 계곡(Valle dei Templi)은 그리스 땅 밖에서 만날 수 있는 고대 그리스 문명의 가장 위대한 유산 중 하나입니다. 기원전 5~6세기에 건설된 이 신전들은 지중해 남쪽 해안을 따라 장엄하게 펼쳐집니다.
+
+콩코르디아 신전(Temple of Concordia)은 세계에서 가장 잘 보존된 그리스 신전 중 하나로, 2,500년의 세월을 견디며 거의 완벽한 상태를 유지합니다. 올리브 나무와 아몬드 나무 사이로 석양빛에 물드는 신전들의 황금빛 실루엣은 잊을 수 없는 광경입니다.`,
+
+  '터키인의계단': `터키인의 계단(Scala dei Turchi)은 아그리젠토 해안에서 빛나는 새하얀 석회암 절벽으로, 오랜 파도의 침식이 만들어낸 자연의 걸작입니다. 16세기 투르크 해적들이 은신처로 사용했다는 전설에서 이름을 얻었습니다.
+
+눈처럼 새하얀 절벽 위로 오르면 지중해의 에메랄드빛 바다가 발 아래 펼쳐집니다. 2020년부터 안전 문제로 울타리가 쳐졌으나, 2023년 9월 오랜 법정 분쟁 끝에 이 사유지 절벽이 마침내 마을 소유가 되어 다시 개방이 논의되고 있습니다.`,
+
+  '노토': `유네스코 세계유산에 등재된 노토(Noto)는 바로크 건축의 살아있는 교과서입니다. 너무나 아름다워 영화 세트장으로 착각할 만한 이 도시는 1693년 대지진으로 완전히 파괴된 뒤 새로운 위치에 장엄하게 재건되었습니다.
+
+중심 거리인 코르소 비토리오 에마누엘레(Corso Vittorio Emanuele)는 화려한 바로크 궁전과 성당이 줄지어 늘어선 우아한 산책로입니다. 해가 기울면 꿀빛과 붉은빛을 발하며 내면의 빛을 발산하는 석회암 건물들이 황금빛으로 빛납니다. 봄이 되면 발코니를 꽃으로 장식하는 꽃 축제(Infiorata)가 열립니다.`,
+
+  '라구사': `현대적인 라구사 수페리오레(Ragusa Superiore)와 역사적인 라구사 이블라(Ragusa Ibla), 두 도시 이야기가 하나로 엮인 라구사는 수백 개의 계단과 함께 펼쳐지는 아름다운 드라마입니다. 1693년 대지진으로 파괴된 이블라는 정교한 바로크 건축으로 재건되어 유네스코 세계유산으로 지정되었습니다.
+
+이블라의 두오모 광장과 주변 카페에서 여유를 즐기는 시간은 시칠리아 여행의 백미입니다. 이탈리아 드라마 '몬탈바노 형사(Il Commissario Montalbano)'의 촬영지로도 유명합니다.`,
+
+  '시라쿠사': `어떤 도시보다 시칠리아의 영원한 아름다움을 압축하는 시라쿠사(Syracuse). 울창한 감귤 과수원 사이에서 고대 그리스 유적이 솟아오르고, 바로크 광장들이 한적한 바다를 내려다봅니다. 전성기에는 아테네와 코린토스를 능가하는 고대 세계 최대의 도시였습니다.
+
+기원전 734년 코린토스 식민지로 시작된 이 도시의 역사는 오르티지아(Ortygia) 섬에서 시작됩니다. 아르테미스 신전의 기둥이 두오모 대성당 벽 속에 그대로 흡수된 광경은 수천 년 역사가 켜켜이 쌓인 시라쿠사를 상징합니다. 고고학 공원의 거대한 그리스 극장에서 지금도 공연이 열립니다.`,
+
+  '타오르미나': `쾌락주의가 흘러넘치는 화려한 타오르미나(Taormina). 고대 그리스인들이 신의 눈높이에서 바다를 내려다볼 수 있는 곳에 극장을 지은 이후, 이 도시는 줄곧 세계에서 가장 욕망 받는 장소 중 하나였습니다. 절벽 위 부티크와 테라스 레스토랑들은 에트나 화산과 이오니아 해가 동시에 보이는 환상적인 전망을 선사합니다.
+
+18세기 그랜드 투어 여행자들이 발자국을 남긴 이후 구스타프 클림트, 오스카 와일드, 트루먼 카포테, 엘리자베스 테일러 등이 이곳에 매료되었습니다. 여름밤, 고대 그리스 극장에서 에트나를 배경으로 열리는 타오르미나 아르테(Taormina Arte) 공연은 잊지 못할 경험입니다.`,
+
+  '카타니아': `시칠리아 제2의 도시 카타니아(Catania)를 능동적으로 피하던 시대는 지났습니다. 처음 마주치는 소음과 혼돈, 거친 느낌에도 불구하고, 카타니아에는 자석 같은 매력이 있습니다. 강렬한 에너지와 거친 생명력이 넘치는 이 도시는 시칠리아에서 가장 젊고 활기찬 곳입니다.
+
+이 유네스코 세계유산 도시는 1669년 에트나 화산 분출과 1693년 대지진으로 두 차례 잿더미가 된 뒤 화산암으로 재건되었습니다. 라 페스케리아(La Pescheria)의 새벽 생선 시장, 화산 용암 튜브 속의 레스토랑, 고대 로마 유적을 감싼 바로크 궁전들이 어우러지는 도시 탐험은 중독적입니다.`,
+
+  '이솔라벨라': `타오르미나 아래 마차로(Mazzarò) 마을의 해변에서 가느다란 자갈 둑길로 이어지는 이솔라 벨라(Isola Bella)는 자연 보호구역으로 지정된 작은 섬입니다. 매력적인 지중해 정원과 둥지를 트는 매, 고유종 붉은 배 도마뱀이 서식합니다.
+
+'아름다운 섬'이라는 뜻 그대로 에메랄드빛 바다에 떠 있는 이 섬 주변에는 산호, 해면, 불가사리가 서식하는 해저 동굴이 있습니다. 타오르미나 케이블카를 타고 내려와 이솔라 벨라 해변(Spiaggia di Isola Bella)에서 스노클링을 즐기는 것은 타오르미나 여행의 완벽한 마무리입니다.`,
+
+  '카스텔몰라': `타오르미나보다 더 극적인 절경을 원한다면 2.5km 북쪽의 언덕 꼭대기 마을 카스텔몰라(Castelmola)로 향하세요. 포장도로와 계단, 자갈 오솔길을 따라 50분~1시간 30분 걷는 오르막길에서는 발걸음을 멈출 때마다 선인장과 포도밭 너머로 에트나 화산이 솟아오르는 장관이 펼쳐집니다.
+
+해발 높이에서 바라보는 이오니아 해안 전경은 메시나 해협부터 시라쿠사까지 이어집니다. 마을의 1700년 창업 카페 산 조르지오(Caffè San Giorgio)에서는 1907년 빈첸조 블란다노가 아몬드와 와인을 처음 혼합해 만든 전설적인 비노 만돌라(vino mandorla, 아몬드 와인)를 맛볼 수 있습니다.`,
+
+  '사보카': `타오르미나 남쪽 해안 마을 산타 테레사 디 리바 위 언덕에 아슬아슬하게 매달린 사보카(Savoca)는 시간이 멈춘 것 같은 중세 마을입니다. 철문으로 막힌 골목, 거친 돌집들, 수백 년 된 올리브 나무에 둘러싸인 고요한 교회들. 프란시스 포드 코폴라 감독이 바로 이 풍경에 매료되어 영화 '대부(The Godfather, 1972)'의 일부를 이곳에서 촬영했습니다.
+
+바 비텔리(Bar Vitelli)에서는 알 파치노가 아폴로니아를 처음 만나는 장면이 촬영되었습니다. 레몬-지비보 그라니타 한 잔을 시키고, 마이클 코를레오네가 아폴로니아와 결혼한 14세기 산타 루치아 성당을 바라보며 앉아 보세요.`,
+
+  '체팔루': `시칠리아에서 가장 아름다운 황금빛 모래사장과 유네스코 세계유산 12세기 성당이 함께 있는 체팔루(Cefalù). 노르만 시대의 걸작 건축과 지중해 최고의 해수욕이 한 곳에서 가능한 시칠리아 북부의 보석입니다.
+
+성당 내부의 비잔틴 황금 모자이크 특히 후진(apse)을 가득 채운 그리스도 판토크라토르는 시칠리아 예술의 정점입니다. 해변에서 한가로이 수영한 뒤 미로 같은 구시가지 골목을 거닐며 현지 오스테리아에서 저녁을 먹는 것이 체팔루의 완벽한 하루입니다.`,
+
+  '에리체': `해발 751m의 산 정상에 매달린 중세 마을 에리체(Erice)는 트라파니 평원과 지중해 연안의 소금밭을 발 아래 내려다보며 구름 속에 잠겨 있습니다. 트라파니에서 케이블카(funivia)를 타고 오르는 연안 파노라마가 이미 숨막히게 아름답습니다.
+
+12세기 성벽 안에서 광택이 나는 돌 포장 골목들을 거니는 것은 몽환적인 경험입니다(미끄러지지 않는 신발 필수). 노르만인들이 로마 비너스 신전 위에 세운 12~13세기 카스텔로 디 베네레(Castello di Venere)의 광활한 잔해와, 마리아 그라마티코 파티세리아(Pasticceria di Maria Grammatico)의 전설적인 아몬드 과자는 에리체 방문의 필수 코스입니다.`,
+
+  '마르살라': `시칠리아 서해안의 고풍스러운 마르살라(Marsala)는 이름처럼 '신의 항구(Marsa Allah)'입니다. 페니키아인이 세우고 아랍인이 이름을 붙인 이 도시의 오늘날 정체성은 단연 와인입니다. 도보 구역인 비아 XI 마지오(Via XI Maggio)를 따라 걸으며 마르살라 와인 생산자들의 시음 공간을 찾아가 보세요.
+
+17세기 팔라초 피치(Palazzo Fici)에서 열리는 마르살라 와인 박물관(Museo del Vino di Marsala)은 와인의 역사와 제조 과정을 알기 쉽게 보여줍니다. 마을 북쪽의 거대한 얕은 석호 로 스타뇨네(Lo Stagnone)는 키테서핑 명소로, 고대 페니키아 섬 모치아(Mozia)의 고고학 유적도 이 석호 안에 있습니다.`,
+
+  '모디카': `라구사에서 20km 남쪽의 모디카(Modica)는 1693년 대지진 이후 바로크 양식으로 재건된 유네스코 세계유산 마을입니다. 모디카 알타(상부)와 모디카 바사(하부)를 연결하는 구불구불한 계단과 골목들 사이에서 길을 잃어도 좋습니다.
+
+모디카 알타의 하이라이트는 화려한 3단 계단 위에 홀로 서 있는 산 조르지오 두오모(Duomo di San Giorgio). 하지만 이 도시를 세계적으로 유명하게 만든 것은 초콜릿입니다. 스페인 통치 시절 아즈텍의 냉가공 제조법이 전해진 모디카의 초콜릿(cioccolato modicano)은 입에 넣으면 녹지 않고 살살 부서지는 독특한 식감이 특징입니다. 코코아와 설탕, 향신료만으로 만드는 4세기 전통의 맛을 보나유토(Bonajuto) 같은 150년 이상 된 초콜릿 가게에서 경험해보세요.`,
+};
+
+// ── LP 패널 열기/닫기 ───────────────────────────────────────────
+function showLPPanel(name) {
+  const content = LP_DATA[name];
+  if (!content) return;
+  document.getElementById('lp-panel-name').textContent = name;
+  document.getElementById('lp-panel-body').textContent = content;
+  document.getElementById('lp-overlay').classList.add('open');
+  const panel = document.getElementById('lp-panel');
+  panel.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLPPanel() {
+  document.getElementById('lp-overlay').classList.remove('open');
+  document.getElementById('lp-panel').classList.remove('open');
+  document.body.style.overflow = '';
+}
 </script>
 </body>
 </html>
