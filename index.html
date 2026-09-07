@@ -708,7 +708,10 @@ function nightsBetween(ci, co) {
 async function fetchSheet(sheetName) {
   if (cache[sheetName]) return cache[sheetName];
   try {
-    const res = await fetch(`${API}?action=read&sheet=${encodeURIComponent(sheetName)}`);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000);
+    const res = await fetch(`${API}?action=read&sheet=${encodeURIComponent(sheetName)}`, { signal: controller.signal });
+    clearTimeout(timer);
     const json = await res.json();
     if (json.data) { cache[sheetName] = json.data; return json.data; }
     return null;
@@ -755,6 +758,10 @@ function switchNav(idx) {
 
 function syncAll() {
   cache = {};
+  const loadingHTML = '<div class="loading"><div class="spinner"></div><p>불러오는 중...</p></div>';
+  const contentIds = ['schedule-content','flight-content','hotel-content','place-content','map-content','settle-content'];
+  const el = document.getElementById(contentIds[currentNav]);
+  if (el) el.innerHTML = loadingHTML;
   toast('🔄 동기화 중...');
   if (currentNav === 0) renderSchedule();
   if (currentNav === 1) renderFlights();
