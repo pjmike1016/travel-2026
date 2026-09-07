@@ -260,51 +260,53 @@
     font-size: 11px; color: var(--text2); margin-top: 6px;
   }
 
-  /* ── 예산 ── */
-  .budget-add {
-    background: var(--surface2); border: 1px dashed var(--border);
-    border-radius: var(--radius); padding: 14px; margin-bottom: 10px;
-  }
-  .budget-add h3 { font-size: 13px; margin-bottom: 10px; color: var(--text2); }
-  .form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-  .form-input {
-    flex: 1; min-width: 100px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 8px 10px;
+  /* ── 정산 (AppSheet 연동, 읽기 전용) ── */
+  .settle-trip-select {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 12px;
     color: var(--text); font-size: 13px; font-family: 'Noto Sans KR', sans-serif;
     outline: none;
   }
-  .form-input:focus { border-color: var(--accent); }
-  .form-select {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 8px 10px;
-    color: var(--text); font-size: 13px; outline: none;
+  .settle-total {
+    font-size: 26px; font-weight: 700; font-family: 'DM Sans', sans-serif; color: var(--text);
   }
-  .btn-submit {
-    width: 100%; padding: 10px; background: var(--accent);
-    color: white; border: none; border-radius: var(--radius-sm);
-    font-size: 13px; font-weight: 600; cursor: pointer;
-    font-family: 'Noto Sans KR', sans-serif;
+  .settle-member-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+    gap: 8px; margin-top: 12px;
   }
-  .btn-submit:active { opacity: 0.8; }
-  .budget-row {
+  .settle-member-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 12px;
+  }
+  .settle-member-name { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+  .settle-member-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .settle-member-net {
+    font-size: 15px; font-weight: 700; font-family: 'DM Sans', sans-serif; margin-top: 6px;
+  }
+  .settle-member-net.owe { color: var(--accent); }
+  .settle-member-net.receive { color: var(--red); }
+  .settle-member-net.even { color: var(--text3); }
+  .settle-cat-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
+  .settle-cat-chip {
+    font-size: 11px; padding: 4px 10px; border-radius: 20px;
+    background: var(--surface2); border: 1px solid var(--border); color: var(--text2);
+  }
+  .settle-row {
     display: flex; align-items: center; gap: 10px;
     padding: 10px 0; border-bottom: 1px solid var(--border);
   }
-  .budget-row:last-child { border-bottom: none; }
-  .budget-who {
+  .settle-row:last-child { border-bottom: none; }
+  .settle-row.is-today { background: rgba(37,99,235,0.05); margin: 0 -14px; padding: 10px 14px; border-radius: 8px; }
+  .settle-who {
     width: 28px; height: 28px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px; flex-shrink: 0;
+    font-size: 12px; flex-shrink: 0; background: var(--surface2); font-weight: 600;
   }
-  .budget-who.hj { background: rgba(37,99,235,0.12); }
-  .budget-who.yj { background: rgba(22,163,74,0.12); }
-  .budget-who.both { background: rgba(124,58,237,0.12); }
-  .budget-desc { flex: 1; }
-  .budget-desc .desc-main { font-size: 13px; }
-  .budget-desc .desc-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
-  .budget-amount { font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; }
-  .budget-amount.exp { color: var(--red); }
+  .settle-desc { flex: 1; min-width: 0; }
+  .settle-desc .desc-main { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .settle-desc .desc-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .settle-amount { font-size: 13px; font-weight: 600; font-family: 'DM Sans', sans-serif; text-align: right; flex-shrink: 0; }
+  .settle-amount .krw { font-size: 11px; color: var(--text3); font-weight: 400; display: block; }
 
   /* ── 구글지도 ── */
   .map-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -426,7 +428,7 @@
     <div class="nav-icon">🗺️</div><div>지도</div>
   </div>
   <div class="nav-item" onclick="switchNav(5)" id="nav5">
-    <div class="nav-icon">💰</div><div>예산</div>
+    <div class="nav-icon">🧾</div><div>정산</div>
   </div>
 </div>
 
@@ -459,9 +461,9 @@
     </div>
     <div id="map-content"><div class="loading"><div class="spinner"></div><p>지도 정보 불러오는 중...</p></div></div>
   </div>
-  <!-- 5. 예산 -->
+  <!-- 5. 정산 (AppSheet 지출정산기 연동, 읽기 전용) -->
   <div class="section" id="sec5">
-    <div id="budget-content"><div class="loading"><div class="spinner"></div><p>예산 불러오는 중...</p></div></div>
+    <div id="settle-content"><div class="loading"><div class="spinner"></div><p>정산 내역 불러오는 중...</p></div></div>
   </div>
 </div>
 
@@ -474,8 +476,7 @@ const SHEETS = {
   flight:   'idx_1',
   hotel:    'idx_2',
   place:    'idx_3',
-  map:      'idx_4',
-  budget:   'idx_5'
+  map:      'idx_4'
 };
 
 let cache = {};
@@ -572,6 +573,16 @@ async function fetchSheet(sheetName) {
   } catch(e) { return null; }
 }
 
+async function fetchSettle() {
+  if (cache['settle']) return cache['settle'];
+  try {
+    const res = await fetch(`${API}?action=settle`);
+    const json = await res.json();
+    if (json.expenses) { cache['settle'] = json; return json; }
+    return null;
+  } catch(e) { return null; }
+}
+
 async function postRow(sheetName, data) {
   try {
     await fetch(API, {
@@ -597,7 +608,7 @@ function switchNav(idx) {
   if (idx === 2 && !cache[SHEETS.hotel])    renderHotels();
   if (idx === 3 && !cache[SHEETS.place])    renderPlaces();
   if (idx === 4 && !cache[SHEETS.map])      renderMaps();
-  if (idx === 5)                             renderBudget();
+  if (idx === 5)                             renderSettle();
 }
 
 function syncAll() {
@@ -608,7 +619,7 @@ function syncAll() {
   if (currentNav === 2) renderHotels();
   if (currentNav === 3) renderPlaces();
   if (currentNav === 4) renderMaps();
-  if (currentNav === 5) renderBudget();
+  if (currentNav === 5) renderSettle();
 }
 
 // ── 카드 토글 ─────────────────────────────────────────────────────
@@ -1048,81 +1059,163 @@ function filterMaps() {
   ));
 }
 
-// ── 5. 예산 ───────────────────────────────────────────────────────
-async function renderBudget() {
-  const el = document.getElementById('budget-content');
-  const data = await fetchSheet(SHEETS.budget);
-  if (!data) { el.innerHTML = errorHTML(() => renderBudget()); return; }
+// ── 5. 정산 (AppSheet 지출정산기 스프레드시트, 읽기 전용) ─────────
+// 입력은 계속 AppSheet에서만 함 (오프라인 큐 필요, 동시쓰기 등 이유로
+// 이 앱에서는 조회·정산 계산만 담당). 통화 환산은 항상 최신 ExRate(G) 사용.
+let _settleExpCols = null, _settleRateCols = null;
 
-  const rows = data.slice(4).filter(r => r[0] || r[2]);
+function _colIndex(headerRow, name) {
+  return headerRow.findIndex(h => String(h).trim() === name);
+}
 
-  const addForm = `
-    <div class="budget-add">
-      <h3>+ 지출 추가</h3>
-      <div class="form-row">
-        <input class="form-input" id="b-date" type="date" value="${todayKST()}" style="flex:1.2">
-        <select class="form-select" id="b-who">
-          <option value="💙 해진">💙 해진</option>
-          <option value="💚 양재">💚 양재</option>
-          <option value="🔷 공통">🔷 공통</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <input class="form-input" id="b-cat" placeholder="카테고리 (식비·교통·숙박...)" style="flex:1">
-      </div>
-      <div class="form-row">
-        <input class="form-input" id="b-desc" placeholder="내용" style="flex:2">
-        <input class="form-input" id="b-amt" type="number" placeholder="금액(₩)" style="flex:1">
-      </div>
-      <button class="btn-submit" onclick="addBudget()">저장</button>
+function settleExRate(currency, rateRows) {
+  if (!currency || currency === 'KRW') return 1;
+  const header = rateRows[0];
+  const cCur = _colIndex(header, 'Currency');
+  const cRate = _colIndex(header, 'ExRate(G)');
+  for (let i = 1; i < rateRows.length; i++) {
+    if (String(rateRows[i][cCur]).trim() === currency) {
+      return parseFloat(rateRows[i][cRate]) || 1;
+    }
+  }
+  return 1; // 알 수 없는 통화는 환산 없이 원값 사용 (표시에 통화 기호를 남겨 눈에 띄게 함)
+}
+
+function computeSettlement(expenseRows, rateRows, tripTitle) {
+  const header = expenseRows[0];
+  const c = {
+    title: _colIndex(header, 'Title'),
+    date:  _colIndex(header, 'Date'),
+    type:  _colIndex(header, 'Type'),
+    detail:_colIndex(header, 'Detail'),
+    cur:   _colIndex(header, 'Currency'),
+    price: _colIndex(header, 'Price'),
+    payer: _colIndex(header, 'Payer'),
+    att:   _colIndex(header, 'Attendee'),
+  };
+  const rows = expenseRows.slice(1).filter(r => String(r[c.title]).trim() === tripTitle);
+
+  const paid = {}, used = {}, catTotals = {};
+  const items = [];
+
+  rows.forEach(r => {
+    const amtRaw = parseFloat(r[c.price]) || 0;
+    const cur = String(r[c.cur] || '').trim();
+    const rate = settleExRate(cur, rateRows);
+    const krw = amtRaw * rate;
+    const payer = String(r[c.payer] || '').trim();
+    const attendees = String(r[c.att] || '').split(',').map(s => s.trim()).filter(Boolean);
+    const type = String(r[c.type] || '').trim();
+
+    if (payer && krw > 0) paid[payer] = (paid[payer] || 0) + krw;
+    if (attendees.length && krw > 0) {
+      const share = krw / attendees.length;
+      attendees.forEach(a => { used[a] = (used[a] || 0) + share; });
+    }
+    if (type && !type.includes('정산용') && krw > 0) {
+      catTotals[type] = (catTotals[type] || 0) + krw;
+    }
+    if (amtRaw !== 0 || String(r[c.detail]||'').trim()) {
+      items.push({ date: r[c.date], type, detail: r[c.detail], cur, amtRaw, krw, payer, attendees });
+    }
+  });
+
+  const members = Array.from(new Set([...Object.keys(paid), ...Object.keys(used)]));
+  const members_summary = members.map(name => ({
+    name,
+    paid: paid[name] || 0,
+    used: used[name] || 0,
+    net: (used[name] || 0) - (paid[name] || 0) // 양수=보내야 함, 음수=받아야 함
+  }));
+
+  const total = Object.values(paid).reduce((s, v) => s + v, 0);
+
+  items.sort((a, b) => toKSTDateStr(b.date).localeCompare(toKSTDateStr(a.date)));
+
+  return { members_summary, total, catTotals, items };
+}
+
+async function renderSettle() {
+  const el = document.getElementById('settle-content');
+  const data = await fetchSettle();
+  if (!data || !data.expenses || data.expenses.length < 2) {
+    el.innerHTML = data
+      ? '<div style="text-align:center;color:var(--text3);padding:40px">아직 입력된 지출이 없어요 (AppSheet에서 입력하면 여기 반영됩니다)</div>'
+      : errorHTML(() => renderSettle());
+    return;
+  }
+
+  const header = data.expenses[0];
+  const cTitle = _colIndex(header, 'Title');
+  const cDate  = _colIndex(header, 'Date');
+
+  // 여행(Title) 목록: 최근 지출 날짜 기준 내림차순, 현재 선택값 유지
+  const byTrip = {};
+  data.expenses.slice(1).forEach(r => {
+    const t = String(r[cTitle] || '').trim();
+    if (!t) return;
+    const d = toKSTDateStr(r[cDate]);
+    if (!byTrip[t] || d > byTrip[t]) byTrip[t] = d;
+  });
+  const trips = Object.keys(byTrip).sort((a, b) => byTrip[b].localeCompare(byTrip[a]));
+  if (!trips.length) {
+    el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px">아직 입력된 지출이 없어요</div>';
+    return;
+  }
+  const selected = (window._settleSelectedTrip && trips.includes(window._settleSelectedTrip))
+    ? window._settleSelectedTrip : trips[0];
+  window._settleSelectedTrip = selected;
+
+  const s = computeSettlement(data.expenses, data.rates, selected);
+  const todayStr = todayKST();
+
+  const tripSelect = `<select class="settle-trip-select" onchange="window._settleSelectedTrip=this.value;renderSettle()">
+    ${trips.map(t => `<option value="${t}" ${t===selected?'selected':''}>${t}</option>`).join('')}
+  </select>`;
+
+  const memberCards = s.members_summary.map(m => {
+    const cls = m.net > 100 ? 'owe' : m.net < -100 ? 'receive' : 'even';
+    const label = m.net > 100 ? '보내야 함' : m.net < -100 ? '받아야 함' : '정산 완료';
+    return `<div class="settle-member-card">
+      <div class="settle-member-name">${m.name}</div>
+      <div class="settle-member-row"><span>결제</span><span>₩${Math.round(m.paid).toLocaleString()}</span></div>
+      <div class="settle-member-row"><span>사용</span><span>₩${Math.round(m.used).toLocaleString()}</span></div>
+      <div class="settle-member-net ${cls}">${label} · ₩${Math.round(Math.abs(m.net)).toLocaleString()}</div>
     </div>`;
+  }).join('');
 
-  // 합계
-  const total = rows.reduce((sum, r) => sum + (parseFloat(r[5]) || 0), 0);
-  const hjTotal = rows.filter(r => (r[3]||'').includes('해진')).reduce((s,r) => s+(parseFloat(r[5])||0), 0);
-  const yjTotal = rows.filter(r => (r[3]||'').includes('양재')).reduce((s,r) => s+(parseFloat(r[5])||0), 0);
+  const catChips = Object.entries(s.catTotals)
+    .sort((a,b) => b[1]-a[1])
+    .map(([type, amt]) => `<div class="settle-cat-chip">${type} ₩${Math.round(amt).toLocaleString()}</div>`)
+    .join('');
 
-  let summary = `
+  const summary = `
     <div class="card" style="margin-bottom:12px">
       <div style="padding:14px 16px">
-        <div style="font-size:11px;color:var(--text3);margin-bottom:8px">총 지출</div>
-        <div style="font-size:26px;font-weight:700;font-family:'DM Sans',sans-serif;color:var(--red)">₩${total.toLocaleString()}</div>
-        <div style="display:flex;gap:16px;margin-top:10px">
-          <div><div style="font-size:10px;color:var(--text3)">💙 해진</div><div style="font-size:14px;font-weight:600">₩${hjTotal.toLocaleString()}</div></div>
-          <div><div style="font-size:10px;color:var(--text3)">💚 양재</div><div style="font-size:14px;font-weight:600">₩${yjTotal.toLocaleString()}</div></div>
-        </div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">총 지출 (KRW 환산)</div>
+        <div class="settle-total">₩${Math.round(s.total).toLocaleString()}</div>
+        <div class="settle-member-grid">${memberCards}</div>
+        ${catChips ? `<div class="settle-cat-chips">${catChips}</div>` : ''}
       </div>
     </div>`;
 
-  let list = `<div class="section-title">내역 · ${rows.length}건</div><div class="card"><div style="padding:4px 14px">`;
-  rows.reverse().forEach(row => {
-    const who = row[3] || '';
-    const whoClass = who.includes('해진') ? 'hj' : who.includes('양재') ? 'yj' : 'both';
-    const emoji = who.includes('해진') ? '💙' : who.includes('양재') ? '💚' : '🔷';
-    const amt = parseFloat(row[5]) || 0;
-    list += `<div class="budget-row">
-      <div class="budget-who ${whoClass}">${emoji}</div>
-      <div class="budget-desc">
-        <div class="desc-main">${row[2] || '-'}</div>
-        <div class="desc-sub">${fmtDate(row[0])} · ${row[1] || ''}</div>
+  let list = `<div class="section-title">내역 · ${s.items.length}건</div><div class="card"><div style="padding:4px 14px">`;
+  s.items.forEach(item => {
+    const isToday = toKSTDateStr(item.date) === todayStr;
+    const initial = (item.payer || '?').slice(0, 1);
+    const krwShown = item.cur !== 'KRW' ? `<span class="krw">₩${Math.round(item.krw).toLocaleString()}</span>` : '';
+    list += `<div class="settle-row${isToday ? ' is-today' : ''}">
+      <div class="settle-who">${initial}</div>
+      <div class="settle-desc">
+        <div class="desc-main">${item.detail || item.type || '-'}</div>
+        <div class="desc-sub">${fmtDate(item.date)} · ${item.type || ''} · ${item.payer || ''}</div>
       </div>
-      <div class="budget-amount exp">₩${amt.toLocaleString()}</div>
+      <div class="settle-amount">${item.cur} ${item.amtRaw.toLocaleString()}${krwShown}</div>
     </div>`;
   });
   list += '</div></div>';
 
-  el.innerHTML = addForm + summary + (rows.length ? list : '<div style="text-align:center;color:var(--text3);padding:20px">아직 내역이 없어요</div>');
-}
-
-async function addBudget() {
-  const date = document.getElementById('b-date').value;
-  const who  = document.getElementById('b-who').value;
-  const cat  = document.getElementById('b-cat').value;
-  const desc = document.getElementById('b-desc').value;
-  const amt  = document.getElementById('b-amt').value;
-  if (!desc || !amt) { toast('내용과 금액을 입력해주세요'); return; }
-  await postRow(SHEETS.budget, [date, cat, desc, who, '', amt, '', '', '']);
-  renderBudget();
+  el.innerHTML = tripSelect + summary + (s.items.length ? list : '<div style="text-align:center;color:var(--text3);padding:20px">아직 내역이 없어요</div>');
 }
 
 // ── 에러 HTML ─────────────────────────────────────────────────────
