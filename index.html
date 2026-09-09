@@ -5,21 +5,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Sicily&amp;Malta</title>
-
 <!-- 홈 화면 바로가기 아이콘 -->
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
-
 <!-- iOS 홈 화면 추가 시 주소창 없이 앱처럼 실행 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Sicily&amp;Malta">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Sans:wght@400;500;600&display=swap');
-
   :root {
     --bg: #f5f7fa;
     --surface: #ffffff;
@@ -36,9 +33,7 @@
     --radius: 14px;
     --radius-sm: 8px;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
   body {
     font-family: 'Noto Sans KR', sans-serif;
     background: var(--bg);
@@ -46,7 +41,6 @@
     min-height: 100vh;
     padding-bottom: 80px;
   }
-
   /* ── 헤더 ── */
   .header {
     background: linear-gradient(135deg, #ffffff 0%, #eef1f6 100%);
@@ -64,7 +58,6 @@
   }
   .sync-btn:active { opacity: 0.7; }
   .date-range { font-size: 11px; color: var(--text3); margin-top: 4px; }
-
   /* ── 탭 ── */
   .tabs {
     display: flex; overflow-x: auto; gap: 6px;
@@ -85,12 +78,10 @@
     background: var(--bg); color: var(--accent);
     border-color: var(--border); border-bottom-color: var(--bg);
   }
-
   /* ── 콘텐츠 ── */
   .content { padding: 16px 16px 0; }
   .section { display: none; }
   .section.active { display: block; }
-
   /* ── 로딩 ── */
   .loading {
     display: flex; flex-direction: column; align-items: center;
@@ -103,7 +94,6 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading p { color: var(--text2); font-size: 13px; }
-
   /* ── 카드 공통 ── */
   .card {
     background: var(--surface);
@@ -125,7 +115,6 @@
     transition: transform 0.2s;
   }
   .card.open .card-chevron { transform: rotate(180deg); }
-
   /* ── 날짜 배지 ── */
   .date-badge {
     background: var(--surface2); border: 1px solid var(--border);
@@ -136,7 +125,6 @@
   .date-badge.today { background: rgba(37,99,235,0.10); border-color: var(--accent); color: var(--accent); }
   .date-badge.tomorrow { background: rgba(22,163,74,0.10); border-color: var(--green); color: var(--green); }
   .date-badge.past { opacity: 0.4; }
-
   /* ── 전체일정 ── */
   .schedule-day { margin-bottom: 6px; }
   .schedule-day.today-card {
@@ -188,7 +176,6 @@
   .tag.hotel  { background: rgba(22,163,74,0.10); color: var(--green); border: 1px solid rgba(22,163,74,0.25); }
   .tag.place  { background: rgba(124,58,237,0.10); color: var(--accent2); border: 1px solid rgba(124,58,237,0.25); }
   .tag.note   { background: rgba(217,119,6,0.10); color: var(--yellow); border: 1px solid rgba(217,119,6,0.20); }
-
   /* ── 항공 ── */
   .flight-card { position: relative; }
   .flight-route {
@@ -224,7 +211,6 @@
   }
   .traveler-name { font-size: 10px; color: var(--text3); margin-bottom: 3px; }
   .traveler-info { font-size: 12px; font-weight: 500; }
-
   /* ── 호텔 ── */
   .hotel-nights {
     font-size: 11px; color: var(--text3);
@@ -241,7 +227,6 @@
     background: rgba(37,99,235,0.07); border-radius: var(--radius-sm);
     border: 1px solid rgba(37,99,235,0.18);
   }
-
   /* ── 여행지 ── */
   .place-number {
     width: 22px; height: 22px; border-radius: 50%;
@@ -259,7 +244,6 @@
     display: inline-flex; align-items: center; gap: 4px;
     font-size: 11px; color: var(--text2); margin-top: 6px;
   }
-
   /* ── 정산 (AppSheet 연동, 읽기 전용) ── */
   .settle-trip-select {
     width: 100%; background: var(--surface); border: 1px solid var(--border);
@@ -307,17 +291,14 @@
   .settle-desc .desc-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
   .settle-amount { font-size: 13px; font-weight: 600; font-family: 'DM Sans', sans-serif; text-align: right; flex-shrink: 0; }
   .settle-amount .krw { font-size: 11px; color: var(--text3); font-weight: 400; display: block; }
-
   /* ── 날씨 ── */
   /* .card / .flight-meta / .meta-item 등 기존 카드 스타일 재사용 */
-
   /* ── 섹션 타이틀 ── */
   .section-title {
     font-size: 11px; font-weight: 500; color: var(--text3);
     text-transform: uppercase; letter-spacing: 0.8px;
     margin: 16px 0 8px; padding-left: 2px;
   }
-
   /* ── 에러 ── */
   .error-box {
     background: rgba(220,38,38,0.07); border: 1px solid rgba(220,38,38,0.22);
@@ -329,7 +310,6 @@
     color: var(--text2); padding: 6px 14px; border-radius: 20px;
     font-size: 12px; cursor: pointer;
   }
-
   /* ── 바텀 네비 ── */
   .bottom-nav {
     position: fixed; bottom: 0; left: 0; right: 0;
@@ -344,7 +324,6 @@
   }
   .nav-item.active { color: var(--accent); }
   .nav-icon { font-size: 20px; }
-
   /* ── 검색 ── */
   .search-bar {
     display: flex; align-items: center; gap: 8px;
@@ -358,7 +337,6 @@
   }
   .search-bar input::placeholder { color: var(--text3); }
   .search-icon { color: var(--text3); font-size: 14px; }
-
   /* ── 토스트 ── */
   .toast {
     position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
@@ -368,7 +346,6 @@
     transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
   }
   .toast.show { opacity: 1; }
-
   /* ── D-day 배너 ── */
   .dday-banner {
     background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(124,58,237,0.08));
@@ -380,7 +357,6 @@
   .dday-num { font-size: 28px; font-weight: 700; font-family: 'DM Sans', sans-serif; color: var(--accent); }
   .dday-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
   .dday-right { text-align: right; }
-
   /* ── LP 슬라이드업 패널 ── */
   .lp-overlay {
     display: none;
@@ -507,10 +483,100 @@
     color: #9ca3af;
     font-size: 12px;
   }
+
+  /* ── 스플래시 (오늘 요약 대시보드) ── */
+  #splash {
+    position: fixed; inset: 0; background: #fff; z-index: 5000;
+    display: flex; flex-direction: column; overflow: hidden;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .splash-header {
+    padding: 14px 18px 10px;
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+    color: #fff; display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .splash-header-title {
+    font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .splash-header-sub { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+  .splash-dday-badge {
+    background: rgba(255,255,255,0.2); padding: 5px 11px; border-radius: 20px;
+    font-size: 13px; font-weight: 700;
+  }
+  .splash-map-wrap {
+    flex: 0 0 48%; position: relative; overflow: hidden;
+    background: #b8d7f0;
+  }
+  .splash-map-svg { width: 100%; height: 100%; display: block; }
+  .splash-body {
+    flex: 1; overflow-y: auto; padding: 12px 16px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .splash-section-title {
+    font-size: 10px; font-weight: 700; color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px;
+  }
+  .splash-today-box {
+    background: var(--surface2); border-radius: var(--radius-sm);
+    padding: 10px 12px; display: flex; flex-direction: column; gap: 5px;
+  }
+  .splash-today-main {
+    font-size: 14px; font-weight: 600; color: var(--text);
+  }
+  .splash-today-detail {
+    font-size: 12px; color: var(--text2); line-height: 1.5;
+  }
+  .splash-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+  .splash-weather-row {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 12px;
+  }
+  .splash-wx-icon { font-size: 30px; line-height: 1; }
+  .splash-wx-main { flex: 1; }
+  .splash-wx-temp { font-size: 16px; font-weight: 700; color: var(--text); }
+  .splash-wx-sub { font-size: 11px; color: var(--text2); margin-top: 1px; }
+  .splash-wx-sun {
+    font-size: 11px; color: var(--text3); text-align: right;
+    line-height: 1.7;
+  }
+  .splash-enter-btn {
+    width: 100%; padding: 14px; background: var(--accent); color: #fff;
+    border: none; border-radius: var(--radius); font-size: 15px;
+    font-weight: 700; cursor: pointer; letter-spacing: 0.2px;
+    margin-top: auto; flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    transition: opacity 0.15s;
+  }
+  .splash-enter-btn:active { opacity: 0.85; }
+  /* Map stop dots / labels */
+  .map-dot { cursor: default; }
+  .map-label { font-size: 7px; fill: #374151; font-family: sans-serif; }
+  .map-label-bold { font-size: 7.5px; fill: #1e3a8a; font-weight: bold; font-family: sans-serif; }
+  .map-current-ring {
+    animation: splash-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes splash-pulse {
+    0%, 100% { r: 7; opacity: 0.7; }
+    50% { r: 11; opacity: 0.2; }
+  }
+  /* Nav home button (기존 nav에 추가) */
+  #nav-home {
+    flex-shrink: 0; padding: 8px 0;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 2px; cursor: pointer; font-size: 10px;
+    color: var(--text3); flex: 1;
+    min-width: 0;
+    border-top: 2px solid transparent;
+    transition: color 0.15s;
+  }
+  #nav-home:active { color: var(--accent); }
+  #nav-home .nav-icon { font-size: 18px; }
+
 </style>
 </head>
 <body>
-
 <!-- LP 슬라이드업 패널 -->
 <div class="lp-overlay" id="lp-overlay" onclick="closeLPPanel()"></div>
 <div class="lp-panel" id="lp-panel">
@@ -524,13 +590,259 @@
   </div>
   <div class="lp-panel-body" id="lp-panel-body"></div>
 </div>
-
 <div id="gate" style="position:fixed;inset:0;background:#fff;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
   <p style="font-size:16px;">비밀번호를 입력하세요</p>
   <input id="gate-pw" type="password" style="padding:10px;font-size:16px;border:1px solid #ccc;border-radius:8px;">
   <button id="gate-btn" style="padding:10px 20px;background:#333;color:#fff;border:none;border-radius:8px;">입장</button>
   <p id="gate-err" style="color:red;font-size:13px;display:none;">틀렸어요</p>
 </div>
+
+<!-- ══════════════════════════════════════════════
+     스플래시 · 오늘 요약 대시보드
+     ════════════════════════════════════════════ -->
+<div id="splash" style="display:none">
+  <!-- 헤더 -->
+  <div class="splash-header">
+    <div>
+      <div class="splash-header-title">✈️ Sicily &amp; Malta</div>
+      <div class="splash-header-sub" id="splash-date-sub">오늘 날짜 확인 중...</div>
+    </div>
+    <div class="splash-dday-badge" id="splash-dday">D-?</div>
+  </div>
+
+  <!-- 지도 -->
+  <div class="splash-map-wrap">
+    <svg class="splash-map-svg" viewBox="0 0 380 340" xmlns="http://www.w3.org/2000/svg" id="splash-svg">
+      <!-- ────── 전체 루트 지도 (overview) ────── -->
+      <g id="map-overview">
+        <!-- 바다 배경 -->
+        <rect width="380" height="340" fill="#b8d7f0"/>
+        <!-- 북아프리카 힌트 -->
+        <rect x="0" y="310" width="380" height="30" fill="#e8d8a0" opacity="0.6"/>
+        <!-- 유럽 대륙 (상단 영역) -->
+        <path d="M 0,0 L 380,0 L 380,62 C 340,58 310,54 280,52 C 250,50 220,50 190,53 C 165,56 140,62 115,68 C 90,74 65,78 40,82 L 0,88 Z" fill="#c8d9a8"/>
+        <!-- 알프스 힌트 -->
+        <path d="M 60,88 C 90,80 120,74 145,72 C 165,70 185,70 205,72 C 220,74 232,76 240,74 L 240,68 C 230,65 215,62 200,60 C 180,58 160,60 140,65 C 115,70 88,78 60,84 Z" fill="#e0e8d0" opacity="0.8"/>
+        <!-- 이탈리아 반도 (simplified boot) -->
+        <path d="
+          M 75,120
+          C 90,112 108,108 130,110
+          C 152,112 172,115 195,118
+          C 215,113 225,108 212,88
+          C 220,82 230,78 240,80
+          L 238,88
+          C 255,90 265,100 262,115
+          C 280,115 300,120 318,132
+          C 336,144 348,162 352,182
+          C 354,196 349,210 340,216
+          C 330,222 318,226 308,228
+          C 300,238 295,248 285,255
+          C 278,260 270,256 266,250
+          C 260,242 260,235 263,228
+          C 255,225 248,228 242,236
+          C 236,244 230,244 224,238
+          C 218,230 218,220 222,210
+          C 225,200 228,190 222,180
+          C 216,170 205,165 192,167
+          C 178,169 162,167 148,162
+          C 128,154 100,142 75,120 Z"
+          fill="#c8d9a8"/>
+        <!-- 시칠리아 -->
+        <path d="M 185,258 C 200,248 215,244 228,246 C 245,248 262,250 275,256 C 283,260 285,268 280,274 C 272,282 258,285 242,284 C 226,283 210,280 198,272 C 190,266 185,264 185,258 Z" fill="#c8d9a8"/>
+        <!-- 몰타 (작은 점) -->
+        <ellipse cx="240" cy="298" rx="5" ry="3.5" fill="#b8cc90"/>
+
+        <!-- ── 루트 라인 ── -->
+        <!-- 마인츠→하이델베르크 (드라이브) -->
+        <line x1="87" y1="42" x2="97" y2="52" stroke="#3b82f6" stroke-width="1.8" opacity="0.7"/>
+        <!-- 하이델베르크→팔레르모 (비행, 점선) -->
+        <line x1="97" y1="52" x2="213" y2="259" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.6"/>
+        <!-- 시칠리아 루트 (드라이브, 실선) -->
+        <polyline points="213,259 192,262 218,272 246,278 260,275 260,248 254,254" stroke="#3b82f6" stroke-width="1.8" opacity="0.7" fill="none" stroke-linejoin="round"/>
+        <!-- 카타니아→몰타 (비행) -->
+        <line x1="254" y1="254" x2="240" y2="298" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.6"/>
+        <!-- 몰타→가르다 (비행) -->
+        <line x1="240" y1="298" x2="150" y2="118" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.6"/>
+        <!-- 가르다→돌로미티 (드라이브) -->
+        <line x1="150" y1="118" x2="172" y2="103" stroke="#3b82f6" stroke-width="1.8" opacity="0.7"/>
+        <!-- 돌로미티→밀라노 (드라이브) -->
+        <line x1="172" y1="103" x2="110" y2="123" stroke="#3b82f6" stroke-width="1.8" opacity="0.7"/>
+        <!-- 밀라노→프랑크푸르트 (비행) -->
+        <line x1="110" y1="123" x2="97" y2="40" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.6"/>
+
+        <!-- ── 위치 마커 ── -->
+        <!-- 마인츠 (출발) -->
+        <circle class="map-dot" cx="87" cy="42" r="5" fill="#10b981"/>
+        <text class="map-label" x="79" y="38" text-anchor="middle">마인츠</text>
+        <!-- 하이델베르크 -->
+        <circle class="map-dot" cx="97" cy="52" r="4" fill="#6b7280"/>
+        <text class="map-label" x="107" y="50" text-anchor="start">하이델베르크</text>
+        <!-- 팔레르모 -->
+        <circle class="map-dot" cx="213" cy="259" r="4" fill="#6b7280"/>
+        <text class="map-label" x="203" y="256" text-anchor="end">팔레르모</text>
+        <!-- 아그리젠토 -->
+        <circle class="map-dot" cx="218" cy="272" r="3.5" fill="#6b7280"/>
+        <!-- 라구사 -->
+        <circle class="map-dot" cx="246" cy="278" r="3.5" fill="#6b7280"/>
+        <!-- 시라쿠사 -->
+        <circle class="map-dot" cx="260" cy="275" r="3.5" fill="#6b7280"/>
+        <!-- 타오르미나 -->
+        <circle class="map-dot" cx="260" cy="248" r="3.5" fill="#6b7280"/>
+        <text class="map-label" x="265" y="246" text-anchor="start">타오르미나</text>
+        <!-- 카타니아 -->
+        <circle class="map-dot" cx="254" cy="254" r="3.5" fill="#6b7280"/>
+        <!-- 몰타 -->
+        <circle class="map-dot" cx="240" cy="298" r="4" fill="#6b7280"/>
+        <text class="map-label" x="248" y="298" text-anchor="start">몰타</text>
+        <!-- 가르다호수 -->
+        <circle class="map-dot" cx="150" cy="118" r="4" fill="#6b7280"/>
+        <text class="map-label" x="140" y="115" text-anchor="end">가르다</text>
+        <!-- 돌로미티 -->
+        <circle class="map-dot" cx="172" cy="103" r="4" fill="#6b7280"/>
+        <text class="map-label" x="178" y="100" text-anchor="start">돌로미티</text>
+        <!-- 밀라노 -->
+        <circle class="map-dot" cx="110" cy="123" r="4" fill="#6b7280"/>
+        <text class="map-label" x="108" y="132" text-anchor="middle">밀라노</text>
+        <!-- 프랑크푸르트 (종착) -->
+        <circle class="map-dot" cx="97" cy="40" r="5" fill="#dc2626"/>
+        <text class="map-label" x="97" y="34" text-anchor="middle">프랑크푸르트</text>
+
+        <!-- 현재 위치 강조 링 (JS로 cx/cy 설정) -->
+        <circle id="map-current-ring" class="map-current-ring" cx="-100" cy="-100" r="7" fill="rgba(37,99,235,0.25)" stroke="none"/>
+        <circle id="map-current-dot" cx="-100" cy="-100" r="5.5" fill="#2563eb" stroke="#fff" stroke-width="1.5"/>
+      </g>
+
+      <!-- ────── 시칠리아 확대 지도 ────── -->
+      <g id="map-sicily" style="display:none">
+        <!-- 배경 바다 -->
+        <rect width="380" height="340" fill="#a8cce8"/>
+        <!-- 이탈리아 남단 힌트 (상단) -->
+        <rect x="200" y="0" width="180" height="40" fill="#c8d9a8"/>
+        <text style="font-size:9px;fill:#6b7280;font-family:sans-serif" x="285" y="25" text-anchor="middle">이탈리아 본토</text>
+        <!-- 시칠리아 섬 윤곽 -->
+        <path d="
+          M 28,175 C 35,162 45,152 55,148 C 68,143 82,142 95,145
+          C 108,140 118,132 128,120 C 138,108 142,98 148,90
+          C 160,78 178,74 195,78 C 212,82 228,90 242,100
+          C 258,110 270,122 278,138 C 286,154 288,168 285,182
+          C 282,196 275,208 265,218 C 252,230 238,238 222,242
+          C 208,246 194,246 180,242 C 165,238 150,230 138,220
+          C 122,208 112,196 100,184 C 85,170 65,172 52,178
+          C 42,182 30,184 28,175 Z"
+          fill="#c8d9a8"/>
+        <!-- 에트나 -->
+        <path d="M 280,115 L 295,90 L 310,115 Z" fill="#d1d5db" opacity="0.6"/>
+        <text style="font-size:8px;fill:#6b7280;font-family:sans-serif" x="295" y="87" text-anchor="middle">에트나</text>
+
+        <!-- 루트 (시칠리아 내) -->
+        <!-- 팔레르모→트라파니 (drive) -->
+        <line x1="148" y1="90" x2="55" y2="148" stroke="#3b82f6" stroke-width="2" opacity="0.7"/>
+        <!-- 트라파니→아그리젠토 (drive) -->
+        <line x1="55" y1="148" x2="155" y2="228" stroke="#3b82f6" stroke-width="2" opacity="0.7"/>
+        <!-- 아그리젠토→라구사 (drive) -->
+        <line x1="155" y1="228" x2="248" y2="240" stroke="#3b82f6" stroke-width="2" opacity="0.7"/>
+        <!-- 라구사→시라쿠사 (drive) -->
+        <line x1="248" y1="240" x2="305" y2="210" stroke="#3b82f6" stroke-width="2" opacity="0.7"/>
+        <!-- 시라쿠사→타오르미나 (drive) -->
+        <line x1="305" y1="210" x2="320" y2="140" stroke="#3b82f6" stroke-width="2" opacity="0.7"/>
+        <!-- 타오르미나→카타니아 (drive) -->
+        <line x1="320" y1="140" x2="295" y2="170" stroke="#3b82f6" stroke-width="2" opacity="0.7"/>
+
+        <!-- 마커 -->
+        <circle cx="148" cy="90" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
+        <text style="font-size:9px;fill:#1e3a8a;font-family:sans-serif;font-weight:600" x="148" y="82" text-anchor="middle">팔레르모</text>
+        <!-- 체팔루 -->
+        <circle cx="195" cy="78" r="4" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
+        <text style="font-size:8px;fill:#374151;font-family:sans-serif" x="195" y="70" text-anchor="middle">체팔루</text>
+        <!-- 트라파니 -->
+        <circle cx="55" cy="148" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="45" y="145" text-anchor="end">트라파니</text>
+        <!-- 아그리젠토 -->
+        <circle cx="155" cy="228" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="155" y="242" text-anchor="middle">아그리젠토</text>
+        <!-- 라구사·모디카 -->
+        <circle cx="248" cy="240" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="255" y="252" text-anchor="start">라구사</text>
+        <!-- 시라쿠사 -->
+        <circle cx="305" cy="210" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="312" y="208" text-anchor="start">시라쿠사</text>
+        <!-- 타오르미나 -->
+        <circle cx="320" cy="140" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="325" y="138" text-anchor="start">타오르미나</text>
+        <!-- 카타니아 -->
+        <circle cx="295" cy="170" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="295" y="182" text-anchor="middle">카타니아</text>
+
+        <!-- 현재 위치 강조 (JS로 이동) -->
+        <circle id="smap-ring" class="map-current-ring" cx="-100" cy="-100" r="9" fill="rgba(37,99,235,0.2)" stroke="none"/>
+        <circle id="smap-dot" cx="-100" cy="-100" r="6.5" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+        <text id="smap-label" style="font-size:9px;font-weight:700;fill:#1e40af;font-family:sans-serif" x="-100" y="-100">●</text>
+        <!-- 타이틀 -->
+        <text style="font-size:11px;font-weight:bold;fill:#1e3a8a;font-family:sans-serif" x="190" y="320" text-anchor="middle">🗺 시칠리아 상세</text>
+      </g>
+
+      <!-- ────── 몰타 확대 지도 ────── -->
+      <g id="map-malta" style="display:none">
+        <rect width="380" height="340" fill="#93c5fd"/>
+        <!-- 몰타 본섬 -->
+        <path d="
+          M 95,170 C 110,150 135,138 162,135 C 188,132 215,138 238,150
+          C 260,162 278,178 285,198 C 290,212 286,226 276,236
+          C 265,246 250,250 234,252 C 218,254 202,252 188,246
+          C 168,238 148,226 130,210 C 112,195 100,182 95,170 Z"
+          fill="#c8d9a8"/>
+        <!-- 고조 섬 (left) -->
+        <ellipse cx="68" cy="115" rx="42" ry="28" fill="#c8d9a8"/>
+        <!-- 코미노 (tiny) -->
+        <ellipse cx="97" cy="140" rx="10" ry="7" fill="#c8d9a8"/>
+
+        <!-- 위치 마커 -->
+        <!-- 발레타 -->
+        <circle cx="238" cy="175" r="7" fill="#6b7280" stroke="#fff" stroke-width="2"/>
+        <text style="font-size:11px;font-weight:700;fill:#1e3a8a;font-family:sans-serif" x="250" y="173" text-anchor="start">발레타</text>
+        <!-- 므디나 -->
+        <circle cx="168" cy="180" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="165" y="172" text-anchor="middle">므디나</text>
+        <!-- 블루 라군 (고조) -->
+        <circle cx="68" cy="115" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="68" y="106" text-anchor="middle">고조</text>
+        <!-- 마르사슐로크 -->
+        <circle cx="235" cy="230" r="4.5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="240" y="242" text-anchor="start">마르사슐로크</text>
+        <!-- 블루 그롯토 -->
+        <circle cx="148" cy="225" r="4" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="140" y="236" text-anchor="middle">블루 그롯토</text>
+
+        <!-- 현재 강조 -->
+        <circle id="mmap-ring" class="map-current-ring" cx="238" cy="175" r="12" fill="rgba(37,99,235,0.2)" stroke="none"/>
+        <circle id="mmap-dot" cx="238" cy="175" r="8" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+        <!-- 타이틀 -->
+        <text style="font-size:11px;font-weight:bold;fill:#1e3a8a;font-family:sans-serif" x="190" y="320" text-anchor="middle">🗺 몰타 상세</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- 오늘 정보 영역 -->
+  <div class="splash-body">
+    <!-- 오늘 일정 -->
+    <div>
+      <div class="splash-section-title">📅 오늘 일정</div>
+      <div class="splash-today-box" id="splash-schedule-box">
+        <div class="loading" style="padding:10px"><div class="spinner" style="width:22px;height:22px;border-width:2px"></div></div>
+      </div>
+    </div>
+    <!-- 날씨 -->
+    <div>
+      <div class="splash-section-title">🌤️ 오늘 날씨</div>
+      <div id="splash-weather-box">
+        <div class="loading" style="padding:10px"><div class="spinner" style="width:22px;height:22px;border-width:2px"></div></div>
+      </div>
+    </div>
+    <!-- 입장 버튼 -->
+    <button class="splash-enter-btn" onclick="enterApp()">전체 일정 보기 →</button>
+  </div>
+</div>
+
 <div class="header">
   <div class="header-top">
     <h1>✈️ Sicily<span>&</span>Malta</h1>
@@ -539,7 +851,6 @@
   <div class="date-range">2026.09.09 — 2026.10.15 · 37일</div>
   <div id="test-mode-banner" style="display:none;font-size:11px;color:#fff;background:var(--red);border-radius:6px;padding:4px 8px;margin-top:6px;font-weight:600"></div>
 </div>
-
 <!-- 바텀 네비 -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="switchNav(0)" id="nav0">
@@ -561,7 +872,6 @@
     <div class="nav-icon">🧾</div><div>정산</div>
   </div>
 </div>
-
 <div class="content">
   <!-- 0. 전체일정 -->
   <div class="section active" id="sec0">
@@ -592,9 +902,7 @@
     <div id="settle-content"><div class="loading"><div class="spinner"></div><p>정산 내역 불러오는 중...</p></div></div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
-
 <script>
 const API = 'https://script.google.com/macros/s/AKfycby1Hf-QIQbkY9ZfEYg-G_UawxvjHgBhfaVCw7h-nv3ckTGZEPpSrL2c5-ly_BUBcKr6wA/exec';
 const SHEETS = {
@@ -603,12 +911,10 @@ const SHEETS = {
   hotel:    'idx_2',
   place:    'idx_3'
 };
-
 let cache = {};
 let placeData = [];
 let weatherRendered = false;
 let currentNav = 0;
-
 // ── 테스트용 날짜 오버라이드 ──────────────────────────────────────
 // URL에 ?asOf=2026-09-14 처럼 붙이면 "오늘"을 그 날짜로 취급합니다.
 // 파라미터가 없으면 완전히 무시되고 실제 기기 날짜를 그대로 씁니다.
@@ -620,14 +926,12 @@ if (_asOfDate) {
   b.textContent = `⚠️ 테스트 모드 · 오늘을 ${_asOfDate}로 표시 중 (?asOf 파라미터 제거하면 실제 날짜로 복귀)`;
   b.style.display = 'block';
 }
-
 function addDaysStr(dateStr, n) {
   const [y, m, d] = dateStr.split('-').map(Number);
   const dt = new Date(y, m - 1, d);
   dt.setDate(dt.getDate() + n);
   return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
 }
-
 // 'today' | 'tomorrow' | 'past' | 'future'
 function dayRelation(dateStr, todayStr) {
   todayStr = todayStr || todayKST();
@@ -635,14 +939,12 @@ function dayRelation(dateStr, todayStr) {
   if (dateStr === addDaysStr(todayStr, 1)) return 'tomorrow';
   return dateStr < todayStr ? 'past' : 'future';
 }
-
 // ── 유틸 ──────────────────────────────────────────────────────────
 function toast(msg, dur=2000) {
   const el = document.getElementById('toast');
   el.textContent = msg; el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), dur);
 }
-
 // Apps Script serializes Sheet date cells as UTC ISO timestamps
 // (e.g. "2026-09-08T15:00:00.000Z" for a cell meaning 2026-09-09 00:00 KST).
 // Naively slicing the string gives the UTC calendar date, which is one day
@@ -658,7 +960,6 @@ function toKSTDateStr(val) {
   if (isNaN(d)) return s.slice(0, 10);
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(d); // YYYY-MM-DD
 }
-
 // "Today" for the itinerary should be a fixed KST calendar day, not derived
 // from toISOString() (which is UTC and drifts a day off for roughly 9 hours
 // of the KST day) nor from raw device-local time (which would shift once
@@ -666,7 +967,6 @@ function toKSTDateStr(val) {
 function todayKST() {
   return _asOfDate || new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date());
 }
-
 function dday() {
   const start = new Date(2026, 8, 9); // local midnight, avoids the UTC-parse quirk of new Date('2026-09-09')
   let today;
@@ -680,14 +980,12 @@ function dday() {
   const diff = Math.ceil((start - today) / 86400000);
   return diff;
 }
-
 function nightsBetween(ci, co) {
   try {
     const a = new Date(ci), b = new Date(co);
     return Math.round((b-a)/86400000);
   } catch { return '?'; }
 }
-
 // ── API 호출 ───────────────────────────────────────────────────────
 async function fetchSheet(sheetName) {
   if (cache[sheetName]) return cache[sheetName];
@@ -701,7 +999,6 @@ async function fetchSheet(sheetName) {
     return null;
   } catch(e) { return null; }
 }
-
 async function fetchSettle() {
   if (cache['settle']) return cache['settle'];
   try {
@@ -711,7 +1008,6 @@ async function fetchSettle() {
     return null;
   } catch(e) { return null; }
 }
-
 async function postRow(sheetName, data) {
   try {
     await fetch(API, {
@@ -722,7 +1018,6 @@ async function postRow(sheetName, data) {
     toast('✅ 저장 완료!');
   } catch(e) { toast('❌ 저장 실패'); }
 }
-
 // ── 네비 전환 ─────────────────────────────────────────────────────
 function switchNav(idx) {
   document.querySelectorAll('.section').forEach((s,i) => {
@@ -739,7 +1034,6 @@ function switchNav(idx) {
   if (idx === 4 && !weatherRendered)        renderWeather();
   if (idx === 5)                             renderSettle();
 }
-
 function syncAll() {
   cache = {};
   const loadingHTML = '<div class="loading"><div class="spinner"></div><p>불러오는 중...</p></div>';
@@ -754,23 +1048,19 @@ function syncAll() {
   if (currentNav === 4) renderWeather();
   if (currentNav === 5) renderSettle();
 }
-
 // ── 카드 토글 ─────────────────────────────────────────────────────
 function toggleCard(el) {
   el.closest('.card').classList.toggle('open');
 }
-
 // ── 0. 전체일정 ───────────────────────────────────────────────────
 async function renderSchedule() {
   const el = document.getElementById('schedule-content');
   const data = await fetchSheet(SHEETS.schedule);
   if (!data) { el.innerHTML = errorHTML(() => renderSchedule()); return; }
-
   const rows = data.slice(4).filter(r => r[0] && r[0].toString().match(/\d{4}-\d{2}-\d{2}/));
   const dd = dday();
   const todayStr = todayKST();
   const dowKr = ['일','월','화','수','목','금','토'];
-
   function buildCard(row, extraClass='') {
     const dateStr = toKSTDateStr(row[0]);
     if (!dateStr) return '';
@@ -782,13 +1072,11 @@ async function renderSchedule() {
     const isTomorrow = rel === 'tomorrow';
     const isPast  = rel === 'past';
     const badgeClass = isToday ? 'today' : isTomorrow ? 'tomorrow' : isPast ? 'past' : '';
-
     const flight = row[2] || '';
     const hotel  = row[5] || '';
     const place  = row[7] || '';
     const detail = row[8] || '';
     const memo   = row[11] || '';
-
     const hasFlight = !!flight;
     const cardClass = [
       'card schedule-day',
@@ -798,10 +1086,8 @@ async function renderSchedule() {
       isPast ? 'past-card' : '',
       extraClass
     ].filter(Boolean).join(' ');
-
     const flightBadge = hasFlight ? `<span style="font-size:11px;margin-left:4px" title="${flight}">✈️</span>` : '';
     const dateLabel = isToday ? ' 오늘' : isTomorrow ? ' 내일' : '';
-
     return `<div class="${cardClass}" data-date="${dateStr}">
       <div class="card-header" onclick="toggleCard(this)">
         <div class="date-badge ${badgeClass}">${dateStr.slice(5)}${dateLabel}</div>
@@ -825,7 +1111,6 @@ async function renderSchedule() {
       </div>
     </div>`;
   }
-
   // 오늘 기준으로 분리 (toKSTDateStr로 통일 — 예전엔 여기만 naive slice를 써서
   // buildCard가 보여주는 날짜와 이 구간분리 기준이 서로 어긋날 수 있었음)
   const rowDateStrs = rows.map(r => toKSTDateStr(r[0]));
@@ -833,7 +1118,6 @@ async function renderSchedule() {
   const pastRows    = todayIdx > 0 ? rows.slice(0, todayIdx) : (todayStr > rowDateStrs[rowDateStrs.length-1] ? rows : []);
   const todayRow    = todayIdx >= 0 ? rows[todayIdx] : null;
   const futureRows  = todayIdx >= 0 ? rows.slice(todayIdx + 1) : (todayStr < rowDateStrs[0] ? rows : []);
-
   // D-day 배너
   let bannerHTML = '';
   if (dd > 0) {
@@ -847,28 +1131,23 @@ async function renderSchedule() {
       <div class="dday-right"><div id="dday-weather" style="font-size:13px;font-weight:600">&nbsp;</div><div class="dday-sub">37일 중 ${Math.abs(dd)+1}일째</div></div>
     </div>`;
   }
-
   // 과거 (역순 — 위로 스크롤하면 더 오래된 날짜)
   const pastHTML   = [...pastRows].reverse().map(r => buildCard(r)).join('');
   const todayHTML  = todayRow ? buildCard(todayRow) : '';
   const futureHTML = futureRows.map(r => buildCard(r)).join('');
-
   el.innerHTML = `
     <div id="past-section" style="display:flex;flex-direction:column-reverse">${pastHTML}</div>
     ${bannerHTML}
     <div id="today-section">${todayHTML}</div>
     <div id="future-section">${futureHTML}</div>
   `;
-
   if (bannerHTML) updateDdayWeather(todayStr);
-
   // 오늘 카드로 스크롤 (없으면 미래 첫 카드)
   setTimeout(() => {
     const target = el.querySelector('.today-card') || el.querySelector('#future-section .card');
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 300);
 }
-
 // ── 1. 항공 ───────────────────────────────────────────────────────
 function fmtDate(val) {
   // Handles both "2026-09-08T15:00:00.000Z" (UTC, converted to KST) and
@@ -903,13 +1182,11 @@ async function renderFlights() {
   const el = document.getElementById('flight-content');
   const data = await fetchSheet(SHEETS.flight);
   if (!data) { el.innerHTML = errorHTML(() => renderFlights()); return; }
-
   const rows = data.slice(4).filter(r => r[0]);
   const todayStr = todayKST();
   const flightRel = rows.map(r => dayRelation(toKSTDateStr(r[0]), todayStr));
   const todayFlight = rows[flightRel.indexOf('today')];
   const tomorrowFlight = rows[flightRel.indexOf('tomorrow')];
-
   let bannerHTML = '';
   if (todayFlight) {
     bannerHTML = `<div class="dday-banner" style="border-color:rgba(37,99,235,0.35)">
@@ -922,9 +1199,7 @@ async function renderFlights() {
       <div class="dday-right"><div style="font-size:13px;font-weight:600">${tomorrowFlight[1] || ''}</div><div class="dday-sub">${tomorrowFlight[2] || ''}</div></div>
     </div>`;
   }
-
   let html = bannerHTML + `<div class="section-title">전체 항공편 · ${rows.length}구간</div>`;
-
   rows.forEach((row, i) => {
     const date   = row[0] || '';
     const route  = row[1] || '';
@@ -938,15 +1213,12 @@ async function renderFlights() {
     const yjBk   = row[14] || '';
     const yjSeat = row[15] || '';
     const memo   = row[17] || '';
-
     const depCode = depAP.length <= 5 ? depAP : (route.split('→')[0]?.trim() || depAP);
     const arrCode = arrAP.length <= 5 ? arrAP : (route.split('→')[1]?.trim() || arrAP);
-
     const rel = flightRel[i];
     const cardExtra = rel === 'today' ? ' today-card' : rel === 'tomorrow' ? ' tomorrow-card' : '';
     const badgeExtra = rel === 'today' ? ' today' : rel === 'tomorrow' ? ' tomorrow' : '';
     const dateLabel = rel === 'today' ? ' 오늘' : rel === 'tomorrow' ? ' 내일' : '';
-
     html += `<div class="card flight-card schedule-day${cardExtra}">
       <div class="card-header" onclick="toggleCard(this)">
         <div class="date-badge${badgeExtra}">${fmtDate(date)}${dateLabel}</div>
@@ -986,21 +1258,17 @@ async function renderFlights() {
       </div>
     </div>`;
   });
-
   el.innerHTML = html;
 }
-
 // ── 2. 숙소 ───────────────────────────────────────────────────────
 async function renderHotels() {
   const el = document.getElementById('hotel-content');
   const data = await fetchSheet(SHEETS.hotel);
   if (!data) { el.innerHTML = errorHTML(() => renderHotels()); return; }
-
   const rows = data.slice(4).filter(r => r[2]);
   const todayStr = todayKST();
   const tomorrowStr = addDaysStr(todayStr, 1);
   let html = `<div class="section-title">숙소 · ${rows.length}곳</div>`;
-
   rows.forEach(row => {
     const ci    = row[0] || '';
     const co    = row[1] || '';
@@ -1014,7 +1282,6 @@ async function renderHotels() {
     const note  = row[12] || '';
     const mapUrl= row[13] || '';
     const nights = nightsBetween(ci, co);
-
     const ciStr = toKSTDateStr(ci), coStr = toKSTDateStr(co);
     const isStayingNow = ciStr && coStr && ciStr <= todayStr && todayStr < coStr;
     const isCheckinTomorrow = ciStr === tomorrowStr;
@@ -1024,7 +1291,6 @@ async function renderHotels() {
       : isCheckinTomorrow
       ? `<span class="tag" style="background:rgba(22,163,74,0.10);color:var(--green);border:1px solid rgba(22,163,74,0.25);margin-bottom:6px;display:inline-block">🏨 내일 체크인</span>`
       : '';
-
     html += `<div class="card schedule-day${stayExtra}">
       ${stayBadge ? `<div style="padding:10px 14px 0">${stayBadge}</div>` : ''}
       <div class="card-header" onclick="toggleCard(this)">
@@ -1060,27 +1326,21 @@ async function renderHotels() {
       </div>
     </div>`;
   });
-
   el.innerHTML = html;
 }
-
 // ── 3. 여행지 ─────────────────────────────────────────────────────
 async function renderPlaces() {
   const el = document.getElementById('place-content');
   const data = await fetchSheet(SHEETS.place);
   if (!data) { el.innerHTML = errorHTML(() => renderPlaces()); return; }
-
   placeData = data.slice(4).filter(r => r[2]);
   renderPlaceList(placeData, true);
 }
-
 function renderPlaceList(rows, scrollToToday=false) {
   const el = document.getElementById('place-content');
   if (!rows.length) { el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px">검색 결과 없음</div>'; return; }
-
   const todayStr = todayKST();
   const tomorrowStr = addDaysStr(todayStr, 1);
-
   // 날짜별 그룹
   const groups = {};
   rows.forEach(row => {
@@ -1088,7 +1348,6 @@ function renderPlaceList(rows, scrollToToday=false) {
     if (!groups[date]) groups[date] = [];
     groups[date].push(row);
   });
-
   let html = '';
   Object.entries(groups).forEach(([date, items]) => {
     const rel = date !== '기타' ? dayRelation(date, todayStr) : '';
@@ -1108,7 +1367,6 @@ function renderPlaceList(rows, scrollToToday=false) {
       const memo  = row[10] || '';
       const mapUrl= row[11] || '';
       const cardExtra = rel === 'today' ? ' schedule-day today-card' : rel === 'tomorrow' ? ' schedule-day tomorrow-card' : '';
-
       html += `<div class="card${cardExtra}">
         <div class="card-header" onclick="toggleCard(this)">
           <div class="place-number">${num || '·'}</div>
@@ -1133,9 +1391,7 @@ function renderPlaceList(rows, scrollToToday=false) {
       </div>`;
     });
   });
-
   el.innerHTML = html;
-
   if (scrollToToday) {
     setTimeout(() => {
       const target = el.querySelector('#place-group-' + todayStr) || el.querySelector('#place-group-' + tomorrowStr);
@@ -1143,7 +1399,6 @@ function renderPlaceList(rows, scrollToToday=false) {
     }, 300);
   }
 }
-
 function filterPlaces() {
   const q = document.getElementById('place-search').value.toLowerCase();
   if (!q) { renderPlaceList(placeData); return; }
@@ -1154,7 +1409,6 @@ function filterPlaces() {
   );
   renderPlaceList(filtered);
 }
-
 // ── 4. 날씨 (Open-Meteo 실시간 예보 + 평년값 폴백) ──────────────────
 // Open-Meteo 무료 API는 키 없이 CORS 허용, 최대 16일(오늘 포함) 예보 제공.
 // 여행 전체(37일)를 커버할 수 없으므로: 오늘~+15일은 실시간 예보,
@@ -1176,7 +1430,6 @@ const WEATHER_STOPS = [
   { start:'2026-10-10', end:'2026-10-12', region:'밀라노',                    lat:45.4642, lon:9.1900,  climHigh:18, climLow:10, climSun:['07:15','18:15'] },
   { start:'2026-10-12', end:'2026-10-15', region:'프랑크푸르트',              lat:50.1109, lon:8.6821,  climHigh:15, climLow:7,  climSun:['07:20','18:55'] }
 ];
-
 const WMO_ICON = {
   0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',
   51:'🌦️',53:'🌦️',55:'🌦️',56:'🌦️',57:'🌦️',
@@ -1195,7 +1448,6 @@ function fmtRange(a, b) {
   const cut = s => s.slice(5).replace('-', '/');
   return `${cut(a)}~${cut(b)}`;
 }
-
 async function fetchForecast(lat, lon) {
   const key = `fc_${lat}_${lon}`;
   if (cache[key]) return cache[key];
@@ -1210,7 +1462,6 @@ async function fetchForecast(lat, lon) {
     return null;
   } catch(e) { return null; }
 }
-
 // ── 오늘 배너용 현재 위치 날씨 ────────────────────────────────────
 // GPS 권한이 있으면 실제 현재 위치, 없거나 거부되면 그날 일정상 목적지 좌표로 대체.
 // 둘 다 안 되면(여행 기간 밖 + GPS 거부) 조용히 숨김.
@@ -1225,11 +1476,9 @@ function getGeoPosition(timeoutMs=6000) {
     );
   });
 }
-
 function findStopForDate(dateStr) {
   return WEATHER_STOPS.find(s => dateStr >= s.start && dateStr < s.end) || null;
 }
-
 async function fetchCurrentWeather(lat, lon) {
   const key = `cur_${lat.toFixed(2)}_${lon.toFixed(2)}`;
   if (cache[key]) return cache[key];
@@ -1244,11 +1493,9 @@ async function fetchCurrentWeather(lat, lon) {
     return null;
   } catch(e) { return null; }
 }
-
 async function updateDdayWeather(todayStr) {
   const el = document.getElementById('dday-weather');
   if (!el) return;
-
   let coords = await getGeoPosition();
   let sourceLabel = '현재 위치';
   if (!coords) {
@@ -1256,24 +1503,19 @@ async function updateDdayWeather(todayStr) {
     if (stop) { coords = { lat: stop.lat, lon: stop.lon }; sourceLabel = stop.region; }
   }
   if (!coords) { el.parentElement.style.display = 'none'; return; }
-
   const cw = await fetchCurrentWeather(coords.lat, coords.lon);
   const liveEl = document.getElementById('dday-weather'); // renderSchedule이 다시 그려졌을 수 있으니 재조회
   if (!liveEl) return;
   if (!cw) { liveEl.parentElement.style.display = 'none'; return; }
-
   const icon = wmoIcon(cw.weathercode);
   const temp = Math.round(cw.temperature);
   liveEl.innerHTML = `${icon} ${temp}°C <span style="font-weight:400;color:var(--text3)">· ${sourceLabel}</span>`;
 }
-
 async function renderWeather() {
   const el = document.getElementById('weather-content');
   el.innerHTML = '<div class="loading"><div class="spinner"></div><p>날씨 불러오는 중...</p></div>';
-
   const todayStr = todayKST();
   const horizonEnd = addDaysStr(todayStr, 15); // Open-Meteo 무료 forecast_days 최대 16일(오늘 포함)
-
   const cardsHTML = [];
   for (const stop of WEATHER_STOPS) {
     // 이 구간에서 예보 가능한 날짜(오늘~+15일)만 추출
@@ -1281,10 +1523,8 @@ async function renderWeather() {
     for (let d = stop.start; d < stop.end; d = addDaysStr(d, 1)) {
       if (d >= todayStr && d <= horizonEnd) forecastDates.push(d);
     }
-
     let dayRows = '';
     let fetchFailed = false;
-
     if (forecastDates.length) {
       const daily = await fetchForecast(stop.lat, stop.lon);
       if (daily && daily.time) {
@@ -1309,10 +1549,8 @@ async function renderWeather() {
         fetchFailed = true;
       }
     }
-
     const totalDays = dateDiffDays(stop.start, stop.end);
     const coveredAll = !fetchFailed && forecastDates.length === totalDays && dayRows;
-
     let climateBlock = '';
     if (!coveredAll) {
       const label = dayRows ? '나머지 기간(예보 범위 밖)은 평년값 기준' : (fetchFailed ? '실시간 예보를 불러오지 못해 평년값으로 표시' : '평년값 기준');
@@ -1321,7 +1559,6 @@ async function renderWeather() {
           ${label}: 낮 ${stop.climHigh}°C / 밤 ${stop.climLow}°C · 일출 ${stop.climSun[0]} · 일몰 ${stop.climSun[1]}
         </div>`;
     }
-
     cardsHTML.push(`
       <div class="card">
         <div class="card-header" onclick="toggleCard(this)">
@@ -1334,7 +1571,6 @@ async function renderWeather() {
         </div>
       </div>`);
   }
-
   el.innerHTML = `
     <div style="font-size:11px;color:var(--text3);background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:12px;line-height:1.6">
       🌐 오늘부터 16일 이내는 <b>Open-Meteo 실시간 예보</b>, 그 이후 날짜는 <b>평년값(참고용)</b>입니다. 탭을 다시 열거나 새로고침하면 최신 예보로 갱신돼요.
@@ -1343,16 +1579,13 @@ async function renderWeather() {
   `;
   weatherRendered = true;
 }
-
 // ── 5. 정산 (AppSheet 지출정산기 스프레드시트, 읽기 전용) ─────────
 // 입력은 계속 AppSheet에서만 함 (오프라인 큐 필요, 동시쓰기 등 이유로
 // 이 앱에서는 조회·정산 계산만 담당). 통화 환산은 항상 최신 ExRate(G) 사용.
 let _settleExpCols = null, _settleRateCols = null;
-
 function _colIndex(headerRow, name) {
   return headerRow.findIndex(h => String(h).trim() === name);
 }
-
 function settleExRate(currency, rateRows) {
   if (!currency || currency === 'KRW') return 1;
   const header = rateRows[0];
@@ -1365,7 +1598,6 @@ function settleExRate(currency, rateRows) {
   }
   return 1; // 알 수 없는 통화는 환산 없이 원값 사용 (표시에 통화 기호를 남겨 눈에 띄게 함)
 }
-
 function computeSettlement(expenseRows, rateRows, tripTitle) {
   const header = expenseRows[0];
   const c = {
@@ -1379,10 +1611,8 @@ function computeSettlement(expenseRows, rateRows, tripTitle) {
     att:   _colIndex(header, 'Attendee'),
   };
   const rows = expenseRows.slice(1).filter(r => String(r[c.title]).trim() === tripTitle);
-
   const paid = {}, used = {}, catTotals = {};
   const items = [];
-
   rows.forEach(r => {
     const amtRaw = parseFloat(r[c.price]) || 0;
     const cur = String(r[c.cur] || '').trim();
@@ -1391,7 +1621,6 @@ function computeSettlement(expenseRows, rateRows, tripTitle) {
     const payer = String(r[c.payer] || '').trim();
     const attendees = String(r[c.att] || '').split(',').map(s => s.trim()).filter(Boolean);
     const type = String(r[c.type] || '').trim();
-
     if (payer && krw > 0) paid[payer] = (paid[payer] || 0) + krw;
     if (attendees.length && krw > 0) {
       const share = krw / attendees.length;
@@ -1404,7 +1633,6 @@ function computeSettlement(expenseRows, rateRows, tripTitle) {
       items.push({ date: r[c.date], type, detail: r[c.detail], cur, amtRaw, krw, payer, attendees });
     }
   });
-
   const members = Array.from(new Set([...Object.keys(paid), ...Object.keys(used)]));
   const members_summary = members.map(name => ({
     name,
@@ -1412,14 +1640,10 @@ function computeSettlement(expenseRows, rateRows, tripTitle) {
     used: used[name] || 0,
     net: (used[name] || 0) - (paid[name] || 0) // 양수=보내야 함, 음수=받아야 함
   }));
-
   const total = Object.values(paid).reduce((s, v) => s + v, 0);
-
   items.sort((a, b) => toKSTDateStr(b.date).localeCompare(toKSTDateStr(a.date)));
-
   return { members_summary, total, catTotals, items };
 }
-
 async function renderSettle() {
   const el = document.getElementById('settle-content');
   const data = await fetchSettle();
@@ -1429,11 +1653,9 @@ async function renderSettle() {
       : errorHTML(() => renderSettle());
     return;
   }
-
   const header = data.expenses[0];
   const cTitle = _colIndex(header, 'Title');
   const cDate  = _colIndex(header, 'Date');
-
   // 여행(Title) 목록: 최근 지출 날짜 기준 내림차순, 현재 선택값 유지
   const byTrip = {};
   data.expenses.slice(1).forEach(r => {
@@ -1450,14 +1672,11 @@ async function renderSettle() {
   const selected = (window._settleSelectedTrip && trips.includes(window._settleSelectedTrip))
     ? window._settleSelectedTrip : trips[0];
   window._settleSelectedTrip = selected;
-
   const s = computeSettlement(data.expenses, data.rates, selected);
   const todayStr = todayKST();
-
   const tripSelect = `<select class="settle-trip-select" onchange="window._settleSelectedTrip=this.value;renderSettle()">
     ${trips.map(t => `<option value="${t}" ${t===selected?'selected':''}>${t}</option>`).join('')}
   </select>`;
-
   const memberCards = s.members_summary.map(m => {
     const cls = m.net > 100 ? 'owe' : m.net < -100 ? 'receive' : 'even';
     const label = m.net > 100 ? '보내야 함' : m.net < -100 ? '받아야 함' : '정산 완료';
@@ -1468,12 +1687,10 @@ async function renderSettle() {
       <div class="settle-member-net ${cls}">${label} · ₩${Math.round(Math.abs(m.net)).toLocaleString()}</div>
     </div>`;
   }).join('');
-
   const catChips = Object.entries(s.catTotals)
     .sort((a,b) => b[1]-a[1])
     .map(([type, amt]) => `<div class="settle-cat-chip">${type} ₩${Math.round(amt).toLocaleString()}</div>`)
     .join('');
-
   const summary = `
     <div class="card" style="margin-bottom:12px">
       <div style="padding:14px 16px">
@@ -1483,7 +1700,6 @@ async function renderSettle() {
         ${catChips ? `<div class="settle-cat-chips">${catChips}</div>` : ''}
       </div>
     </div>`;
-
   let list = `<div class="section-title">내역 · ${s.items.length}건</div><div class="card"><div style="padding:4px 14px">`;
   s.items.forEach(item => {
     const isToday = toKSTDateStr(item.date) === todayStr;
@@ -1499,10 +1715,8 @@ async function renderSettle() {
     </div>`;
   });
   list += '</div></div>';
-
   el.innerHTML = tripSelect + summary + (s.items.length ? list : '<div style="text-align:center;color:var(--text3);padding:20px">아직 내역이 없어요</div>');
 }
-
 // ── 에러 HTML ─────────────────────────────────────────────────────
 function errorHTML(retryFn) {
   window._retryFn = retryFn;
@@ -1512,20 +1726,191 @@ function errorHTML(retryFn) {
   </div>`;
 }
 
+// ══════════════════════════════════════════════════════════
+// 스플래시 기능 (Feature 1)
+// ══════════════════════════════════════════════════════════
+
+// 시칠리아·몰타 기간 정의
+const SICILY_START = '2026-09-14', SICILY_END = '2026-09-30';
+const MALTA_START  = '2026-09-30', MALTA_END  = '2026-10-05';
+
+// 개요 지도의 각 거점 SVG 좌표 (viewBox 380×340 기준)
+const OVERVIEW_COORDS = {
+  '마인츠':        { x: 87,  y: 42  },
+  '하이델베르크':  { x: 97,  y: 52  },
+  '팔레르모':      { x: 213, y: 259 },
+  '트라파니':      { x: 192, y: 262 },
+  '아그리젠토':    { x: 218, y: 272 },
+  '라구사':        { x: 246, y: 278 },
+  '시라쿠사':      { x: 260, y: 275 },
+  '타오르미나':    { x: 260, y: 248 },
+  '카타니아':      { x: 254, y: 254 },
+  '몰타':          { x: 240, y: 298 },
+  '가르다호수':    { x: 150, y: 118 },
+  '돌로미티':      { x: 172, y: 103 },
+  '밀라노':        { x: 110, y: 123 },
+  '프랑크푸르트':  { x: 97,  y: 40  },
+};
+// 시칠리아 확대 지도의 주요 거점 SVG 좌표
+const SICILY_COORDS = {
+  '팔레르모·체팔루': { x: 148, y: 90  },
+  '트라파니':        { x: 55,  y: 148 },
+  '아그리젠토':      { x: 155, y: 228 },
+  '라구사·모디카':   { x: 248, y: 240 },
+  '시라쿠사':        { x: 305, y: 210 },
+  '타오르미나':      { x: 320, y: 140 },
+  '카타니아':        { x: 295, y: 170 },
+};
+
+function showSplash() {
+  const splash = document.getElementById('splash');
+  splash.style.display = 'flex';
+  const todayStr = todayKST();
+  _updateSplashHeader(todayStr);
+  _setupSplashMap(todayStr);
+  _loadSplashSchedule(todayStr);
+  _loadSplashWeather(todayStr);
+}
+
+function enterApp() {
+  document.getElementById('splash').style.display = 'none';
+}
+
+function _updateSplashHeader(todayStr) {
+  const dowKr = ['일','월','화','수','목','금','토'];
+  const [y,m,d] = todayStr.split('-').map(Number);
+  const dow = dowKr[new Date(y,m-1,d).getDay()];
+  const sub = document.getElementById('splash-date-sub');
+  if (sub) sub.textContent = `${m}월 ${d}일 (${dow})`;
+  const ddEl = document.getElementById('splash-dday');
+  if (ddEl) {
+    const dd = dday();
+    if (dd === null) { ddEl.textContent = '여행 후'; return; }
+    if (dd < 0) { ddEl.textContent = `D+${Math.abs(dd)}`; return; }
+    ddEl.textContent = dd === 0 ? 'D-Day' : `D-${dd}`;
+  }
+}
+
+function _setupSplashMap(todayStr) {
+  // 어느 지도 뷰를 보여줄지 결정
+  const inSicily = todayStr >= SICILY_START && todayStr < SICILY_END;
+  const inMalta  = todayStr >= MALTA_START  && todayStr < MALTA_END;
+
+  document.getElementById('map-overview').style.display = inSicily || inMalta ? 'none' : '';
+  document.getElementById('map-sicily').style.display   = inSicily ? '' : 'none';
+  document.getElementById('map-malta').style.display    = inMalta  ? '' : 'none';
+
+  // 현재 거점을 WEATHER_STOPS 기준으로 찾아 하이라이트
+  const stop = WEATHER_STOPS.find(s => todayStr >= s.start && todayStr < s.end);
+  if (!stop) return;
+
+  if (inSicily) {
+    // 시칠리아 확대 지도에서 현재 거점 강조
+    const regionKey = Object.keys(SICILY_COORDS).find(k => stop.region.includes(k.split('·')[0]));
+    const coord = regionKey ? SICILY_COORDS[regionKey] : null;
+    if (coord) {
+      const dot  = document.getElementById('smap-dot');
+      const ring = document.getElementById('smap-ring');
+      const lbl  = document.getElementById('smap-label');
+      if (dot)  { dot.setAttribute('cx', coord.x);  dot.setAttribute('cy', coord.y); }
+      if (ring) { ring.setAttribute('cx', coord.x); ring.setAttribute('cy', coord.y); }
+      if (lbl)  { lbl.setAttribute('x', coord.x);   lbl.setAttribute('y', coord.y - 12); lbl.textContent = ''; }
+    }
+  } else if (!inMalta) {
+    // 개요 지도에서 현재 거점 강조
+    const regionKey = Object.keys(OVERVIEW_COORDS).find(k => stop.region.includes(k));
+    const coord = regionKey ? OVERVIEW_COORDS[regionKey] : null;
+    if (coord) {
+      const dot  = document.getElementById('map-current-dot');
+      const ring = document.getElementById('map-current-ring');
+      if (dot)  { dot.setAttribute('cx', coord.x);  dot.setAttribute('cy', coord.y); }
+      if (ring) { ring.setAttribute('cx', coord.x); ring.setAttribute('cy', coord.y); }
+    }
+  }
+  // 몰타는 고정 위치(발레타)에 항상 표시됨
+}
+
+async function _loadSplashSchedule(todayStr) {
+  const box = document.getElementById('splash-schedule-box');
+  try {
+    const data = await fetchSheet(SHEETS.schedule);
+    if (!data) throw new Error('no data');
+    const rows = data.slice(4).filter(r => r[0] && r[0].toString().match(/\d{4}-\d{2}-\d{2}/));
+    const row = rows.find(r => toKSTDateStr(r[0]) === todayStr);
+    if (!row) {
+      const rel = dayRelation(todayStr, todayStr);
+      const nearest = rows.filter(r => toKSTDateStr(r[0]) > todayStr)[0];
+      box.innerHTML = `<div class="splash-today-detail" style="color:var(--text3)">여행 기간 외${nearest ? ' · 다음 일정: ' + toKSTDateStr(nearest[0]).slice(5) : ''}</div>`;
+      return;
+    }
+    const place  = row[7] || '';
+    const detail = row[8] || '';
+    const flight = row[2] || '';
+    const hotel  = row[5] || '';
+    let html = '';
+    if (place)  html += `<div class="splash-today-main">${place}</div>`;
+    const tags = [];
+    if (flight) tags.push(`<span class="tag flight" style="font-size:11px">✈ ${flight}</span>`);
+    if (hotel)  tags.push(`<span class="tag hotel"  style="font-size:11px">🏨 ${hotel}</span>`);
+    if (tags.length) html += `<div class="splash-tags">${tags.join('')}</div>`;
+    if (detail) html += `<div class="splash-today-detail">${detail.slice(0,140)}${detail.length>140?'…':''}</div>`;
+    box.innerHTML = html || `<div class="splash-today-detail" style="color:var(--text3)">오늘 상세 일정 없음</div>`;
+  } catch(e) {
+    box.innerHTML = `<div class="splash-today-detail" style="color:var(--text3)">일정 불러오기 실패</div>`;
+  }
+}
+
+async function _loadSplashWeather(todayStr) {
+  const box = document.getElementById('splash-weather-box');
+  const stop = WEATHER_STOPS.find(s => todayStr >= s.start && todayStr < s.end)
+    || WEATHER_STOPS[WEATHER_STOPS.length - 1];
+  function climateHTML() {
+    return `<div class="splash-weather-row">
+      <div class="splash-wx-icon">🌡️</div>
+      <div class="splash-wx-main">
+        <div class="splash-wx-temp">~${stop.climHigh}° / ~${stop.climLow}°</div>
+        <div class="splash-wx-sub">${stop.region} · 기후 평균</div>
+      </div>
+    </div>`;
+  }
+  try {
+    const daily = await fetchForecast(stop.lat, stop.lon);
+    if (!daily || !daily.time) { box.innerHTML = climateHTML(); return; }
+    const idx = daily.time.indexOf(todayStr);
+    if (idx === -1) { box.innerHTML = climateHTML(); return; }
+    const hi   = Math.round(daily.temperature_2m_max[idx]);
+    const lo   = Math.round(daily.temperature_2m_min[idx]);
+    const code = daily.weathercode ? daily.weathercode[idx] : null;
+    const sr   = daily.sunrise ? hhmm(daily.sunrise[idx]) : '';
+    const ss   = daily.sunset  ? hhmm(daily.sunset[idx])  : '';
+    const pop  = daily.precipitation_probability_max ? daily.precipitation_probability_max[idx] : null;
+    box.innerHTML = `<div class="splash-weather-row">
+      <div class="splash-wx-icon">${wmoIcon(code)}</div>
+      <div class="splash-wx-main">
+        <div class="splash-wx-temp">${hi}° / ${lo}°</div>
+        <div class="splash-wx-sub">${stop.region}${pop != null ? ' · 강수 '+pop+'%' : ''}</div>
+      </div>
+      ${sr||ss ? `<div class="splash-wx-sun">🌅 ${sr}<br>🌇 ${ss}</div>` : ''}
+    </div>`;
+  } catch(e) {
+    box.innerHTML = climateHTML();
+  }
+}
+
+
 // ── 초기화 ────────────────────────────────────────────────────────
 renderSchedule();
 </script>
   <script>
 const CORRECT_HASH = "d05237d0f34432aac1885e1e82c5bf43bbf489ea7d6a049aff64c6a1225a506c";
-
 async function hashPw(pw) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
-
 (function checkGate() {
   if (localStorage.getItem('travel2026_unlocked') === 'yes') {
     document.getElementById('gate').style.display = 'none';
+    showSplash();
     return;
   }
   document.getElementById('gate-btn').onclick = async () => {
@@ -1534,6 +1919,7 @@ async function hashPw(pw) {
     if (hash === CORRECT_HASH) {
       localStorage.setItem('travel2026_unlocked', 'yes');
       document.getElementById('gate').style.display = 'none';
+      showSplash();
     } else {
       document.getElementById('gate-err').style.display = 'block';
     }
@@ -1542,345 +1928,183 @@ async function hashPw(pw) {
     if (e.key === 'Enter') document.getElementById('gate-btn').click();
   });
 })();
-
 // ── Lonely Planet 데이터 ───────────────────────────────────────────
 const LP_DATA = {
   // ═══════ MALTA ═══════
   '발레타': `유럽 최초의 계획 도시 발레타. 1565년 오스만 제국의 대공방전에서 승리한 성 요한 기사단이 세운 이 도시는 면적 불과 0.55㎢의 작은 반도 위에 거의 완벽한 바둑판 형태로 건설되었습니다.
-
 평행하게 뻗은 거리 양편으로 4~5층 높이의 타운하우스가 늘어서고, 파스텔 색조나 선명한 빨간색으로 칠해진 벽에 돌출형 발코니가 매달려 있습니다. 기사단장의 궁전, 성 요한 대성당(St John's Co-Cathedral)의 황금빛 바로크 내부, 전쟁 박물관, 수십 개의 교회와 요새가 이 작은 도시에 빽빽하게 들어서 있습니다.
-
 성 요한 대성당의 수수한 요새 같은 외관에 속지 마세요. 내부는 금빛 조각과 카라바조의 걸작 그림으로 가득한 압도적인 공간이 기다리고 있습니다.`,
-
   '임디나': `황금빛 돌로 쌓인 성벽 도시 임디나(Mdina)는 현대 몰타와 완전히 다른 세계입니다. 아랍과 노르만 건축이 어우러진 이 고요한 중세 도시는 한때 몰타의 수도였으며, 현재는 불과 몇백 명만 거주하는 '침묵의 도시'로 불립니다.
-
 카타콤, 웅장한 노르만 궁전, 17세기 바로크 성당들이 좁은 미로 같은 골목 사이에 숨겨져 있습니다. 성벽 위에서 바라보는 몰타 전경과 멀리 보이는 바다는 잊지 못할 파노라마를 선사합니다. 해 질 무렵 황금빛으로 빛나는 석회암 건물들과 텅 빈 골목은 시간이 멈춘 듯한 환상적인 분위기를 자아냅니다.`,
-
   '쓰리시티': `발레타의 그랜드 하버 건너편, 황금빛 돌로 지어진 비토리오사(Vittoriosa)와 셍글레아(Senglea)는 17세기에 건설된 아름다운 도시입니다. 비토리오사, 셍글레아, 코스피쿠아(Cospicua) 세 도시를 합쳐 '쓰리시티'라 부릅니다.
-
 성 요한 기사단의 역사가 고스란히 숨쉬는 이곳은 발레타보다 훨씬 한적하고 진실한 몰타의 모습을 보여줍니다. 물 위에서 바라보는 쓰리시티의 실루엣과 그랜드 하버의 전경은 몰타 여행의 하이라이트 중 하나입니다. 수상 택시를 타고 발레타에서 건너오는 것도 특별한 경험이 됩니다.`,
-
   '마르사슬록': `알록달록한 전통 어선 루쭈(luzzu)와 신선한 해산물 레스토랑으로 가득한 마르사슬록 항구는 수천 년의 역사를 품고 있습니다. 1565년 대공방전 당시 오스만 군대 30,000명이 이 천연 만에 상륙했고, 이후 나폴레옹도 이곳을 통해 몰타를 점령했습니다. 1989년에는 부시 대통령과 고르바초프가 이 바다 위에서 냉전 종식을 논의하기도 했습니다.
-
 일요일 새벽에 열리는 수산 시장은 몰타에서 가장 유명한 야외 시장으로, 신선한 생선과 현지 특산물을 만날 수 있습니다. 주중에 방문하면 붐비지 않고 느긋하게 항구의 정취를 즐길 수 있습니다.`,
-
   '고조섬': `느린 삶의 속도와 전원적인 매력이 넘치는 고조는 몰타 본섬과는 전혀 다른 세계입니다. 역사적인 타운들, 아름다운 해변, 들쭉날쭉한 절벽이 어우러진 이 섬은 작지만 볼거리가 풍부합니다.
-
 수도 빅토리아(Victoria) 꼭대기에는 아담한 요새 치타델(Citadel)이 서 있고, 비밀스러운 마을 샤흐라(Xagħra) 바로 외곽에는 인류 최고(最古)의 돌 신전 중 하나인 쥬간티야(Ġgantija) 신전이 자리합니다. 아주르 윈도우(Azure Window)가 무너진 자리에는 이제 다이버들이 즐겨 찾는 해저 아치가 남아 있습니다.`,
-
   '코미노': `몰타와 고조 사이 코미노 섬에 자리한 블루 라군은 그 이름처럼 믿기 어려울 만큼 투명하고 새파란 바다를 자랑합니다. 수심이 얕아 수영과 스노클링을 즐기기에 완벽하며, 맑은 물 속으로 물고기와 해초가 선명하게 보입니다.
-
 성수기에는 몰타 전역에서 보트들이 모여 붐비지만, 이른 아침이나 늦은 오후에 방문하면 더 여유롭게 즐길 수 있습니다. 코미노는 인구가 거의 없는 섬으로 블루 라군 외에도 아름다운 동굴과 트레킹 코스를 갖추고 있습니다.`,
-
   '몰타 생줄리안': `슬리에마(Sliema)와 세인트 줄리안스(St Julian's)는 발레타에서 북쪽으로 이어지는 몰타의 현대적인 해안 지구입니다. 긴 해안 산책로를 따라 카페와 레스토랑이 즐비하고, 쇼핑센터와 호텔들이 모여 있습니다.
-
 슬리에마는 몰타 상류층이 오래전부터 거주하던 고급스러운 분위기의 지구로, 우아한 타운하우스와 암반 수영 장소가 평화로운 분위기를 만들어냅니다. 세인트 줄리안스는 에너지 넘치는 레스토랑과 바가 가득하며, 파체빌레(Paceville)는 몰타 최대의 나이트라이프 중심지입니다.`,
-
   // ═══════ SICILY ═══════
   '팔레르모': `시칠리아의 수도 팔레르모는 수천 년 역사의 층위가 쌓인 복잡하고 매혹적인 도시입니다. 페니키아, 그리스, 로마, 아랍, 노르만, 스페인의 지배를 거치며 세계 어디에서도 볼 수 없는 독특한 문화와 건축이 탄생했습니다.
-
 노르만 왕궁(Palazzo dei Normanni)과 팔라티나 예배당의 황금빛 모자이크는 그 화려함에 할 말을 잃게 만듭니다. 발라로(Ballarò) 시장에서는 9세기 아랍 상인들이 흥정하던 그 자리에서 오늘도 시칠리아, 아시아, 아프리카의 냄새와 소리가 뒤섞입니다.`,
-
   '콰트로칸티': `'태양의 무대(Il Teatro del Sole)'라는 별명을 가진 콰트로칸티(Quattro Canti)는 팔레르모 구도심의 중심을 이루는 팔각형 광장입니다. 비아 비토리오 에마누엘레와 비아 마퀘다의 우아한 교차로에서, 매일 햇빛이 이동하면서 네 개의 바로크 파사드를 차례로 비추는 빛의 쇼가 펼쳐집니다.
-
 각 모퉁이에는 사계절의 여신, 스페인 왕들, 그리고 팔레르모의 수호 성인들이 층층이 조각되어 있습니다. 팔레르모의 4개 구역이 만나는 이 지점은 도시 산책의 출발점으로 완벽합니다.`,
-
   '팔레르모 팔라로시장': `발라로(Ballarò)는 팔레르모에서 가장 오래된 노천 시장으로, 9세기 아랍 상인들이 흥정하던 그 자리에서 오늘도 변함없이 시칠리아, 아시아, 아프리카의 냄새와 소리가 뒤섞입니다.
-
 색색의 향신료 더미, 신선한 생선, 채소, 과일 그리고 길거리 음식들이 좁은 골목을 가득 채웁니다. 아란치니(arancini), 파니니 콘 라 밀차(panino con la milza, 비장 샌드위치)를 비롯한 시칠리아 길거리 음식의 성지입니다. 이른 아침부터 오후까지 운영되며, 현지인들의 일상 속으로 깊이 들어가는 최고의 방법입니다.`,
-
   '팔레르모 대성당': `팔레르모 대성당(Cattedrale di Palermo)은 무려 9세기에 걸쳐 증축과 개조를 거듭하며 아랍-노르만 건축의 정수를 보여주는 건축물입니다. 노르만, 아랍, 비잔틴, 고딕, 바로크 양식이 한 건물에 공존하는 세계적으로 유례없는 건축 유산입니다.
-
 금박 모자이크로 장식된 내부와 루게로 2세(Roger II)를 비롯한 노르만 왕들의 석관이 있는 왕실 예배당이 특히 인상적입니다. 지붕에 올라가면 팔레르모 구도심의 파노라마가 펼쳐집니다.`,
-
   '노르만궁전': `노르만 왕궁(Palazzo dei Normanni)은 팔레르모에서 가장 오래된 왕실 거주지로, 현재는 시칠리아 지방의회로 사용됩니다. 9세기 아랍 에미리트의 요새 위에 노르만 왕들이 증축한 이 궁전은 시칠리아 문화 혼합의 살아있는 증거입니다.
-
 궁전 안에 자리한 팔라티나 예배당(Cappella Palatina)은 비잔틴 황금 모자이크, 아랍식 무카르나스 천장, 노르만 건축이 완벽하게 융합된 걸작으로, 팔레르모 방문의 절정입니다. 12세기에 루게로 2세가 건설한 이 예배당의 모자이크는 라벤나에 비견되는 아름다움을 자랑합니다.`,
-
   '몬레알레 대성당': `팔레르모에서 8km 거리의 몬레알레(Monreale)에 자리한 대성당은 세계에서 가장 화려한 비잔틴 모자이크의 보고입니다. 12세기 노르만 왕 굴리엘모 2세(William II)가 건설한 이 성당의 내부 벽면 6,340㎡ 전체가 황금 배경의 모자이크로 뒤덮여 있습니다.
-
 모자이크들은 창세기부터 그리스도의 생애까지 성경 전체를 생생하게 묘사하며, 정점에는 중앙 앱스를 가득 채운 판토크라토르(전능한 그리스도) 이미지가 자리합니다. 회랑(chiostro)의 228개 쌍둥이 기둥도 놓치지 마세요.`,
-
   '세게스타': `들판의 야생화 사이에 우뚝 선 세게스타(Segesta)의 도리아식 신전은 고대 그리스 건축의 신비를 품고 있습니다. 기원전 5세기에 지어진 이 신전은 36개의 기둥이 완벽하게 보존되어 있으며, 바람이 불면 기둥들이 파이프 오르간처럼 신비로운 소리를 냅니다.
-
 언덕 꼭대기에는 기원전 3세기에 지어진 그리스 극장이 있어, 여름밤 별빛 아래 공연이 펼쳐집니다. 엘리미아(Elymian) 문명의 수도였던 이곳은 그리스 세리누스(Selinunte)와 끊임없이 충돌했던 역사를 품고 있습니다.`,
-
   '셀리눈테': `유럽 최대의 고고학 공원인 셀리눈테(Selinunte, 파르코 아르케올로지코 디 셀리눈테)는 드넓은 지중해를 배경으로 웅장하게 펼쳐집니다. 기원전 7세기에 건설된 이 고대 그리스 도시는 카르타고에 의해 기원전 409년 철저히 파괴되었습니다.
-
 현재도 발굴이 진행 중인 이곳에는 여러 신전의 잔해가 남아 있으며, 그중 일부는 웅장하게 재건되었습니다. 바다를 향해 서 있는 신전 기둥들과 석양이 어우러지는 풍경은 시칠리아 고고학 여행의 하이라이트입니다.`,
-
   '아그리젠토 신전의계곡': `시칠리아 전역을 통틀어 그 중요성, 규모, 아름다움에서 견줄 곳이 없는 신전의 계곡(Valle dei Templi)은 그리스 땅 밖에서 만날 수 있는 고대 그리스 문명의 가장 위대한 유산 중 하나입니다. 기원전 5~6세기에 건설된 이 신전들은 지중해 남쪽 해안을 따라 장엄하게 펼쳐집니다.
-
 콩코르디아 신전(Temple of Concordia)은 세계에서 가장 잘 보존된 그리스 신전 중 하나로, 2,500년의 세월을 견디며 거의 완벽한 상태를 유지합니다. 올리브 나무와 아몬드 나무 사이로 석양빛에 물드는 신전들의 황금빛 실루엣은 잊을 수 없는 광경입니다.`,
-
   '터키인의 계단': `터키인의 계단(Scala dei Turchi)은 아그리젠토 해안에서 빛나는 새하얀 석회암 절벽으로, 오랜 파도의 침식이 만들어낸 자연의 걸작입니다. 16세기 투르크 해적들이 은신처로 사용했다는 전설에서 이름을 얻었습니다.
-
 눈처럼 새하얀 절벽 위로 오르면 지중해의 에메랄드빛 바다가 발 아래 펼쳐집니다. 2020년부터 안전 문제로 울타리가 쳐졌으나, 2023년 9월 오랜 법정 분쟁 끝에 이 사유지 절벽이 마침내 마을 소유가 되어 다시 개방이 논의되고 있습니다.`,
-
   '노토': `유네스코 세계유산에 등재된 노토(Noto)는 바로크 건축의 살아있는 교과서입니다. 너무나 아름다워 영화 세트장으로 착각할 만한 이 도시는 1693년 대지진으로 완전히 파괴된 뒤 새로운 위치에 장엄하게 재건되었습니다.
-
 중심 거리인 코르소 비토리오 에마누엘레(Corso Vittorio Emanuele)는 화려한 바로크 궁전과 성당이 줄지어 늘어선 우아한 산책로입니다. 해가 기울면 꿀빛과 붉은빛을 발하며 내면의 빛을 발산하는 석회암 건물들이 황금빛으로 빛납니다. 봄이 되면 발코니를 꽃으로 장식하는 꽃 축제(Infiorata)가 열립니다.`,
-
   '라구사': `현대적인 라구사 수페리오레(Ragusa Superiore)와 역사적인 라구사 이블라(Ragusa Ibla), 두 도시 이야기가 하나로 엮인 라구사는 수백 개의 계단과 함께 펼쳐지는 아름다운 드라마입니다. 1693년 대지진으로 파괴된 이블라는 정교한 바로크 건축으로 재건되어 유네스코 세계유산으로 지정되었습니다.
-
 이블라의 두오모 광장과 주변 카페에서 여유를 즐기는 시간은 시칠리아 여행의 백미입니다. 이탈리아 드라마 '몬탈바노 형사(Il Commissario Montalbano)'의 촬영지로도 유명합니다.`,
-
   '시라쿠사': `어떤 도시보다 시칠리아의 영원한 아름다움을 압축하는 시라쿠사(Syracuse). 울창한 감귤 과수원 사이에서 고대 그리스 유적이 솟아오르고, 바로크 광장들이 한적한 바다를 내려다봅니다. 전성기에는 아테네와 코린토스를 능가하는 고대 세계 최대의 도시였습니다.
-
 기원전 734년 코린토스 식민지로 시작된 이 도시의 역사는 오르티지아(Ortygia) 섬에서 시작됩니다. 아르테미스 신전의 기둥이 두오모 대성당 벽 속에 그대로 흡수된 광경은 수천 년 역사가 켜켜이 쌓인 시라쿠사를 상징합니다. 고고학 공원의 거대한 그리스 극장에서 지금도 공연이 열립니다.`,
-
   '타오르미나': `쾌락주의가 흘러넘치는 화려한 타오르미나(Taormina). 고대 그리스인들이 신의 눈높이에서 바다를 내려다볼 수 있는 곳에 극장을 지은 이후, 이 도시는 줄곧 세계에서 가장 욕망 받는 장소 중 하나였습니다. 절벽 위 부티크와 테라스 레스토랑들은 에트나 화산과 이오니아 해가 동시에 보이는 환상적인 전망을 선사합니다.
-
 18세기 그랜드 투어 여행자들이 발자국을 남긴 이후 구스타프 클림트, 오스카 와일드, 트루먼 카포테, 엘리자베스 테일러 등이 이곳에 매료되었습니다. 여름밤, 고대 그리스 극장에서 에트나를 배경으로 열리는 타오르미나 아르테(Taormina Arte) 공연은 잊지 못할 경험입니다.`,
-
   '카타니아': `시칠리아 제2의 도시 카타니아(Catania)를 능동적으로 피하던 시대는 지났습니다. 처음 마주치는 소음과 혼돈, 거친 느낌에도 불구하고, 카타니아에는 자석 같은 매력이 있습니다. 강렬한 에너지와 거친 생명력이 넘치는 이 도시는 시칠리아에서 가장 젊고 활기찬 곳입니다.
-
 이 유네스코 세계유산 도시는 1669년 에트나 화산 분출과 1693년 대지진으로 두 차례 잿더미가 된 뒤 화산암으로 재건되었습니다. 라 페스케리아(La Pescheria)의 새벽 생선 시장, 화산 용암 튜브 속의 레스토랑, 고대 로마 유적을 감싼 바로크 궁전들이 어우러지는 도시 탐험은 중독적입니다.`,
-
   '이솔라벨라': `타오르미나 아래 마차로(Mazzarò) 마을의 해변에서 가느다란 자갈 둑길로 이어지는 이솔라 벨라(Isola Bella)는 자연 보호구역으로 지정된 작은 섬입니다. 매력적인 지중해 정원과 둥지를 트는 매, 고유종 붉은 배 도마뱀이 서식합니다.
-
 '아름다운 섬'이라는 뜻 그대로 에메랄드빛 바다에 떠 있는 이 섬 주변에는 산호, 해면, 불가사리가 서식하는 해저 동굴이 있습니다. 타오르미나 케이블카를 타고 내려와 이솔라 벨라 해변(Spiaggia di Isola Bella)에서 스노클링을 즐기는 것은 타오르미나 여행의 완벽한 마무리입니다.`,
-
   '카스텔로몰라': `타오르미나보다 더 극적인 절경을 원한다면 2.5km 북쪽의 언덕 꼭대기 마을 카스텔몰라(Castelmola)로 향하세요. 포장도로와 계단, 자갈 오솔길을 따라 50분~1시간 30분 걷는 오르막길에서는 발걸음을 멈출 때마다 선인장과 포도밭 너머로 에트나 화산이 솟아오르는 장관이 펼쳐집니다.
-
 해발 높이에서 바라보는 이오니아 해안 전경은 메시나 해협부터 시라쿠사까지 이어집니다. 마을의 1700년 창업 카페 산 조르지오(Caffè San Giorgio)에서는 1907년 빈첸조 블란다노가 아몬드와 와인을 처음 혼합해 만든 전설적인 비노 만돌라(vino mandorla, 아몬드 와인)를 맛볼 수 있습니다.`,
-
   '사보카': `타오르미나 남쪽 해안 마을 산타 테레사 디 리바 위 언덕에 아슬아슬하게 매달린 사보카(Savoca)는 시간이 멈춘 것 같은 중세 마을입니다. 철문으로 막힌 골목, 거친 돌집들, 수백 년 된 올리브 나무에 둘러싸인 고요한 교회들. 프란시스 포드 코폴라 감독이 바로 이 풍경에 매료되어 영화 '대부(The Godfather, 1972)'의 일부를 이곳에서 촬영했습니다.
-
 바 비텔리(Bar Vitelli)에서는 알 파치노가 아폴로니아를 처음 만나는 장면이 촬영되었습니다. 레몬-지비보 그라니타 한 잔을 시키고, 마이클 코를레오네가 아폴로니아와 결혼한 14세기 산타 루치아 성당을 바라보며 앉아 보세요.`,
-
   '체팔루': `시칠리아에서 가장 아름다운 황금빛 모래사장과 유네스코 세계유산 12세기 성당이 함께 있는 체팔루(Cefalù). 노르만 시대의 걸작 건축과 지중해 최고의 해수욕이 한 곳에서 가능한 시칠리아 북부의 보석입니다.
-
 성당 내부의 비잔틴 황금 모자이크 특히 후진(apse)을 가득 채운 그리스도 판토크라토르는 시칠리아 예술의 정점입니다. 해변에서 한가로이 수영한 뒤 미로 같은 구시가지 골목을 거닐며 현지 오스테리아에서 저녁을 먹는 것이 체팔루의 완벽한 하루입니다.`,
-
   '트라파니': `시칠리아 서쪽 끝 반도에 자리한 항구 도시 트라파니(Trapani)는 아프리카를 향해 돌출한 낫 모양의 지형에서 이름을 따왔습니다(그리스어 drepanon, 낫). 오랜 세월 지중해 교역의 핵심 거점이었던 이 도시는 아라곤, 아랍, 노르만의 흔적이 뒤섞인 매력적인 구시가지를 품고 있습니다.
-
 비아 가리발디(Via Garibaldi)와 코르소 비토리오 에마누엘레(Corso Vittorio Emanuele)를 중심으로 한 구시가지를 거닐면 바로크 성당들과 로지아(loggia), 리니 탑(Torre di Ligny) 등이 발길을 붙잡습니다. 항구 주변의 생선시장과 해산물 식당들, 특히 참다랑어(bluefin tuna) 기반의 시칠리아 전통 요리도 놓치지 마세요.
-
 트라파니 최대의 볼거리는 에리체 방문의 출발점으로서의 역할입니다. 산 정상까지 이어지는 케이블카(Funivia Trapani-Erice)의 시작점이 여기 있으며, 에올리에 군도나 판텔레리아 섬으로 가는 페리도 이곳에서 출발합니다. 4월의 성주간(Settimana Santa) 행렬은 트라파니에서만 볼 수 있는 수백 년 전통의 종교 의식입니다.`,
-
   '에리체': `해발 751m의 산 정상에 매달린 중세 마을 에리체(Erice)는 트라파니 평원과 지중해 연안의 소금밭을 발 아래 내려다보며 구름 속에 잠겨 있습니다. 트라파니에서 케이블카(funivia)를 타고 오르는 연안 파노라마가 이미 숨막히게 아름답습니다.
-
 12세기 성벽 안에서 광택이 나는 돌 포장 골목들을 거니는 것은 몽환적인 경험입니다(미끄러지지 않는 신발 필수). 노르만인들이 로마 비너스 신전 위에 세운 12~13세기 카스텔로 디 베네레(Castello di Venere)의 광활한 잔해와, 마리아 그라마티코 파티세리아(Pasticceria di Maria Grammatico)의 전설적인 아몬드 과자는 에리체 방문의 필수 코스입니다.`,
-
   '마르살라': `시칠리아 서해안의 고풍스러운 마르살라(Marsala)는 이름처럼 '신의 항구(Marsa Allah)'입니다. 페니키아인이 세우고 아랍인이 이름을 붙인 이 도시의 오늘날 정체성은 단연 와인입니다. 도보 구역인 비아 XI 마지오(Via XI Maggio)를 따라 걸으며 마르살라 와인 생산자들의 시음 공간을 찾아가 보세요.
-
 17세기 팔라초 피치(Palazzo Fici)에서 열리는 마르살라 와인 박물관(Museo del Vino di Marsala)은 와인의 역사와 제조 과정을 알기 쉽게 보여줍니다. 마을 북쪽의 거대한 얕은 석호 로 스타뇨네(Lo Stagnone)는 키테서핑 명소로, 고대 페니키아 섬 모치아(Mozia)의 고고학 유적도 이 석호 안에 있습니다.`,
-
   '모디카': `라구사에서 20km 남쪽의 모디카(Modica)는 1693년 대지진 이후 바로크 양식으로 재건된 유네스코 세계유산 마을입니다. 모디카 알타(상부)와 모디카 바사(하부)를 연결하는 구불구불한 계단과 골목들 사이에서 길을 잃어도 좋습니다.
-
 모디카 알타의 하이라이트는 화려한 3단 계단 위에 홀로 서 있는 산 조르지오 두오모(Duomo di San Giorgio). 하지만 이 도시를 세계적으로 유명하게 만든 것은 초콜릿입니다. 스페인 통치 시절 아즈텍의 냉가공 제조법이 전해진 모디카의 초콜릿(cioccolato modicano)은 입에 넣으면 녹지 않고 살살 부서지는 독특한 식감이 특징입니다. 코코아와 설탕, 향신료만으로 만드는 4세기 전통의 맛을 보나유토(Bonajuto) 같은 150년 이상 된 초콜릿 가게에서 경험해보세요.`,
-
   // ═══════ 추가 여행지 (인터넷 자료 기반) ═══════
   '에트나': `유럽에서 가장 높고 가장 활발한 화산, 에트나(Etna). 해발 3,357m의 이 거대한 존재는 시칠리아 동부 어디서나 하늘 위로 솟은 윤곽이 보이며, 기원전 1500년부터 기록된 분화 역사를 가진 지구상 가장 오래 관측된 화산 중 하나입니다. 2013년 유네스코 세계자연유산으로 지정되었습니다.
-
 리푸지오 사피엔차(Rifugio Sapienza, 남쪽 루트)에서 케이블카를 타면 약 2,500m까지 오르고, 이후 4륜구동 버스로 2,900m 근처까지 접근합니다. 그 위로는 공인 가이드 동반이 필수입니다. 1892년 폭발로 생성된 실베스트리 분화구(Crateri Silvestri)는 케이블카 역 근처에서 도보로 접근 가능하며, 검은 화산 모래와 굳은 용암 대지의 달 표면 같은 풍경이 압도적입니다.
-
 화산 비탈에서는 해발 고도에 따라 포도밭, 피스타치오 나무, 울창한 너도밤나무 숲이 층층이 펼쳐집니다. 에트나 DOC 와인은 화산 토양의 미네랄이 녹아든 시칠리아 최고 와인 중 하나로 손꼽힙니다. 카타니아에서 약 40분 거리이며, 맑은 날에는 정상에서 이오니아 해와 이탈리아 본토까지 보입니다.`,
-
   '피아차아르메리나': `시칠리아 내륙 언덕 위의 소도시 피아차 아르메리나(Piazza Armerina)에서 3km 떨어진 빌라 로마나 델 카살레(Villa Romana del Casale)는 고대 로마 모자이크의 세계 최대·최고 보존 컬렉션입니다. 기원후 320~350년경 건축된 이 대규모 귀족 별장은 3,500㎡에 달하는 모자이크 바닥이 1997년 유네스코 세계유산으로 등재되었습니다.
-
 가장 유명한 장면은 '비키니 소녀들(Ragazze in Bikini)'이라 불리는 모자이크로, 원반던지기·달리기·역기 들기 등 체육 경기에 참여하는 고대 여성들을 묘사합니다. 이외에도 헤라클레스 12가지 과업, 아프리카와 아시아 동물 사냥 장면, 신화 속 장면들이 생생하게 펼쳐집니다. 보호 지붕 아래 유리 통로를 따라 걷다 보면 마치 1,700년 전의 색채가 그대로 살아있는 듯한 착각을 줍니다.
-
 카타니아에서 약 1시간 20분, 시라쿠사에서 약 1시간 30분 거리입니다. 빌라 자체는 매일 오전 9시부터 개방하며, 방문 후 피아차 아르메리나 구도심의 광장 카페에서 한숨 돌리는 것을 추천합니다.`,
-
   '칼타지로네': `시칠리아 중부 내륙의 칼타지로네(Caltagirone)는 수천 년 역사의 도예 전통으로 유네스코 세계유산 마을(2002)이 된 세라믹의 도시입니다. 142개의 계단으로 이루어진 산타 마리아 델 몬테 계단(Scalinata di Santa Maria del Monte)은 각 계단마다 서로 다른 시대의 무늬가 새겨진 세라믹 타일로 장식되어 있어, 그 자체가 하나의 거대한 도예 작품입니다.
-
 로마, 아랍, 노르만, 스페인, 프랑스의 지배가 남긴 건축적 층위가 마을 곳곳에 스며들어 있고, 구시가지 골목들은 형형색색의 도예품을 파는 공방과 상점으로 가득합니다. 7~8월의 '일루미나타(Illuminata)' 축제 때는 수천 개의 기름 램프가 계단 전체를 밝혀 황홀한 야경을 연출하며, 5월의 인피오리타(Infiorita) 축제에는 꽃으로 계단을 수놓습니다.
-
 카타니아에서 약 1시간, 피아차 아르메리나에서 30분 거리로 두 곳을 묶어 당일치기로 방문하기 좋습니다.`,
-
   '하가르킴': `기원전 3600~3000년경 신석기 시대에 건축된 하가르 킴(Ħaġar Qim)과 므나이드라(Mnajdra) 신전은 스톤헨지보다도 천 년 이상 앞선 몰타 선사 문명의 가장 경이로운 유산입니다. '직립한 돌들'이라는 뜻의 하가르 킴은 1992년 유네스코 세계유산으로 등재되었으며, UNESCO는 이 신전들이 "세계 어디에서도 유사한 사례를 찾을 수 없는" 독자적인 건축 전통임을 인정했습니다.
-
 하가르 킴에는 하지(夏至) 때 태양빛이 특정 돌에 정확히 닿도록 설계된 '오라클 홀(oracle hole)'이 있으며, 해안 절벽 위 므나이드라 신전은 동분(春分·秋分)과 하지·동지에 태양빛이 문을 통해 정확한 각도로 내부를 비추는 정밀한 달력 기능을 했습니다. 5,500년 전 사람들이 이 정도의 천문 지식을 보유했다는 사실이 경이롭습니다.
-
 발레타에서 남서쪽으로 약 30분 거리이며, 현대식 비지터 센터에서 3D 영상으로 먼저 역사를 파악한 뒤 실물 유적을 보면 훨씬 깊이 감상할 수 있습니다. 방문 후 근처 절벽에서 바라보는 지중해 전망도 놓치지 마세요.`,
-
   '라바트': `몰타 중부, 임디나 성벽 바로 바깥에 맞닿아 있는 라바트(Rabat)는 임디나의 '부속 도시'처럼 여겨지지만, 실은 독립적인 매력과 깊이 있는 역사를 지닌 살아있는 마을입니다. 중세의 무덤 도시(catacomb city)라는 별명답게, 도시 전체 아래에 초기 기독교 시대의 지하 묘지가 거미줄처럼 이어져 있습니다.
-
 세인트 폴 카타콤(St Paul's Catacombs)은 3~8세기에 걸쳐 기독교·유대·이교도 사이에서 공동으로 사용된 광대한 지하 묘지로, 구불구불한 통로와 나지막한 천장이 이어지는 탐험 같은 경험을 제공합니다. 세인트 아가타 카타콤(St Agatha's Catacombs)에는 3세기의 초기 기독교 프레스코화가 남아 있으며, 위냐쿠르 박물관(Wignacourt Museum)은 바로크 성당, 지하 묘지, 2차 세계대전 방공호를 아우르는 복합 공간입니다.
-
 임디나의 고요한 돌담 도시를 돌아본 뒤 라바트로 내려오면 진짜 몰타의 일상을 만납니다. 크리스탈 팰리스 바(Crystal Palace Bar)의 갓 구운 파스티찌(pastizzi)는 이 동네를 찾는 또 하나의 이유가 됩니다.`,
 };
-
 // ── 인터넷 자료 ─────────────────────────────────────────────────
 const WEB_DATA = {
   // ═══════ SICILY — 팔레르모 ═══════
   '마시모 극장': `유럽에서 세 번째로 큰 오페라 하우스, 테아트로 마시모(Teatro Massimo). 1897년 개관한 이 웅장한 신고전주의 건물은 팔레르모 비아 마퀘다의 북쪽 끝 광장을 압도합니다. 정면 계단과 기둥들로 이루어진 외관만으로도 충분히 장관이지만, 내부의 붉은 벨벳과 금빛 장식, 완벽한 음향 설계는 세계 최고 수준으로 꼽힙니다.
-
 영화 팬이라면 특별한 감흥을 느낄 수 있습니다. 프란시스 포드 코폴라의 《대부 3편(The Godfather Part III, 1990)》의 비극적 클라이맥스 장면이 바로 이 계단에서 촬영되었습니다. 오페라 시즌(10~6월)에는 공연 관람이 가능하며, 낮 시간에는 30~40분짜리 가이드 투어로 내부를 둘러볼 수 있습니다.
-
 팔레르모에서 이탈리아 건축의 자부심을 느끼고 싶다면 이곳을 놓치지 마세요.`,
-
   '카포시장': `팔레르모 북부의 카포(Capo) 시장은 발라로 시장보다 덜 알려졌지만, 현지 팔레르미타니(팔레르모 사람들)가 매일 장을 보는 진짜 시장입니다. 비아 산탄젤로(Via Sant'Agostino)에서 시작해 수백 미터에 걸쳐 이어지는 아케이드 아래, 시칠리아 특유의 생생한 시장 문화가 펼쳐집니다.
-
 형형색색의 과일과 채소, 싱싱한 생선과 문어, 올리브와 치즈, 그리고 팔레르모의 소울 푸드인 파니 카 메우사(비장과 폐로 만든 샌드위치)를 파는 노점들이 줄지어 있습니다. 상인들의 호객 소리와 냄새, 색깔이 뒤섞이는 이 시장은 관광지화된 곳이 아니라, 팔레르모의 살아있는 일상입니다.
-
 오전 일찍 방문할수록 신선함과 활기가 넘칩니다. 근처의 카르미네 성당(Chiesa del Carmine)의 금빛 돔도 함께 들러보세요.`,
-
   '제수교회': `팔레르모 구도심의 제수 교회(Chiesa del Gesù, 또는 Casa Professa)는 16세기 예수회가 시칠리아에 세운 첫 번째 교회로, 이탈리아 남부 바로크 건축의 선구적 작품입니다. 1564년 착공해 한 세기에 걸쳐 완성된 내부는 대리석 인타르시아(intarsia) 장식으로 뒤덮여 있습니다.
-
 벽과 기둥, 바닥 전체를 감싸는 색색의 대리석 모자이크 패턴은 '팔레르모의 숨겨진 보석'이라는 별명에 걸맞습니다. 화려함의 절정을 보여주는 이 공간은 강렬한 팔레르모 바로크 양식의 교과서로, 도시를 조금 더 깊게 들여다보고 싶은 여행자에게 강력히 추천합니다.
-
 1943년 연합군 폭격으로 일부 손상되었지만 수십 년에 걸친 복원 작업으로 대부분 원형을 회복했습니다.`,
-
   '벨리니광장': `팔레르모의 건축적 다양성을 가장 극적으로 보여주는 장소가 피아차 벨리니(Piazza Bellini)입니다. 이 작은 광장에 서면, 서로 전혀 다른 두 개의 중세 교회가 마주보고 있습니다.
-
 선명한 빨간색 돔 세 개가 올라앉은 산 카탈도 교회(Chiesa di San Cataldo)는 12세기 노르만-아랍 건축의 순수한 결정체입니다. 단순하고 기하학적인 외관이 오히려 강렬한 인상을 남깁니다. 바로 옆의 마르토라나 교회(La Martorana, 공식명 Santa Maria dell'Ammiraglio)는 12세기 비잔틴 황금 모자이크가 압도적인 걸작 내부를 자랑합니다. 1143년 완공 당시의 모자이크가 오늘도 황금빛으로 빛납니다.
-
 두 교회는 입장료가 다르니 방문 전 확인하세요. 광장 주변에 카페들이 있어 잠시 앉아 건물들을 감상하기에도 좋습니다.`,
-
   '산타카테리나 성당': `피아차 프레토리아(Piazza Pretoria, '수치의 분수'가 있는 광장) 바로 옆에 자리한 산타 카테리나 성당(Chiesa di Santa Caterina d'Alessandria)은 16~17세기에 걸쳐 완성된 팔레르모 바로크 건축의 또 다른 걸작입니다. 오랫동안 수녀원의 교회로 외부인 출입이 제한되어 있다가 2020년 전면 복원 후 일반에 개방되었습니다.
-
 내부는 색채 대리석, 금박 치장 벽토, 정교한 조각들로 가득 채워져 있습니다. 특히 돔 아래에 서면 모든 방향에서 쏟아지는 빛과 황금빛 장식이 압도적인 공간감을 만들어냅니다. 옥상 테라스로 올라가면 팔레르모 구도심과 돔들의 파노라마 전망이 펼쳐집니다.
-
 비아 마퀘다와 콰트로칸티에서 걸어서 2분 거리로, 팔레르모 구도심 투어에 자연스럽게 포함시킬 수 있습니다.`,
-
   '팔라조 아드리아노': `팔레르모에서 남동쪽으로 약 70km 내륙에 자리한 팔라초 아드리아노(Palazzo Adriano)는 1988년 제작된 영화 《시네마 천국(Cinema Paradiso)》의 촬영지로 전 세계에 알려진 작은 산골 마을입니다. 감독 주세페 토르나토레의 고향 바지니아 근처에서 발굴한 이 마을은, 영화 속 '지안칼도(Giancaldo)' 마을로 완벽한 배경이 되어 주었습니다.
-
 마을 중심의 피아차 움베르토 1세(Piazza Umberto I)는 영화에서 토토와 알프레도가 영화를 상영하던 광장 그대로입니다. 분수와 교회, 주변 건물들이 영화 장면과 거의 변하지 않아 팬들에게는 순례지나 다름없습니다.
-
 15세기 알바니아 이민자들이 세운 마을답게 독자적인 언어와 문화가 지금도 일부 남아 있습니다. 팔레르모에서 당일치기 드라이브 코스로 방문하기 좋습니다.`,
-
   // ═══════ SICILY — 카타니아 ═══════
   '카타니아 어시장': `카타니아 두오모 광장(Piazza del Duomo) 바로 뒤편 골목에서 매일 새벽부터 오전까지 열리는 라 페스케리아(La Pescheria)는 시칠리아에서 가장 생동감 넘치는 시장입니다. 아랍 시대부터 이어진 1,000년 역사의 이 어시장은, 카타니아 특유의 거칠고 활기찬 에너지가 응축된 공간입니다.
-
 새벽빛 아래 얼음 위에 늘어선 황새치, 참치, 성게, 오징어, 문어들과 이를 큰 소리로 팔아치우는 상인들의 모습은 카타니아 여행의 필수 장면입니다. 이탈리아어와 시칠리아 방언이 뒤섞인 호객 소리, 생선 비늘과 얼음이 쏟아지는 골목 풍경은 그 자체로 하나의 퍼포먼스입니다.
-
 오전 9~10시가 지나면 시장이 닫히기 시작하므로, 이른 아침 방문을 강력히 추천합니다. 시장 주변의 현지인 전용 트라토리아에서 아침 식사를 겸하는 것도 좋습니다.`,
-
   '산베네디토 교회': `카타니아 구도심에 자리한 베네딕트 수도원(Monastero dei Benedettini di San Nicolò l'Arena)은 유럽 최대 베네딕트 수도원 중 하나로, 현재 카타니아 대학교(Università degli Studi di Catania)로 사용되고 있습니다. 1693년 대지진 이후 화산 현무암과 흰 석회암으로 재건된 이 거대한 복합 건물은 카타니아 바로크 건축의 대표작입니다.
-
 수도원 내부의 정원과 회랑, 예배당을 가이드 투어로 둘러볼 수 있으며, 서로 다른 시대의 건축 양식이 층층이 겹쳐진 지하 유적도 탐방합니다. 특히 아랍 시대의 목욕탕 터, 노르만 시대의 구조물, 17세기 바로크 건물이 수직으로 교차하는 지점은 시칠리아 역사의 단면을 보는 것 같습니다.
-
 두오모 광장에서 도보 10분 거리이며, 대학 측에 투어 예약을 권장합니다.`,
-
   '비스카리 궁전': `1693년 대지진 이후 재건된 카타니아 최고의 귀족 바로크 궁전, 팔라초 비스카리(Palazzo Biscari). 18세기 팔라초 비스카리 왕자(Prince of Biscari)가 수십 년에 걸쳐 완성한 이 궁전은, 외부의 화려한 테라스 난간 조각과 내부의 거대한 무도회장(Sala del Ballo)으로 유명합니다.
-
 모차르트가 1770년 시칠리아 여행 중 이 궁전을 방문하여 연주했다는 기록이 남아 있습니다. 지금도 궁전 일가(비스카리-파테르노 가문)가 거주하고 있어 일부 공간만 공개되지만, 공개된 방들의 프레스코화와 치장 벽토 장식은 충분히 인상적입니다.
-
 두오모 광장 근처에 있으며, 방문 전 홈페이지에서 가이드 투어 일정을 확인하세요.`,
-
   // ═══════ SICILY — 기타 ═══════
   '그리스 극장': `타오르미나의 절벽 위에 서 있는 그리스 극장(Teatro Greco)은 세계에서 가장 아름다운 고대 극장 중 하나입니다. 기원전 3세기 그리스인들이 건설하고 로마 시대에 개축된 이 극장은, 에트나 화산과 이오니아 해가 동시에 보이는 천혜의 자리에 위치합니다.
-
 지름 109m의 반원형 관람석에서 바라보는 무대 너머의 풍경은, 극장 건설을 지시한 사람이 단순히 공연장을 넘어 자연과 건축의 완벽한 합일을 추구했음을 느끼게 합니다. 로마 시대에 검투사 경기장으로 개조되면서 일부 구조가 변형되었지만, 오늘날에도 매년 여름 타오르미나 국제 영화제와 야외 공연의 무대로 활용됩니다.
-
 타오르미나 구도심에서 도보로 10분 거리이며, 시칠리아 방문 중 반드시 들러야 할 장소 중 하나입니다.`,
-
   // ═══════ GERMANY — 라인강 ═══════
   '뤼데스하임': `라인강 협곡의 관문 뤼데스하임(Rüdesheim am Rhein)은 독일 와인 가도의 상징적인 출발점입니다. 마을 중심의 좁은 골목 드로셀가세(Drosselgasse, '찌르레기 골목')는 와인 바와 레스토랑이 빼곡히 들어선 100m 남짓한 길이지만, 독일 전통 음악과 리슬링 와인 잔이 부딪히는 소리로 하루 종일 활기가 넘칩니다.
-
 닐더발트 기념비(Niederwald Monument)로 오르는 곤돌라 케이블카는 뤼데스하임 최고의 경험 중 하나입니다. 라인강 양쪽에 포도밭과 성들이 펼쳐지는 파노라마 전망이 압도적입니다. 기념비 근처에서 시작하는 포도밭 산책로(Weinlehrpfad)를 따라 걸으면 수백 년 된 리슬링 포도밭 사이를 거닐 수 있습니다.
-
 라인강 유람선 출발지 중 하나이며, 기차로 프랑크푸르트에서 약 1시간 거리입니다.`,
-
   '바하라흐': `중세 독일의 동화 속으로 들어가는 문, 바하라흐(Bacharach). 라인강 협곡에서 가장 잘 보존된 중세 마을로 손꼽히는 이곳은 14세기 성벽과 망루가 지금도 마을을 온전히 둘러싸고 있습니다. 붉은 목골조 건물(Fachwerkhaus)들이 늘어선 구도심은 걸음마다 사진이 됩니다.
-
 언덕 위 슈타흘렉 성(Burg Stahleck, 현재 유스호스텔로 운영)에서 내려다보는 라인강과 마을 전경이 이 지역 최고의 뷰 포인트 중 하나입니다. 마을 안에는 폐허로 남은 베르너 예배당(Wernerkapelle)도 있어, 완성되지 못한 고딕 아치들 사이로 하늘이 보이는 독특한 풍경을 연출합니다.
-
 성수기에도 인근 뤼데스하임보다 훨씬 한적해, 라인 협곡의 진짜 분위기를 느끼기에 이상적입니다.`,
-
   '코블렌츠': `라인강과 모젤강이 만나는 도이체스 에크(Deutsches Eck, '독일의 모퉁이')로 유명한 코블렌츠(Koblenz)는 2,000년 로마 시대부터 전략적 요충지였습니다. 두 강이 합류하는 지점에 서면, 카이저 빌헬름 1세의 거대한 기마상이 시선을 압도합니다.
-
 라인강 맞은편 절벽 위의 에렌브라이트슈타인 요새(Festung Ehrenbreitstein)는 세계 최대 보존 요새 중 하나입니다. 코블렌츠 시내에서 케이블카(라인강을 가로지름)로 올라갈 수 있으며, 요새에서 바라보는 두 강의 합류 지점과 도시 전경이 장관입니다.
-
 구도심의 요제프스광장(Jesuitenplatz)과 코른포르크스플라츠(Kornpfortstrasse) 일대도 산책하기 좋습니다. 라인강 유람선과 기차 환승의 교통 거점이기도 합니다.`,
-
   '엘츠성': `독일에서 가장 아름다운 성으로 꼽히는 엘츠 성(Burg Eltz)은 코헴에서 20km 떨어진 숲 속 계곡에 숨겨져 있습니다. 1,000년 역사 동안 단 한 번도 전쟁으로 함락되거나 파괴된 적 없는 이 성은, 지금도 엘츠 가문의 후손들이 살고 있습니다.
-
 성은 모젤강 지류가 만드는 좁은 계곡 바위 위에 마치 유기적으로 자란 것처럼 솟아있으며, 여러 가문 분파의 타워와 주거 건물이 수백 년에 걸쳐 덧붙여진 독특한 실루엣이 특징입니다. 숲길을 걸어 처음 성이 시야에 들어오는 순간은 잊기 어렵습니다.
-
 내부 투어를 통해 원래 가구와 갑옷, 무기, 그림이 그대로 보존된 방들을 볼 수 있습니다. 인근 마을 뮈렌바흐(Mühlental) 주차장에서 도보 30분, 또는 코헴이나 카르덴(Karben) 기차역에서 트레킹으로 접근합니다.`,
-
   '코헴': `모젤강변에서 가장 그림 같은 소도시 코헴(Cochem). 붉은 지붕 건물들이 빽빽이 들어선 강변 위로 라이히스부르크 성(Reichsburg)이 언덕 꼭대기에서 내려다보는 풍경은 독일 라인-모젤 여행의 상징적인 장면입니다. 1000년대에 건설되고 1877년 복원된 이 성에서 모젤 계곡을 내려다보는 전망이 빼어납니다.
-
 모젤 지역은 세계 최고의 리슬링 와인 산지입니다. 급경사 슬레이트 비탈에 뿌리내린 포도나무에서 생산되는 모젤 리슬링은 섬세한 산미와 미네랄이 특징이며, 마을 와인 바에서 현지 생산 와인을 저렴하게 즐길 수 있습니다.
-
 강변 산책로(Promenade)와 구도심 골목 탐방, 페리 유람도 코헴 여행의 필수 코스입니다.`,
-
   '하이델베르크': `독일 낭만주의의 심장 하이델베르크(Heidelberg). 네카어강(Neckar)과 그 위 붉은 사암 절벽, 그리고 그 위에 자리한 하이델베르크 성(Schloss Heidelberg)의 폐허가 어우러진 풍경은 괴테와 마크 트웨인을 비롯한 수많은 문인들을 매혹시켰습니다.
-
 독일 최초의 대학(하이델베르크 대학, 1386년 설립)을 품은 이 도시는 학문과 낭만의 분위기가 공존합니다. 구도심의 하우프트슈트라세(Hauptstrasse)는 유럽에서 가장 긴 보행자 전용 쇼핑 거리 중 하나이며, 네카어강 건너편 언덕의 철학자의 길(Philosophenweg)은 도시 전경을 즐기며 산책하기에 더없이 좋습니다.
-
 성 내부에는 세계 최대 와인 통(22만 리터 용량)이 전시되어 있으며, 일몰 때 성이 황금빛으로 물드는 장면이 하이델베르크 여행의 하이라이트입니다.`,
-
   // ═══════ 가르다 호수 ═══════
   '가르다호수': `이탈리아 최대 호수 가르다(Lago di Garda)는 남북으로 52km에 걸쳐 펼쳐지며, 북쪽은 알프스 협곡의 서늘한 산악 풍경을, 남쪽은 레몬과 올리브가 자라는 지중해 기후 풍경을 보여줍니다. 단 하나의 호수에서 전혀 다른 두 세계를 경험하는 것이 가르다 호수 여행의 매력입니다.
-
 북쪽의 리바 델 가르다(Riva del Garda)와 토르볼레(Torbole)는 윈드서핑과 카이트서핑의 성지이며, 동쪽의 말체시네와 서쪽의 리모네는 아름다운 중세 마을들이 절벽에 매달려 있습니다. 남쪽 시르미오네의 온천과 로마 유적은 또 다른 매력입니다.
-
 밀라노에서 기차로 약 1시간 30분(데센자노 역), 베로나에서 약 30분 거리입니다. 호수 주변 마을들을 잇는 페리 노선이 잘 발달되어 있어 차 없이 여행하기도 좋습니다.`,
-
   '말체시네': `가르다 호수 동쪽 해안 중간쯤에 자리한 말체시네(Malcesine)는 호수에서 가장 아름다운 중세 마을 중 하나입니다. 호숫가 바위 위에 올라앉은 스칼리제리 성(Castello Scaligero, 14세기)이 마을의 상징이며, 성 꼭대기에서 바라보는 호수 전망이 빼어납니다.
-
 말체시네의 또 다른 하이라이트는 몬테 발도(Monte Baldo, 1,760m)로 오르는 케이블카입니다. 360도 회전하는 곤돌라 캐빈으로 가르다 호수와 알프스를 동시에 조망하며 오르는 경험이 독특합니다. 정상에는 하이킹 코스와 패러글라이딩 출발지가 있으며, 겨울에는 스키장으로 변합니다.
-
 괴테가 1786년 이 마을을 방문했다가 오해를 받아 잠시 억류되었다는 일화가 전해집니다. 구도심의 좁은 골목과 호숫가 레스토랑에서 여유롭게 시간을 보내기에 완벽한 곳입니다.`,
-
   '말체시네 케이블카': `말체시네에서 출발하는 몬테 발도 케이블카(Funivia Monte Baldo)는 가르다 호수 여행의 하이라이트 중 하나입니다. 360도 회전하는 파노라마 캐빈이 해발 1,760m 정상까지 약 15분 만에 올려다 주는 동안, 코발트블루 가르다 호수와 트렌티노 알프스 봉우리들이 파노라마로 펼쳐집니다.
-
 정상 알보레 역(Stazione di Tratto Spino)에서 이어지는 산책로와 하이킹 트레일은 다양한 난이도로 준비되어 있습니다. 운이 좋으면 야생 사슴과 마모트(marmot)를 만날 수도 있습니다. 패러글라이딩 출발지도 이곳에 있어, 호수 위를 활공하는 짜릿한 경험도 가능합니다.
-
 성수기(7~8월) 케이블카 탑승 대기가 길 수 있으므로 이른 아침 방문을 추천합니다. 탑승권은 현장 구매보다 온라인 사전 예매가 저렴합니다.`,
-
   '리모네술가르다': `이름처럼 레몬으로 유명한 리모네 술 가르다(Limone sul Garda)는 가르다 호수 서안의 절벽에 아슬아슬하게 매달린 작은 마을입니다. 수백 년 전부터 레몬과 감귤 재배로 생계를 이어온 이 마을에는 지금도 레몬 과수원을 덮었던 돌기둥 구조물(limonaie) 유적이 남아 있습니다.
-
 1990년대 이 마을 주민들에게서 심혈관 질환이 현저히 낮다는 것이 발견되었고, 연구 결과 혈중에 '아포리포단백질 AI-Milano'라는 특이 단백질이 있음이 밝혀졌습니다. 현대 심장 의학에 큰 영향을 준 발견입니다.
-
 호숫가 산책로를 따라 파스텔 색조의 건물들과 꽃으로 장식된 발코니들이 이어지며, 레몬 젤라토와 리몬첼로는 빠뜨릴 수 없는 기념품입니다. 가르다 호수 서안 도로(SS45bis)는 가드레일 없이 절벽 위를 달리는 스릴 넘치는 드라이브 코스이기도 합니다.`,
-
   '시르미오네': `가르다 호수 남쪽에서 물 위로 길게 뻗어 나온 반도 끝에 자리한 시르미오네(Sirmione)는 가르다 호수에서 가장 유명한 여행지입니다. 14세기 스칼리제리 가문이 건설한 로카 스칼리제라(Rocca Scaligera) 성이 세 면이 물로 둘러싸인 채 마을 입구를 지키고 있어, 다리를 건너 성문을 통과하는 순간 중세로 시간 여행을 하는 기분입니다.
-
 반도 끝에는 기원전 1세기 로마 시인 카툴루스의 별장 유적 '카툴루스의 동굴(Grotte di Catullo)'이 자리합니다. 가르다 호수에서 가장 큰 규모의 로마 빌라 유적으로, 언덕 위에서 내려다보는 호수 전망도 훌륭합니다.
-
 시르미오네는 지열 온천 지대이기도 합니다. 카투로 스파(Terme di Sirmione)에서 유황 온천을 즐기거나, 반도 동쪽 해안의 자연 온천 해변에서 따뜻한 물에 몸을 담글 수 있습니다.`,
-
   // ═══════ 돌로미테 ═══════
   '오르티세이': `돌로미테의 심장, 발 가르데나(Val Gardena) 계곡 중심에 자리한 오르티세이(Ortisei, 라딘어 Urtijëi)는 돌로미테 여행의 가장 이상적인 베이스 캠프입니다. 자체 고유 언어인 라딘(Ladin)어를 사용하는 독자적 문화 공동체가 이어온 이 마을은 수백 년 전통의 목조 공예로도 유명합니다.
-
 마을에서 세체다(Seceda)와 알페 디 시우시(Alpe di Siusi) 두 방향으로 곤돌라가 출발하여, 돌로미테의 대표 풍경 두 곳을 하루에 모두 즐길 수 있습니다. 마을 자체도 아기자기한 가게들과 카페, 목조 공예 공방들이 가득해 산책만으로도 충분히 즐겁습니다.
-
 볼차노(Bozen)에서 버스로 약 1시간, 또는 볼차노 공항이나 베로나/뮌헨에서 렌터카로 접근합니다. 여름(하이킹)과 겨울(스키 월드컵 개최지)모두 세계적인 여행지입니다.`,
-
   '산타막달레나': `돌로미테에서 가장 아이코닉한 풍경을 꼽으라면 단연 산타 막달레나(Santa Maddalena, 라딘어 St. Magdalena)입니다. 발 디 푸네스(Val di Funes) 계곡의 초록 언덕 위에 자그마한 첨탑 예배당이 서 있고, 그 뒤로 오들레 산군(Gruppo delle Odle)의 수직 암벽들이 하늘을 향해 치솟는 풍경은 돌로미테를 대표하는 엽서 사진 그 자체입니다.
-
 봄의 야생화 초원, 여름의 짙은 초록, 가을의 황금빛 낙엽, 겨울의 눈 덮인 설경 등 계절마다 전혀 다른 감동을 선사합니다. 마을 뒤로 시작되는 트레일들은 오들레 기슭까지 이어지며, 고산 산장(리푸지오, rifugio)에서 점심을 먹을 수 있습니다.
-
 오르티세이에서 차로 약 30분, 브레사노네(Brixen)에서도 접근 가능합니다.`,
-
   '발 가르데나': `알프스에서 가장 유명한 계곡 중 하나인 발 가르데나(Val Gardena)는 돌로미테 한가운데를 동서로 관통하는 30km 길이의 계곡입니다. 계곡 내 오르티세이(Ortisei), 산타 크리스티나(Santa Cristina), 셀바(Selva)의 세 주요 마을이 차례로 이어지며, 각각 스키 리프트와 하이킹 곤돌라를 갖추고 있습니다.
-
 겨울에는 스키 알파인 월드컵 슬라롬 코스(Gran Risa)가 열리는 세계 정상급 스키 리조트로, 여름에는 '돌로미테 슈퍼스키' 하이킹 패스를 이용한 트레일 네트워크가 수백 킬로미터에 달합니다. 계곡 끝 셀바 위의 셀라 산군(Gruppo del Sella)과 패소 셀라(Passo Sella)에서 360도로 펼쳐지는 돌로미테 파노라마는 지구상 최고의 경치 중 하나입니다.
-
 라딘 문화권 특유의 산장 음식(카넬로니, 뇨키, 슈트루델)을 고산 리푸지오에서 즐기는 것도 빠뜨릴 수 없습니다.`,
-
   '세체다': `오르티세이에서 곤돌라를 타고 오르는 세체다(Seceda, 2,518m)는 돌로미테 전체를 통틀어 가장 극적인 풍경 중 하나를 선사합니다. 고원에 서면 전방을 가득 채우는 오들레 산군(Odle/Geisler Group)의 수직 암탑들과 발 가르데나 계곡, 멀리 알프스 봉우리들이 360도 파노라마로 펼쳐집니다.
-
 능선을 따라 이어지는 릿지 워크(Seceda Ridge Trail)는 돌로미테에서 가장 아름다운 트레킹 코스 중 하나로 꼽힙니다. 일출 시 오들레 암벽이 분홍빛으로 물드는 '엔로사디라(Enrosadira, 알펜글로 현상)'는 이 장소를 잊지 못하게 만드는 장면입니다.
-
 오르티세이에서 곤돌라로 약 15분, 정상 레스토랑에서 뷰를 감상하며 식사도 가능합니다. 하강은 트레일로 걸어 내려오는 것을 추천합니다.`,
-
   '알페디시우스': `유럽 최대 고산 초원 알페 디 시우시(Alpe di Siusi, 라딘어 Seiser Alm)는 해발 1,800~2,000m 고도에 56㎢ 면적으로 펼쳐지는 광활한 녹색 초원 지대입니다. 초원 너머로 란코펠(Langkofel/Sassolungo)과 슐레른(Schlern/Sciliar) 산군의 웅장한 암벽이 솟아있어, 지구상 어디에서도 볼 수 없는 독특한 풍경을 만들어냅니다.
-
 자동차 출입이 제한(허가 차량 및 특정 시간대만 허용)되어 케이블카 또는 셔틀버스로 오릅니다. 초원 전역을 종횡으로 잇는 수십 개의 트레킹 코스와 자전거 트레일이 있으며, 고산 산장들이 일정 간격마다 있어 음식과 음료를 보충할 수 있습니다.
-
 봄(5~6월)에 야생화 카펫이 가장 화려하며, 초여름 아침 안개가 걷히며 봉우리가 드러나는 장면은 쉽게 잊히지 않습니다.`,
-
   '사쏘룽고': `발 가르데나의 수호신처럼 우뚝 선 사쏘룽고(Sassolungo/Langkofel, 3,181m)는 돌로미테에서 가장 극적인 실루엣의 봉우리 중 하나입니다. 수직에 가까운 거대한 암벽 덩어리가 패소 셀라(Passo Sella, 2,244m) 위로 솟아있어, 고갯길에서 바라보는 모습이 특히 압도적입니다.
-
 사쏘룽고와 사쏘피아토(Sassopiatto) 사이의 협곡을 돌아가는 순환 트레일(Sassolungo Circuit)은 돌로미테에서 손꼽히는 당일 하이킹 코스입니다. 패소 셀라에서 시작해 고산 산장 티라부세르(Rifugio Friedrich August)와 토니 드마에츠(Rifugio Toni Demetz)를 거치는 이 루트는, 암벽 기슭을 바짝 붙어 걷는 전반부와 넓은 초원을 가로지르는 후반부가 대비를 이룹니다.
-
 오르티세이나 셀바에서 패소 셀라까지 버스 또는 차로 30~40분 거리입니다.`,
-
   // ═══════ 밀라노 ═══════
   '밀라노': `이탈리아 패션과 디자인, 금융의 수도 밀라노(Milano)는 한국 여행자에게 쇼핑 목적지로 익숙하지만, 도시 자체의 문화적 깊이는 그보다 훨씬 깊습니다. 두오모 광장(Piazza del Duomo)의 고딕 대성당은 135개 첨탑과 3,400여 개의 조각상으로 이루어진 900년 역사의 건축적 경이입니다. 옥상 테라스에 오르면 맑은 날 알프스 설봉이 지평선에 걸립니다.
-
 두오모 옆 비토리오 에마누엘레 2세 갈레리아(Galleria Vittorio Emanuele II)는 1877년 완공된 세계 최초의 쇼핑몰로, 철제 아치와 스테인드글라스 천장 아래 명품 부티크와 클래식 카페가 들어서 있습니다. 레오나르도 다빈치의 《최후의 만찬(L'Ultima Cena, 1497)》은 산타 마리아 델레 그라치에 성당 식당 벽에 그려진 프레스코화로, 방문 2~3개월 전 예약이 필수입니다.
-
 브레라(Brera) 지구의 갤러리아와 예술가 골목, 나빌리(Navigli)의 운하변 바와 빈티지 마켓도 밀라노의 또 다른 얼굴입니다.`,
 };
-
 // ── Wikipedia 이미지 타이틀 매핑 ──────────────────────────────────
 const WIKI_TITLES = {
   // Malta
@@ -1951,7 +2175,6 @@ const WIKI_TITLES = {
   // Milan
   '밀라노': 'Milan',
 };
-
 // ── LP 패널 열기/닫기 ───────────────────────────────────────────
 function showLPPanel(name, source) {
   const content = source === 'web' ? WEB_DATA[name] : LP_DATA[name];
@@ -1968,19 +2191,16 @@ function showLPPanel(name, source) {
   const paras = content.trim().split(/\n\n+/).map(p =>
     `<p>${p.trim().replace(/\n/g, '<br>')}</p>`
   ).join('');
-
   const wikiTitle = WIKI_TITLES[name];
   const imgPlaceholder = wikiTitle
     ? `<div class="place-img-wrap" id="place-img-wrap"><span class="place-img-loading">📷 사진 불러오는 중…</span></div>`
     : '';
   document.getElementById('lp-panel-body').innerHTML = imgPlaceholder + paras;
-
   document.getElementById('lp-overlay').classList.add('open');
   const panel = document.getElementById('lp-panel');
   panel.classList.add('open');
   document.getElementById('lp-panel-body').scrollTop = 0;
   document.body.style.overflow = 'hidden';
-
   if (wikiTitle) {
     fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(wikiTitle)}`)
       .then(r => r.json())
@@ -2000,7 +2220,6 @@ function showLPPanel(name, source) {
       });
   }
 }
-
 function closeLPPanel() {
   document.getElementById('lp-overlay').classList.remove('open');
   document.getElementById('lp-panel').classList.remove('open');
