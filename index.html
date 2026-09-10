@@ -481,7 +481,7 @@
     color: #9ca3af;
     font-size: 12px;
   }
- 
+
   /* ── 스플래시 (오늘 요약 대시보드) ── */
   #splash {
     position: fixed; inset: 0; background: #fff; z-index: 5000;
@@ -571,7 +571,7 @@
   }
   #nav-home:active { color: var(--accent); }
   #nav-home .nav-icon { font-size: 18px; }
- 
+
 </style>
 </head>
 <body>
@@ -594,7 +594,7 @@
   <button id="gate-btn" style="padding:10px 20px;background:#333;color:#fff;border:none;border-radius:8px;">입장</button>
   <p id="gate-err" style="color:red;font-size:13px;display:none;">틀렸어요</p>
 </div>
- 
+
 <!-- ══════════════════════════════════════════════
      스플래시 · 오늘 요약 대시보드
      ════════════════════════════════════════════ -->
@@ -607,252 +607,264 @@
     </div>
     <div class="splash-dday-badge" id="splash-dday">D-?</div>
   </div>
- 
+
   <!-- 지도 -->
   <div class="splash-map-wrap">
     <svg class="splash-map-svg" viewBox="0 0 380 340" xmlns="http://www.w3.org/2000/svg" id="splash-svg">
       <!-- ────── 전체 루트 지도 (overview) ────── -->
       <g id="map-overview">
         <!-- 바다 배경 -->
-        <rect width="380" height="340" fill="#b8d7f0"/>
+        <rect width="380" height="340" fill="#a8c4e0"/>
         <!-- 북아프리카 힌트 -->
-        <rect x="0" y="302" width="380" height="38" fill="#e8d8a0" opacity="0.55"/>
-        <!-- 유럽 대륙 (독일·프랑스·스위스·오스트리아·알프스 포함) -->
-        <path d="M 0,0 L 380,0 L 380,88 C 358,84 335,80 312,80 C 292,80 272,82 252,84 C 240,86 234,94 228,106 L 194,110 C 178,112 164,114 157,114 C 140,114 128,118 118,124 C 108,130 106,136 100,142 C 90,144 78,148 68,150 L 0,150 Z" fill="#c8d9a8"/>
-        <!-- 알프스 힌트 (밝은 선) -->
-        <path d="M 82,144 C 100,136 118,128 140,124 C 160,120 180,116 204,112 C 218,110 230,108 238,106" stroke="#e8f0d8" stroke-width="2.5" fill="none" opacity="0.7"/>
- 
-        <!-- 이탈리아 반도 (boot shape) -->
-        <!-- 프로젝션: x=(lon-5)/14*360+10, y=(52-lat)/18*300+10 -->
-        <!-- W해안(S방향): 제노바→나폴리→레조 / E해안(N방향): 레조→타란토→뒤꿈치→풀리아→아드리아 -->
+        <rect x="0" y="302" width="380" height="38" fill="#e8d8a0" opacity="0.5"/>
+
+        <!-- 유럽 대륙 (알프스 남쪽 경계 따라) -->
         <path d="
-          M 110,130
-          C 124,134 136,138 140,142
-          C 145,148 152,154 162,158
-          C 174,162 186,166 196,172
-          C 208,178 220,184 230,190
-          C 238,196 245,204 250,210
-          C 258,218 266,226 272,232
-          L 270,240
-          C 267,247 268,250 272,244
-          C 277,236 284,220 288,216
-          C 294,208 304,196 306,192
-          C 314,190 322,192 322,198
-          L 334,206
-          L 324,212
-          C 314,212 304,208 296,198
-          C 292,186 294,182 300,182
-          L 299,181
-          C 286,174 276,170 274,170
-          L 282,164
-          L 272,173
-          C 258,165 246,160 238,158
-          C 228,151 220,140 218,138
-          C 208,128 200,120 194,120
-          L 228,106
-          C 220,104 206,106 192,108
-          C 178,110 162,114 148,118
-          C 134,122 120,126 110,130 Z
-        " fill="#c8d9a8"/>
- 
-        <!-- 시칠리아 (삼각형, 이탈리아 발끝 바로 아래) -->
-        <!-- NE=메시나(272,226), NW=트라파니(172,233), S=카포파세로(248,264) -->
+          M 0,0 L 380,0 L 380,122
+          C 352,124 318,126 296,126
+          C 278,126 264,122 250,118
+          C 240,116 238,116 236,116
+          C 220,118 204,120 198,119
+          C 184,116 168,109 152,106
+          C 138,106 122,110 106,118
+          C 96,122 84,126 72,132
+          L 0,132 Z
+        " fill="#c9d9a3"/>
+
+        <!-- 이탈리아 반도 (장화 정확한 형태) -->
+        <!-- 알프스 리구리아 접속 → 서해안 남하 → 발가락 → 힐 → 아드리아 북상 → 북이탈리아 귀환 -->
         <path d="
-          M 172,233
-          C 184,228 194,228 194,230
-          C 212,228 234,226 256,226
-          L 272,226
-          C 268,232 258,239 244,243
-          C 243,248 244,254 244,256
-          C 242,262 242,266 248,264
-          C 240,268 230,266 218,262
-          C 206,256 198,250 198,250
-          C 188,244 180,238 172,233 Z
-        " fill="#c8d9a8"/>
-        <!-- 몰타 (작은 섬) -->
-        <ellipse cx="228" cy="280" rx="7" ry="4.5" fill="#b8cc90"/>
- 
+          M 72,132
+          C 80,134 96,136 111,137
+          C 120,139 128,140 134,142
+          C 140,147 144,150 147,151
+          C 152,156 162,162 168,166
+          C 177,170 183,175 185,175
+          C 193,178 200,182 200,183
+          C 208,185 220,190 229,191
+          C 238,194 248,196 248,196
+          C 255,198 261,199 261,199
+          C 270,203 280,210 280,210
+          C 284,224 284,234 284,242
+          C 283,244 286,245 295,245
+          C 306,237 320,226 322,225
+          L 325,202
+          C 334,198 344,200 344,200
+          C 350,206 354,213 353,213
+          C 348,208 342,204 325,202
+          C 316,192 300,188 247,169
+          C 234,158 229,150 229,150
+          C 218,136 206,123 198,119
+          C 210,118 222,118 236,116
+          Z
+        " fill="#c9d9a3"/>
+
+        <!-- 시칠리아 (정확한 삼각형: NW=트라파니, NE=메시나, S=카포파세로) -->
+        <path d="
+          M 203,245
+          C 212,241 218,241 225,241
+          C 233,241 238,242 242,244
+          C 256,242 270,240 282,240
+          C 276,248 272,256 271,265
+          C 263,268 259,262 260,261
+          C 248,259 236,256 231,255
+          C 220,252 210,248 203,245 Z
+        " fill="#c9d9a3"/>
+
+        <!-- 몰타 (소형 섬 정확한 위치) -->
+        <ellipse cx="255" cy="278" rx="8" ry="5" fill="#b8cc8c"/>
+
         <!-- ── 루트 라인 ── -->
-        <!-- 마인츠→하이델베르크 (드라이브) -->
-        <line x1="97" y1="43" x2="107" y2="53" stroke="#3b82f6" stroke-width="1.8" opacity="0.75"/>
-        <!-- 하이델베르크→팔레르모 (비행 아크: 이탈리아 서쪽 지중해로 우회) -->
-        <path d="M 107,53 Q 52,190 194,230" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.65" fill="none"/>
+        <!-- 마인츠↔하이델베르크 (드라이브) -->
+        <line x1="94" y1="43" x2="105" y2="53" stroke="#3b82f6" stroke-width="1.8" opacity="0.75"/>
+        <!-- 하이델베르크→팔레르모 (비행 아크, 서지중해 경유) -->
+        <path d="M 105,53 Q 58,188 225,241" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.65" fill="none"/>
         <!-- 시칠리아 드라이브 루트 -->
-        <polyline points="194,230 172,233 198,250 228,260 244,254 242,234 240,244" stroke="#3b82f6" stroke-width="1.8" opacity="0.75" fill="none" stroke-linejoin="round"/>
-        <!-- 카타니아→몰타 (비행 아크) -->
-        <path d="M 240,244 Q 226,265 228,280" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.65" fill="none"/>
-        <!-- 몰타→가르다 (비행 아크: 서쪽 지중해·론 계곡으로) -->
-        <path d="M 228,280 Q 95,215 157,114" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.65" fill="none"/>
+        <polyline points="225,241 203,245 231,255 260,261 274,259 270,252 272,246"
+          stroke="#3b82f6" stroke-width="1.8" opacity="0.75" fill="none" stroke-linejoin="round"/>
+        <!-- 타오르미나→몰타 (비행 아크) -->
+        <path d="M 272,246 Q 256,264 255,278" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.65" fill="none"/>
+        <!-- 몰타→가르다 (비행 아크, 북상) -->
+        <path d="M 255,278 Q 180,218 156,117" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.65" fill="none"/>
         <!-- 가르다→돌로미티→밀라노 (드라이브) -->
-        <polyline points="157,114 191,101 119,118" stroke="#3b82f6" stroke-width="1.8" opacity="0.75" fill="none" stroke-linejoin="round"/>
+        <polyline points="156,117 184,102 118,119"
+          stroke="#3b82f6" stroke-width="1.8" opacity="0.75" fill="none" stroke-linejoin="round"/>
         <!-- 밀라노→프랑크푸르트 (비행 아크) -->
-        <path d="M 119,118 Q 98,82 107,42" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.65" fill="none"/>
- 
+        <path d="M 118,119 Q 92,82 105,41" stroke="#3b82f6" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.65" fill="none"/>
+
         <!-- ── 위치 마커 ── -->
-        <circle class="map-dot" cx="97" cy="43" r="5" fill="#10b981"/>
-        <text class="map-label" x="88" y="39" text-anchor="middle">마인츠</text>
-        <circle class="map-dot" cx="107" cy="53" r="4" fill="#6b7280"/>
+        <circle class="map-dot" cx="94" cy="43" r="5" fill="#10b981"/>
+        <text class="map-label" x="86" y="39" text-anchor="middle">마인츠</text>
+        <circle class="map-dot" cx="105" cy="53" r="4" fill="#6b7280"/>
         <text class="map-label" x="116" y="51" text-anchor="start">하이델베르크</text>
-        <circle class="map-dot" cx="194" cy="230" r="4" fill="#6b7280"/>
-        <text class="map-label" x="184" y="227" text-anchor="end">팔레르모</text>
-        <circle class="map-dot" cx="198" cy="250" r="3.5" fill="#6b7280"/>
-        <circle class="map-dot" cx="228" cy="260" r="3.5" fill="#6b7280"/>
-        <circle class="map-dot" cx="244" cy="254" r="3.5" fill="#6b7280"/>
-        <circle class="map-dot" cx="242" cy="234" r="3.5" fill="#6b7280"/>
-        <text class="map-label" x="248" y="232" text-anchor="start">타오르미나</text>
-        <circle class="map-dot" cx="240" cy="244" r="3.5" fill="#6b7280"/>
-        <circle class="map-dot" cx="228" cy="280" r="4" fill="#6b7280"/>
-        <text class="map-label" x="236" y="280" text-anchor="start">몰타</text>
-        <circle class="map-dot" cx="157" cy="114" r="4" fill="#6b7280"/>
-        <text class="map-label" x="148" y="111" text-anchor="end">가르다</text>
-        <circle class="map-dot" cx="191" cy="101" r="4" fill="#6b7280"/>
-        <text class="map-label" x="197" y="98" text-anchor="start">돌로미티</text>
-        <circle class="map-dot" cx="119" cy="118" r="4" fill="#6b7280"/>
-        <text class="map-label" x="117" y="128" text-anchor="middle">밀라노</text>
-        <circle class="map-dot" cx="107" cy="42" r="5" fill="#dc2626"/>
-        <text class="map-label" x="107" y="36" text-anchor="middle">프랑크푸르트</text>
- 
+        <circle class="map-dot" cx="225" cy="241" r="4" fill="#6b7280"/>
+        <text class="map-label" x="216" y="237" text-anchor="end">팔레르모</text>
+        <circle class="map-dot" cx="203" cy="245" r="3.5" fill="#6b7280"/>
+        <circle class="map-dot" cx="231" cy="255" r="3.5" fill="#6b7280"/>
+        <circle class="map-dot" cx="260" cy="261" r="3.5" fill="#6b7280"/>
+        <circle class="map-dot" cx="274" cy="259" r="3.5" fill="#6b7280"/>
+        <circle class="map-dot" cx="272" cy="246" r="3.5" fill="#6b7280"/>
+        <text class="map-label" x="279" y="244" text-anchor="start">타오르미나</text>
+        <circle class="map-dot" cx="270" cy="252" r="3.5" fill="#6b7280"/>
+        <circle class="map-dot" cx="255" cy="278" r="4" fill="#6b7280"/>
+        <text class="map-label" x="263" y="278" text-anchor="start">몰타</text>
+        <circle class="map-dot" cx="156" cy="117" r="4" fill="#6b7280"/>
+        <text class="map-label" x="148" y="113" text-anchor="end">가르다</text>
+        <circle class="map-dot" cx="184" cy="102" r="4" fill="#6b7280"/>
+        <text class="map-label" x="190" y="99" text-anchor="start">돌로미티</text>
+        <circle class="map-dot" cx="118" cy="119" r="4" fill="#6b7280"/>
+        <text class="map-label" x="116" y="130" text-anchor="middle">밀라노</text>
+        <circle class="map-dot" cx="105" cy="41" r="5" fill="#dc2626"/>
+        <text class="map-label" x="105" y="35" text-anchor="middle">프랑크푸르트</text>
+
         <!-- 현재 위치 강조 링 (JS로 cx/cy 설정) -->
         <circle id="map-current-ring" class="map-current-ring" cx="-100" cy="-100" r="7" fill="rgba(37,99,235,0.25)" stroke="none"/>
         <circle id="map-current-dot" cx="-100" cy="-100" r="5.5" fill="#2563eb" stroke="#fff" stroke-width="1.5"/>
       </g>
- 
-      <!-- ────── 시칠리아 확대 지도 ────── -->
+
+<!-- ────── 시칠리아 확대 지도 ────── -->
       <!-- 프로젝션: x=(lon-11.8)/4.0*350+15, y=(38.4-lat)/1.9*295+10 -->
-      <!-- 트라파니(37.9°N,12.5°E)→x=76,y=88 / 팔레르모(38.1°N,13.4°E)→x=155,y=57 -->
-      <!-- 메시나(38.2°N,15.6°E)→x=349,y=26 / 카타니아(37.5°N,15.1°E)→x=305,y=151 -->
-      <!-- 시라쿠사(37.1°N,15.3°E)→x=321,y=214 / 아그리젠토(37.3°N,13.6°E)→x=173,y=181 -->
-      <!-- 라구사(36.9°N,14.7°E)→x=267,y=244 / 타오르미나(37.85°N,15.3°E)→x=321,y=91 -->
       <g id="map-sicily" style="display:none">
         <!-- 배경 바다 -->
-        <rect width="380" height="340" fill="#a8cce8"/>
-        <!-- 이탈리아 본토 힌트 (NE 모서리) -->
-        <path d="M 340,0 L 380,0 L 380,55 C 368,48 355,36 348,26 C 342,18 340,8 340,0 Z" fill="#c8d9a8"/>
-        <text style="font-size:8px;fill:#6b7280;font-family:sans-serif" x="368" y="35" text-anchor="middle">본토</text>
-        <!-- 메시나 해협 (좁은 물길) 힌트 -->
-        <path d="M 349,26 L 354,45 L 356,50" stroke="#a8cce8" stroke-width="6" fill="none"/>
- 
-        <!-- 시칠리아 섬 윤곽 (실제 삼각형 모양) -->
-        <!-- NW=트라파니(76,88), NE=메시나(349,26), S=카포파세로(305,275) -->
+        <rect width="380" height="340" fill="#a0c4e0"/>
+
+        <!-- 이탈리아 본토 힌트 (NE 모서리 레조칼라브리아 부근) -->
+        <path d="M 352,0 L 380,0 L 380,72 C 372,62 360,52 352,50 C 348,42 348,20 352,0 Z" fill="#c9d9a3"/>
+        <path d="M 352,50 L 350,62 L 348,70" stroke="#a0c4e0" stroke-width="5" fill="none"/>
+        <text style="font-size:8px;fill:#6b7280;font-family:sans-serif" x="370" y="40" text-anchor="middle">본토</text>
+
+        <!-- 시칠리아 섬 윤곽 (시계 방향 실제 해안선) -->
+        <!-- 메시나(NE) → N해안(W) → 트라파니(NW) → S해안(E) → 카포파세로(S) → E해안(N) → 메시나 -->
         <path d="
-          M 68,103
-          C 64,96 70,90 76,88
-          C 100,66 130,56 155,57
-          C 182,55 205,62 208,72
-          C 248,62 308,38 349,26
-          C 350,52 336,100 318,130
-          L 305,151
-          C 312,178 320,196 321,214
-          C 318,244 310,265 305,275
-          C 292,286 278,284 268,278
-          L 267,244
-          C 244,232 224,220 210,214
-          C 192,204 178,192 173,181
-          C 150,164 118,138 90,114
-          C 80,108 72,106 68,103 Z
-        " fill="#c8d9a8"/>
- 
-        <!-- 에트나 화산 -->
-        <path d="M 288,112 L 298,88 L 308,112 Z" fill="#c8b8a8" opacity="0.75"/>
-        <text style="font-size:8px;fill:#6b7280;font-family:sans-serif" x="298" y="85" text-anchor="middle">에트나</text>
- 
-        <!-- 루트 라인 (드라이브) -->
-        <polyline points="155,57 76,88 173,181 267,244 321,214 321,91 305,151"
+          M 344,43
+          L 352,30
+          C 340,34 328,36 316,38
+          C 268,52 238,58 209,74
+          C 178,64 158,54 152,54
+          C 134,50 116,52 96,44
+          C 82,60 76,74 75,86
+          C 72,94 70,98 70,103
+          C 90,118 110,136 127,148
+          C 144,162 154,172 165,182
+          C 180,194 194,206 202,212
+          C 218,216 226,216 230,218
+          C 244,230 252,246 255,262
+          C 264,267 272,270 281,269
+          C 296,274 304,278 308,277
+          C 316,252 318,236 320,215
+          C 316,202 314,194 314,192
+          C 308,170 305,158 303,150
+          C 308,128 316,110 320,95
+          C 330,66 338,54 344,43 Z
+        " fill="#c9d9a3" stroke="#9ab89a" stroke-width="0.8"/>
+
+        <!-- 에트나 화산 (카타니아 북쪽) -->
+        <path d="M 283,96 L 295,72 L 307,96 Z" fill="#c8b8a8" opacity="0.7"/>
+        <text style="font-size:7px;fill:#6b7280;font-family:sans-serif" x="295" y="70" text-anchor="middle">에트나</text>
+
+        <!-- 몰타 (시칠리아 남쪽 작은 섬 힌트) -->
+        <!-- Malta center: sc(14.51, 35.9) ≈ (244, 310) - off viewBox bottom -->
+        <!-- Show as label at bottom edge -->
+        <text style="font-size:8px;fill:#4b72b0;font-family:sans-serif;font-weight:500" x="256" y="332" text-anchor="middle">▼ 몰타 (90km)</text>
+
+        <!-- 루트 라인 (팔레르모→트라파니→아그리젠토→라구사→시라쿠사→카타니아→타오르미나) -->
+        <polyline points="152,54 75,86 165,182 255,262 320,215 303,150 320,95"
           stroke="#3b82f6" stroke-width="2" opacity="0.75" fill="none" stroke-linejoin="round"/>
- 
-        <!-- 체팔루 (팔레르모 동쪽 N 해안) -->
-        <circle cx="208" cy="72" r="4" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
-        <text style="font-size:8px;fill:#374151;font-family:sans-serif" x="208" y="64" text-anchor="middle">체팔루</text>
-        <!-- 팔레르모 -->
-        <circle cx="155" cy="57" r="5.5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
-        <text style="font-size:9px;fill:#1e3a8a;font-family:sans-serif;font-weight:600" x="155" y="49" text-anchor="middle">팔레르모</text>
-        <!-- 트라파니 -->
-        <circle cx="76" cy="88" r="5.5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
-        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="64" y="84" text-anchor="end">트라파니</text>
-        <!-- 아그리젠토 -->
-        <circle cx="173" cy="181" r="5.5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
-        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="173" y="195" text-anchor="middle">아그리젠토</text>
-        <!-- 라구사·모디카 -->
-        <circle cx="267" cy="244" r="5.5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
-        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="275" y="256" text-anchor="start">라구사</text>
-        <!-- 시라쿠사 -->
-        <circle cx="321" cy="214" r="5.5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
-        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="329" y="212" text-anchor="start">시라쿠사</text>
-        <!-- 타오르미나 -->
-        <circle cx="321" cy="91" r="5.5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
-        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="329" y="89" text-anchor="start">타오르미나</text>
-        <!-- 카타니아 -->
-        <circle cx="305" cy="151" r="5.5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
-        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="305" y="165" text-anchor="middle">카타니아</text>
- 
+
+        <!-- 도시 마커 -->
+        <circle cx="152" cy="54" r="6" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#1e3a8a;font-family:sans-serif;font-weight:600" x="152" y="46" text-anchor="middle">팔레르모</text>
+        <circle cx="209" cy="74" r="4" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
+        <text style="font-size:8px;fill:#374151;font-family:sans-serif" x="209" y="66" text-anchor="middle">체팔루</text>
+        <circle cx="75" cy="86" r="6" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="63" y="82" text-anchor="end">트라파니</text>
+        <circle cx="70" cy="103" r="4.5" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
+        <text style="font-size:8px;fill:#374151;font-family:sans-serif" x="58" y="107" text-anchor="end">마르살라</text>
+        <circle cx="165" cy="182" r="6" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="165" y="196" text-anchor="middle">아그리젠토</text>
+        <circle cx="255" cy="262" r="6" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="263" y="274" text-anchor="start">라구사</text>
+        <circle cx="320" cy="215" r="6" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="328" y="213" text-anchor="start">시라쿠사</text>
+        <circle cx="320" cy="95" r="6" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="328" y="93" text-anchor="start">타오르미나</text>
+        <circle cx="303" cy="150" r="6" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="303" y="164" text-anchor="middle">카타니아</text>
+
         <!-- 현재 위치 강조 (JS로 이동) -->
         <circle id="smap-ring" class="map-current-ring" cx="-100" cy="-100" r="9" fill="rgba(37,99,235,0.2)" stroke="none"/>
         <circle id="smap-dot" cx="-100" cy="-100" r="6.5" fill="#2563eb" stroke="#fff" stroke-width="2"/>
         <text id="smap-label" style="font-size:9px;font-weight:700;fill:#1e40af;font-family:sans-serif" x="-100" y="-100">●</text>
         <text style="font-size:11px;font-weight:bold;fill:#1e3a8a;font-family:sans-serif" x="190" y="318" text-anchor="middle">🗺 시칠리아 상세</text>
       </g>
- 
-      <!-- ────── 몰타 확대 지도 ────── -->
+
+<!-- ────── 몰타 확대 지도 ────── -->
       <!-- 프로젝션: x=(lon-14.1)/0.65*340+20, y=(36.15-lat)/0.45*295+20 -->
-      <!-- 몰타 본섬: 35.83-35.99°N, 14.33-14.57°E / 고조: 36.0-36.08°N, 14.18-14.3°E -->
-      <!-- 발레타(35.9°N,14.51°E)→x=236,y=184 / 고조중심(36.04°N,14.24°E)→x=88,y=74 -->
       <g id="map-malta" style="display:none">
-        <rect width="380" height="340" fill="#93c5fd"/>
- 
-        <!-- 고조 섬 (NW) - 타원형, 몰타 NW에 위치 -->
-        <ellipse cx="88" cy="80" rx="34" ry="22" fill="#c8d9a8"/>
-        <text style="font-size:9px;fill:#374151;font-family:sans-serif;font-weight:600" x="88" y="69" text-anchor="middle">고조</text>
- 
-        <!-- 코미노 (고조·몰타 사이 작은 섬) -->
-        <ellipse cx="148" cy="118" rx="12" ry="8" fill="#c8d9a8"/>
- 
-        <!-- 몰타 본섬 (실제 형태: NW-SE 방향, 약 27km×14km) -->
-        <!-- N해안: 다수의 만(灣) / S해안: 절벽 -->
-        <!-- NW=말파곶(35.99°N,14.34°E)→x=165,y=152 -->
-        <!-- NE=포인트(35.9°N,14.57°E)→x=257,y=184 -->
-        <!-- SE=델리마라(35.83°N,14.56°E)→x=255,y=221 -->
-        <!-- SW=발레타반도→S해안→블루그롯토 -->
+        <rect width="380" height="340" fill="#90bce0"/>
+
+        <!-- 고조 섬 (NW) – 실측 윤곽 -->
         <path d="
-          M 165,152
-          C 178,148 192,150 204,158
-          C 216,164 226,174 236,184
-          C 245,192 253,204 257,216
-          C 256,222 254,224 250,225
-          L 254,228
-          C 250,232 240,232 228,228
-          C 215,224 200,222 192,226
-          C 182,230 176,228 172,222
-          C 166,214 170,208 176,208
-          C 178,214 182,218 186,216
-          C 188,210 186,202 182,196
-          C 176,188 170,178 165,168
-          C 163,160 163,154 165,152 Z
-        " fill="#c8d9a8"/>
- 
+          M 70,71
+          C 82,67 96,70 104,72
+          C 110,74 116,80 119,99
+          C 116,106 112,110 113,112
+          C 100,114 88,110 87,109
+          C 78,105 70,100 70,100
+          C 68,92 68,82 70,71 Z
+        " fill="#c9d9a3" stroke="#9ab89a" stroke-width="0.8"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif;font-weight:600" x="93" y="92" text-anchor="middle">고조</text>
+
+        <!-- 코미노 (고조·몰타 사이 작은 섬) -->
+        <ellipse cx="144" cy="115" rx="13" ry="8" fill="#c9d9a3" stroke="#9ab89a" stroke-width="0.6"/>
+
+        <!-- 몰타 본섬 (실측 윤곽: NW–SE 방향 27km×13km) -->
+        <!-- NW tip → N bay coastline → Valletta NE → SE Delimara → S coast → Dingli W cliff → NW -->
+        <path d="
+          M 116,137
+          C 128,135 140,138 149,145
+          C 160,148 172,153 176,155
+          C 186,153 196,153 200,158
+          C 210,164 218,170 226,175
+          C 230,180 234,183 237,184
+          C 244,192 250,200 253,206
+          C 258,218 261,225 261,231
+          C 256,228 250,226 249,225
+          C 245,228 242,230 230,232
+          C 218,233 207,233 201,232
+          C 190,231 178,229 172,229
+          C 168,222 168,216 168,213
+          C 158,202 148,192 142,181
+          C 130,168 120,156 116,137 Z
+        " fill="#c9d9a3" stroke="#9ab89a" stroke-width="0.8"/>
+
         <!-- 위치 마커 -->
-        <!-- 발레타 (NE, 항구도시) -->
-        <circle cx="244" cy="184" r="7" fill="#6b7280" stroke="#fff" stroke-width="2"/>
-        <text style="font-size:11px;font-weight:700;fill:#1e3a8a;font-family:sans-serif" x="255" y="182" text-anchor="start">발레타</text>
-        <!-- 므디나 (중앙서부 고지) -->
-        <circle cx="186" cy="190" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
-        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="178" y="183" text-anchor="end">므디나</text>
+        <!-- 발레타 (NE 항구 수도) -->
+        <circle cx="237" cy="184" r="7" fill="#6b7280" stroke="#fff" stroke-width="2"/>
+        <text style="font-size:11px;font-weight:700;fill:#1e3a8a;font-family:sans-serif" x="247" y="182" text-anchor="start">발레타</text>
+        <!-- 므디나 (중앙 서부 고지대) -->
+        <circle cx="180" cy="192" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="172" y="186" text-anchor="end">므디나</text>
         <!-- 마르사슐로크 (SE 어항) -->
-        <circle cx="242" cy="222" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
-        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="248" y="234" text-anchor="start">마르사슐로크</text>
-        <!-- 블루 그롯토 (SW 해안) -->
-        <circle cx="174" cy="220" r="4.5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
-        <text style="font-size:9px;fill:#374151;font-family:sans-serif" x="168" y="232" text-anchor="middle">블루그롯토</text>
-        <!-- 고조 중심 -->
-        <circle cx="88" cy="80" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
- 
-        <!-- 현재 강조 -->
-        <circle id="mmap-ring" class="map-current-ring" cx="244" cy="184" r="12" fill="rgba(37,99,235,0.2)" stroke="none"/>
-        <circle id="mmap-dot" cx="244" cy="184" r="8" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+        <circle cx="252" cy="223" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:8px;fill:#374151;font-family:sans-serif" x="258" y="234" text-anchor="start">마르사슐로크</text>
+        <!-- 딩글리 절벽 (SW 절벽) -->
+        <circle cx="168" cy="213" r="4.5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+        <text style="font-size:8px;fill:#374151;font-family:sans-serif" x="162" y="224" text-anchor="middle">딩글리</text>
+        <!-- 하자르임 (S 거석 신전) -->
+        <circle cx="201" cy="232" r="4" fill="#6b7280" stroke="#fff" stroke-width="1.2"/>
+        <text style="font-size:8px;fill:#374151;font-family:sans-serif" x="196" y="244" text-anchor="middle">하자르임</text>
+        <!-- 고조 마커 -->
+        <circle cx="93" cy="90" r="5" fill="#6b7280" stroke="#fff" stroke-width="1.5"/>
+
+        <!-- 현재 강조 (발레타 고정, 몰타에서는 고정 위치 사용) -->
+        <circle id="mmap-ring" class="map-current-ring" cx="237" cy="184" r="12" fill="rgba(37,99,235,0.2)" stroke="none"/>
+        <circle id="mmap-dot" cx="237" cy="184" r="8" fill="#2563eb" stroke="#fff" stroke-width="2"/>
         <text style="font-size:11px;font-weight:bold;fill:#1e3a8a;font-family:sans-serif" x="190" y="318" text-anchor="middle">🗺 몰타 상세</text>
       </g>
     </svg>
   </div>
- 
+
   <!-- 오늘 정보 영역 -->
   <div class="splash-body">
     <!-- 오늘 일정 -->
@@ -873,7 +885,7 @@
     <button class="splash-enter-btn" onclick="enterApp()">전체 일정 보기 →</button>
   </div>
 </div>
- 
+
 <div class="header">
   <div class="header-top">
     <h1>✈️ Sicily<span>&</span>Malta</h1>
@@ -1756,45 +1768,58 @@ function errorHTML(retryFn) {
     <button class="retry-btn" onclick="window._retryFn()">다시 시도</button>
   </div>`;
 }
- 
+
 // ══════════════════════════════════════════════════════════
 // 스플래시 기능 (Feature 1)
 // ══════════════════════════════════════════════════════════
- 
+
 // 시칠리아·몰타 기간 정의
 const SICILY_START = '2026-09-14', SICILY_END = '2026-09-30';
 const MALTA_START  = '2026-09-30', MALTA_END  = '2026-10-05';
- 
+
 // 개요 지도의 각 거점 SVG 좌표 (viewBox 380×340, 지리 보정 반영)
 // 프로젝션: x=(lon-5)/14*360+10, y=(52-lat)/18*300+10
 const OVERVIEW_COORDS = {
-  '마인츠':        { x: 97,  y: 43  },
-  '하이델베르크':  { x: 107, y: 53  },
-  '팔레르모':      { x: 194, y: 230 },
-  '트라파니':      { x: 172, y: 233 },
-  '아그리젠토':    { x: 198, y: 250 },
-  '라구사':        { x: 228, y: 260 },
-  '시라쿠사':      { x: 244, y: 254 },
-  '타오르미나':    { x: 242, y: 234 },
-  '카타니아':      { x: 240, y: 244 },
-  '몰타':          { x: 228, y: 280 },
-  '가르다호수':    { x: 157, y: 114 },
-  '돌로미티':      { x: 191, y: 101 },
-  '밀라노':        { x: 119, y: 118 },
-  '프랑크푸르트':  { x: 107, y: 42  },
+  '마인츠':       { x: 94,  y: 43  },
+  '하이델베르크': { x: 105, y: 53  },
+  '팔레르모':     { x: 225, y: 241 },
+  '트라파니':     { x: 203, y: 245 },
+  '세제스타':     { x: 210, y: 247 },
+  '아그리젠토':   { x: 231, y: 255 },
+  '라구사':       { x: 260, y: 261 },
+  '모디카':       { x: 258, y: 263 },
+  '시라쿠사':     { x: 274, y: 259 },
+  '카타니아':     { x: 270, y: 252 },
+  '타오르미나':   { x: 272, y: 246 },
+  '체팔루':       { x: 242, y: 244 },
+  '몰타':         { x: 255, y: 278 },
+  '발레타':       { x: 255, y: 278 },
+  '마르사슐로크': { x: 257, y: 280 },
+  '가르다호수':   { x: 156, y: 117 },
+  '돌로미티':     { x: 184, y: 102 },
+  '밀라노':       { x: 118, y: 119 },
+  '프랑크푸르트': { x: 105, y: 41  },
 };
 // 시칠리아 확대 지도의 주요 거점 SVG 좌표
 // 프로젝션: x=(lon-11.8)/4.0*350+15, y=(38.4-lat)/1.9*295+10
 const SICILY_COORDS = {
-  '팔레르모·체팔루': { x: 155, y: 57  },
-  '트라파니':        { x: 76,  y: 88  },
-  '아그리젠토':      { x: 173, y: 181 },
-  '라구사·모디카':   { x: 267, y: 244 },
-  '시라쿠사':        { x: 321, y: 214 },
-  '타오르미나':      { x: 321, y: 91  },
-  '카타니아':        { x: 305, y: 151 },
+  '팔레르모·체팔루': { x: 152, y: 54  },
+  '팔레르모':        { x: 152, y: 54  },
+  '체팔루':          { x: 209, y: 74  },
+  '트라파니':        { x: 75,  y: 86  },
+  '마르살라':        { x: 70,  y: 103 },
+  '세제스타':        { x: 105, y: 81  },
+  '아그리젠토':      { x: 165, y: 182 },
+  '라구사·모디카':   { x: 255, y: 262 },
+  '라구사':          { x: 255, y: 262 },
+  '모디카':          { x: 258, y: 268 },
+  '시라쿠사':        { x: 320, y: 215 },
+  '노토':            { x: 309, y: 243 },
+  '카타니아':        { x: 303, y: 150 },
+  '타오르미나':      { x: 320, y: 95  },
+  '메시나':          { x: 344, y: 42  },
 };
- 
+
 function showSplash() {
   const splash = document.getElementById('splash');
   splash.style.display = 'flex';
@@ -1804,11 +1829,11 @@ function showSplash() {
   _loadSplashSchedule(todayStr);
   _loadSplashWeather(todayStr);
 }
- 
+
 function enterApp() {
   document.getElementById('splash').style.display = 'none';
 }
- 
+
 function _updateSplashHeader(todayStr) {
   const dowKr = ['일','월','화','수','목','금','토'];
   const [y,m,d] = todayStr.split('-').map(Number);
@@ -1823,20 +1848,20 @@ function _updateSplashHeader(todayStr) {
     ddEl.textContent = dd === 0 ? 'D-Day' : `D-${dd}`;
   }
 }
- 
+
 function _setupSplashMap(todayStr) {
   // 어느 지도 뷰를 보여줄지 결정
   const inSicily = todayStr >= SICILY_START && todayStr < SICILY_END;
   const inMalta  = todayStr >= MALTA_START  && todayStr < MALTA_END;
- 
+
   document.getElementById('map-overview').style.display = inSicily || inMalta ? 'none' : '';
   document.getElementById('map-sicily').style.display   = inSicily ? '' : 'none';
   document.getElementById('map-malta').style.display    = inMalta  ? '' : 'none';
- 
+
   // 현재 거점을 WEATHER_STOPS 기준으로 찾아 하이라이트
   const stop = WEATHER_STOPS.find(s => todayStr >= s.start && todayStr < s.end);
   if (!stop) return;
- 
+
   if (inSicily) {
     // 시칠리아 확대 지도에서 현재 거점 강조
     const regionKey = Object.keys(SICILY_COORDS).find(k => stop.region.includes(k.split('·')[0]));
@@ -1862,7 +1887,7 @@ function _setupSplashMap(todayStr) {
   }
   // 몰타는 고정 위치(발레타)에 항상 표시됨
 }
- 
+
 async function _loadSplashSchedule(todayStr) {
   const box = document.getElementById('splash-schedule-box');
   try {
@@ -1892,7 +1917,7 @@ async function _loadSplashSchedule(todayStr) {
     box.innerHTML = `<div class="splash-today-detail" style="color:var(--text3)">일정 불러오기 실패</div>`;
   }
 }
- 
+
 async function _loadSplashWeather(todayStr) {
   const box = document.getElementById('splash-weather-box');
   const stop = WEATHER_STOPS.find(s => todayStr >= s.start && todayStr < s.end)
@@ -1929,8 +1954,8 @@ async function _loadSplashWeather(todayStr) {
     box.innerHTML = climateHTML();
   }
 }
- 
- 
+
+
 // ── 초기화 ────────────────────────────────────────────────────────
 renderSchedule();
 </script>
@@ -2261,4 +2286,3 @@ function closeLPPanel() {
 </script>
 </body>
 </html>
- 
